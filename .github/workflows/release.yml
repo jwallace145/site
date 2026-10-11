@@ -1,0 +1,171 @@
+name: Release
+
+# Release Please opens (and keeps updated) a release PR after every push to
+# main. Nothing is auto-merged: the owner merges the release PR when ready, and
+# that merge is the release. The same push then creates the tag and GitHub
+# Release, and the deploy job ships that tag to S3 + CloudFront.
+#
+# workflow_dispatch redeploys an existing release (latest by default) without
+# touching Release Please.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to deploy (defaults to the latest GitHub Release)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    name: release-please
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      # PRs opened with the default GITHUB_TOKEN do not trigger other
+      # workflows, so required CI checks would never run on the release PR.
+      # A GitHub App installation token behaves like a normal user.
+      - name: Create GitHub App token
+        id: app-token
+        # actions/create-github-app-token v3.2.0
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
+      - name: Release Please
+        id: release
+        # googleapis/release-please-action v5.0.0
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  deploy:
+    name: deploy
+    needs: release-please
+    # Runs when this push created a release, or on manual dispatch. A release
+    # created with a workflow token would not reliably trigger a separate
+    # `release` workflow, so the deploy lives here.
+    if: >-
+      !cancelled() &&
+      (
+        (github.event_name == 'push' &&
+         needs.release-please.result == 'success' &&
+         needs.release-please.outputs.release_created == 'true') ||
+        github.event_name == 'workflow_dispatch'
+      )
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ vars.SITE_URL }}
+    permissions:
+      contents: read
+      id-token: write # OIDC token for AWS role assumption
+    steps:
+      - name: Resolve release tag
+        id: tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          EVENT_NAME: ${{ github.event_name }}
+          RELEASE_TAG: ${{ needs.release-please.outputs.tag_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          if [ "$EVENT_NAME" = "push" ]; then
+            tag="$RELEASE_TAG"
+          elif [ -n "$INPUT_TAG" ]; then
+            tag="$INPUT_TAG"
+          else
+            tag="$(gh release view --json tagName --jq .tagName)"
+          fi
+          if [ -z "$tag" ]; then
+            echo "::error::Could not determine a release tag to deploy"
+            exit 1
+          fi
+          echo "Deploying $tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout release tag
+        # actions/checkout v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: refs/tags/${{ steps.tag.outputs.tag }}
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup
+
+      - name: Build
+        run: pnpm build
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+
+      - name: Configure AWS credentials (OIDC)
+        # aws-actions/configure-aws-credentials v6.3.0
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: github-deploy-${{ github.run_id }}
+
+      - name: Sync to S3
+        env:
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+        run: |
+          set -euo pipefail
+
+          # 1. Everything except HTML and hashed assets: short cache.
+          aws s3 sync dist/ "s3://$S3_BUCKET/" \
+            --delete \
+            --exclude "*.html" \
+            --exclude "_astro/*" \
+            --cache-control "public, max-age=3600"
+
+          # 2. Hashed assets under _astro/: cache forever.
+          aws s3 sync dist/_astro/ "s3://$S3_BUCKET/_astro/" \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable"
+
+          # 3. HTML: always revalidate so new releases show up immediately.
+          aws s3 sync dist/ "s3://$S3_BUCKET/" \
+            --delete \
+            --exclude "*" \
+            --include "*.html" \
+            --cache-control "public, max-age=0, must-revalidate" \
+            --content-type "text/html; charset=utf-8"
+
+      - name: Invalidate CloudFront
+        env:
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/*" \
+            --query 'Invalidation.Id' --output text
+
+      - name: Summary
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          {
+            echo "## Deployed $TAG"
+            echo
+            echo "- Site: $SITE_URL"
+            echo "- Bucket synced and CloudFront invalidation created."
+          } >> "$GITHUB_STEP_SUMMARY"
