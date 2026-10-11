@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/jwallace145/site/compare/v1.10.0...v1.11.0) (2026-10-11)
+
+
+### Features
+
+* **site:** show the release version in the footer ([#27](https://github.com/jwallace145/site/issues/27)) ([cb538e8](https://github.com/jwallace145/site/commit/cb538e87c10c4907e289a952f4a8cf9fb6ba392f))
+
 ## [1.10.0](https://github.com/jwallace145/site/compare/v1.9.0...v1.10.0) (2026-10-11)
 
 
