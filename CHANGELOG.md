@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/jwallace145/site/compare/v1.2.0...v1.3.0) (2026-10-11)
+
+
+### Features
+
+* **content:** populate homepage from the latest resume ([#9](https://github.com/jwallace145/site/issues/9)) ([ac37987](https://github.com/jwallace145/site/commit/ac3798739d8502e58e051669efc54d0c7a85b8d1))
+
 ## [1.2.0](https://github.com/jwallace145/site/compare/v1.1.0...v1.2.0) (2026-10-11)
 
 
