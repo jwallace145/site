@@ -65,6 +65,23 @@ variable "github_repository" {
   }
 }
 
+variable "github_owner_id" {
+  description = "Numeric GitHub ID of the repository owner. With github_repository_id, enables GitHub's immutable OIDC subject (repo:owner@id/name@id:...). null accepts the plain subject only."
+  type        = number
+  default     = null
+}
+
+variable "github_repository_id" {
+  description = "Numeric GitHub ID of the repository. See github_owner_id."
+  type        = number
+  default     = null
+
+  validation {
+    condition     = (var.github_owner_id == null) == (var.github_repository_id == null)
+    error_message = "github_owner_id and github_repository_id must be set together."
+  }
+}
+
 variable "github_environment" {
   description = "GitHub Environment whose jobs may assume the deploy role."
   type        = string
@@ -75,6 +92,29 @@ variable "create_oidc_provider" {
   description = "Create the token.actions.githubusercontent.com OIDC provider. false looks up an existing one (one per account)."
   type        = bool
   default     = true
+}
+
+variable "plan_role" {
+  description = "Create a read-only role that pull_request workflows assume to run terraform plan. Needs terraform_state_bucket/key."
+  type        = bool
+  default     = true
+}
+
+variable "terraform_state_bucket" {
+  description = "S3 bucket holding this stack's state. Read by the plan role."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = !var.plan_role || (var.terraform_state_bucket != null && var.terraform_state_key != null)
+    error_message = "terraform_state_bucket and terraform_state_key are required when plan_role is true."
+  }
+}
+
+variable "terraform_state_key" {
+  description = "S3 key of this stack's state file. Read by the plan role."
+  type        = string
+  default     = null
 }
 
 # -----------------------------------------------------------------------------

@@ -31,6 +31,19 @@ output "site_url" {
   value       = module.site.site_url
 }
 
+output "plan_role_arn" {
+  description = "AWS_PLAN_ROLE_ARN (repository variable): read-only role for terraform plan in PRs."
+  value       = module.site.plan_role_arn
+}
+
+output "github_repository_variables" {
+  description = "Repository-level (not environment) variables read by the PR terraform-plan check."
+  value = {
+    AWS_PLAN_ROLE_ARN = module.site.plan_role_arn
+    AWS_REGION        = var.aws_region
+  }
+}
+
 output "github_environment_variables" {
   description = "Everything to paste into the GitHub `production` environment."
   value = {

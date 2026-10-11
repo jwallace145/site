@@ -69,6 +69,18 @@ variable "github_repository" {
   default     = "jwallace145/site"
 }
 
+variable "github_owner_id" {
+  description = "Numeric GitHub ID of jwallace145 (gh api users/jwallace145 --jq .id). Needed because the repo uses immutable OIDC subjects."
+  type        = number
+  default     = 35950238
+}
+
+variable "github_repository_id" {
+  description = "Numeric GitHub ID of jwallace145/site (gh api repos/jwallace145/site --jq .id)."
+  type        = number
+  default     = 1413965497
+}
+
 variable "github_environment" {
   description = "GitHub Environment whose jobs may assume the deploy role."
   type        = string
