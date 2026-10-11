@@ -17,9 +17,11 @@ infra/
     main.tf              computes names + tags, calls the module
     variables.tf         the simple interface (one required input)
     providers.tf         default_tags carry the standard tags
-    backend.tf           S3 backend with lockfile locking
+    backend.tf           S3 backend: jwallace145-site-tfstate, key prod/live/terraform.tfstate
     outputs.tf           values for the GitHub `production` environment
     terraform.tfvars.example
+  scripts/
+    bootstrap-state-bucket.sh   creates the state bucket with the standard tags
 ```
 
 ## Standards
@@ -63,22 +65,17 @@ Add more with `extra_tags`.
 
 ## 1. Bootstrap the state bucket (once)
 
-State lives in S3 with native lockfile locking, so no DynamoDB table is
-needed. The bucket is created by hand and its name is never committed.
+State lives in `s3://jwallace145-site-tfstate` with native lockfile locking,
+so no DynamoDB table is needed. Keys are `<environment>/<stack>/terraform.tfstate`
+(this root uses `prod/live/terraform.tfstate`), so one bucket holds every
+stack of the project.
+
+The bucket is created outside Terraform by a script that applies the same
+standard tags, plus versioning, encryption, public-access block and a
+90-day retention for old state versions. Re-running it is safe.
 
 ```bash
-export AWS_REGION=us-east-1
-export TF_STATE_BUCKET=jwallace145-tfstate-<something-unique>
-
-aws s3api create-bucket --bucket "$TF_STATE_BUCKET" --region "$AWS_REGION"
-# Outside us-east-1 add: --create-bucket-configuration LocationConstraint=$AWS_REGION
-
-aws s3api put-bucket-versioning --bucket "$TF_STATE_BUCKET" \
-  --versioning-configuration Status=Enabled
-aws s3api put-bucket-encryption --bucket "$TF_STATE_BUCKET" \
-  --server-side-encryption-configuration '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
-aws s3api put-public-access-block --bucket "$TF_STATE_BUCKET" \
-  --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+infra/scripts/bootstrap-state-bucket.sh
 ```
 
 ## 2. Configure
@@ -89,21 +86,22 @@ cp terraform.tfvars.example terraform.tfvars   # git-ignored
 $EDITOR terraform.tfvars                        # set budget_alert_email
 ```
 
-Everything else defaults to the project standards. Set
-`create_oidc_provider = false` if the account already has a provider for
-`token.actions.githubusercontent.com`:
+Everything else defaults to the project standards. The account already has
+an OIDC provider for `token.actions.githubusercontent.com`, so
+`create_oidc_provider` defaults to `false` and the module looks it up. Confirm
+it accepts the `sts.amazonaws.com` audience the deploy role trusts:
 
 ```bash
-aws iam list-open-id-connect-providers
+aws iam get-open-id-connect-provider \
+  --open-id-connect-provider-arn "$(aws iam list-open-id-connect-providers \
+    --query 'OpenIDConnectProviderList[?contains(Arn, `token.actions.githubusercontent.com`)].Arn' --output text)" \
+  --query ClientIDList
 ```
 
 ## 3. Init, plan, apply
 
 ```bash
-terraform init \
-  -backend-config="bucket=$TF_STATE_BUCKET" \
-  -backend-config="region=$AWS_REGION"
-
+terraform init                  # backend is fully configured in backend.tf
 terraform plan -out=tfplan      # review names and tags here
 terraform apply tfplan
 ```

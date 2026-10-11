@@ -76,9 +76,9 @@ variable "github_environment" {
 }
 
 variable "create_oidc_provider" {
-  description = "Create the GitHub OIDC provider. Set false if the account already has one."
+  description = "Create the GitHub OIDC provider. The target account already has one, so the module looks it up by default."
   type        = bool
-  default     = true
+  default     = false
 }
 
 # -----------------------------------------------------------------------------
