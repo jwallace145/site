@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/jwallace145/site/compare/v1.13.0...v1.14.0) (2026-10-11)
+
+
+### Features
+
+* **content:** show months on the education dates ([#33](https://github.com/jwallace145/site/issues/33)) ([27cd1bd](https://github.com/jwallace145/site/commit/27cd1bd356afabedea4789189e6ea514abbcf8a0))
+
 ## [1.13.0](https://github.com/jwallace145/site/compare/v1.12.0...v1.13.0) (2026-10-11)
 
 
