@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/jwallace145/site/compare/v1.0.0...v1.1.0) (2026-10-11)
+
+
+### Features
+
+* **infra:** pin state bucket and default to the existing oidc provider ([#4](https://github.com/jwallace145/site/issues/4)) ([db34c4e](https://github.com/jwallace145/site/commit/db34c4eb0c732cb58f99220fc7bf5ed44e4566fc))
+
 ## 1.0.0 (2026-10-11)
 
 
