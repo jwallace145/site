@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/jwallace145/site/compare/v1.7.0...v1.8.0) (2026-10-11)
+
+
+### Features
+
+* **infra:** add the github pages domain verification record ([#20](https://github.com/jwallace145/site/issues/20)) ([f885f64](https://github.com/jwallace145/site/commit/f885f649825647195981f10019778acfa10cf9bb))
+
 ## [1.7.0](https://github.com/jwallace145/site/compare/v1.6.0...v1.7.0) (2026-10-11)
 
 
