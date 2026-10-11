@@ -19,7 +19,10 @@ aws = {
 # (see infra/README.md).
 dns = {
   zone_name = "jwall.engineering"
-  records   = {}
+  records = {
+    # CS Survival Guide, hosted on GitHub Pages from jwallace145/cs-survival-guide.
+    "survival-guide" = { type = "CNAME", values = ["jwallace145.github.io."] }
+  }
 }
 
 domain = {
