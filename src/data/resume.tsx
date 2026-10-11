@@ -12,14 +12,6 @@ import { Docker } from "@/components/ui/svgs/docker";
 import { Kubernetes } from "@/components/ui/svgs/kubernetes";
 import { Nodejs } from "@/components/ui/svgs/nodejs";
 
-const Bullets = ({ items }: { items: string[] }) => (
-  <ul className="list-disc space-y-2 pl-4">
-    {items.map((item) => (
-      <li key={item}>{item}</li>
-    ))}
-  </ul>
-);
-
 export const DATA = {
   name: "Jimmy Wallace",
   initials: "JW",
@@ -112,82 +104,74 @@ export const DATA = {
     },
   },
 
-  // Most recent first. `end: undefined` renders as "Present".
+  // Most recent first. Each company lists its roles, most recent first, so a
+  // promotion shows as two roles under one logo. `end: undefined` renders as
+  // "Present". Bullets are plain strings so the component owns the markup.
   work: [
     {
       company: "Charter Communications",
       href: "https://corporate.charter.com",
-      badges: [],
       location: "Denver, CO",
-      title: "Lead DevOps Engineer, Data Lake Platforms",
       logoUrl: "/logos/charter.svg",
-      start: "July 2025",
-      end: undefined,
-      description: (
-        <Bullets
-          items={[
+      roles: [
+        {
+          title: "Lead DevOps Engineer",
+          team: "Data Lake Platforms (DLP)",
+          start: "July 2025",
+          end: undefined,
+          bullets: [
             "Built and deployed the PII Access Auditor, an event-driven serverless AWS service delivering the organization's first real-time alerting, logging, and violation reporting for PII access. A queue-driven Lambda collects and centrally caches IAM and resource permission data across a hub-and-spoke architecture of 50+ accounts, then analyzes access and generates monitoring and reporting at organizational scale.",
             "Architected Charter's Databricks pilot platform on AWS spanning multiple environments to support all workspaces across the organization, engineering VPC isolation, SSO integration, AD-based access control, Unity Catalog data governance, and infrastructure policies and limits to control cloud costs. Integrated existing AWS Glue catalogs to accelerate team onboarding and preserve access to established datasets.",
             "Independently led the cross-enterprise effort between Charter and AWS to resolve a breaking AWS Glue service release that changed IAM permission caching behavior and disrupted Charter's transient role approach, threatening downtime for every EMR reporting team in the organization. Coordinated with AWS to roll back the release and refactored Charter's EMR orchestration layer from dynamic IAM policy swapping to static, team-scoped roles through a monitored rollout across 500+ developers with zero regressions.",
-          ]}
-        />
-      ),
+          ],
+        },
+      ],
     },
     {
       company: "Amazon Web Services (AWS)",
       href: "https://aws.amazon.com",
-      badges: [],
       location: "Arlington, VA",
-      title: "Software Development Engineer II, EC2 Metering",
       logoUrl: "/logos/aws.svg",
-      start: "August 2022",
-      end: "April 2025",
-      description: (
-        <Bullets
-          items={[
+      roles: [
+        {
+          title: "Software Development Engineer II",
+          team: "EC2 Core Platform · EC2 Metering",
+          start: "August 2022",
+          end: "April 2025",
+          bullets: [
             "Owned and improved AWS' Java (JDK 17) metering service for EC2 resources to accurately meter customer instance and host usage globally (single and shared tenancy), as well as other EC2 resources such as On-Demand Capacity Reservations (ODCRs), IP Address Manager (IPAM), and all IPv4 resources (billions of records per day) with a 99.999% metering accuracy SLA.",
             "Independently developed EC2's metering system for AWS Global Accelerator, AWS VPN Site-to-Site Connections, and IPv4 Contiguous Blocks in Java.",
             "Identified and created a simplified onboarding framework to add new EC2 resources to EC2's metering system within a week, decreasing engineering time from three months and saving the team valuable resources.",
             "Promoted internal recyclability of service hosts to help EC2 maximize host pool utilization by developing a metering system to remove discounts for old hosts and avoid host hoarding (billions of records per year).",
-          ]}
-        />
-      ),
+          ],
+        },
+      ],
     },
     {
       company: "Capital One",
       href: "https://www.capitalone.com",
-      badges: [],
       location: "Richmond, VA",
-      title: "Senior Associate Software Engineer",
       logoUrl: "/logos/capital-one.svg",
-      start: "August 2020",
-      end: "August 2022",
-      description: (
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <p className="font-medium text-foreground">
-              Senior Associate Software Engineer, Cloud Productivity Engineering (July 2021 – August
-              2022)
-            </p>
-            <Bullets
-              items={[
-                "Designed and owned an internal enterprise toolchain (Python, Boto3, CloudFormation, Jinja) to deploy and migrate containerized applications to ECS Fargate, streamlining the organization's transition from ECS on EC2.",
-              ]}
-            />
-          </div>
-          <div className="space-y-2">
-            <p className="font-medium text-foreground">
-              Associate Software Engineer, Commercial Data, Strategy, and Engineering (August 2020 –
-              July 2021)
-            </p>
-            <Bullets
-              items={[
-                "Maintained RPA cloud infrastructure for Commercial Bank (Automation Anywhere on EC2 via ASGs) and improved disaster recovery by migrating bot code storage from EBS to Amazon FSx and implementing cross-region SQL Server backup replication via serverless Lambda functions.",
-              ]}
-            />
-          </div>
-        </div>
-      ),
+      roles: [
+        {
+          title: "Senior Associate Software Engineer",
+          team: "Delivery Experience · Containers (ECS Fargate), Team Fargo",
+          start: "July 2021",
+          end: "August 2022",
+          bullets: [
+            "Designed and owned an internal enterprise toolchain (Python, Boto3, CloudFormation, Jinja) to deploy and migrate containerized applications to ECS Fargate, streamlining the organization's transition from ECS on EC2.",
+          ],
+        },
+        {
+          title: "Associate Software Engineer",
+          team: "Commercial Data, Strategy & Engineering (CDSE) · Auto Pilots (RPA), Commercial Bank",
+          start: "August 2020",
+          end: "July 2021",
+          bullets: [
+            "Maintained RPA cloud infrastructure for Commercial Bank (Automation Anywhere on EC2 via ASGs) and improved disaster recovery by migrating bot code storage from EBS to Amazon FSx and implementing cross-region SQL Server backup replication via serverless Lambda functions.",
+          ],
+        },
+      ],
     },
   ],
   // Most recent first.
