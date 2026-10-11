@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/jwallace145/site/compare/v1.11.0...v1.12.0) (2026-10-11)
+
+
+### Features
+
+* **site:** link the source repo from the footer and drop the site project card ([#29](https://github.com/jwallace145/site/issues/29)) ([7f1ccf6](https://github.com/jwallace145/site/commit/7f1ccf67494519b554d6911e97a41264b6a7f2a5))
+
 ## [1.11.0](https://github.com/jwallace145/site/compare/v1.10.0...v1.11.0) (2026-10-11)
 
 
