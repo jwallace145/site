@@ -42,3 +42,18 @@ output "resource_names" {
   description = "Every name this module assigns, for reference and audits."
   value       = local.names
 }
+
+output "oidc_provider_arn" {
+  description = "ARN of the GitHub OIDC provider the roles trust (created or looked up)."
+  value       = local.oidc_provider_arn
+}
+
+output "web_rewrite_index_function_arn" {
+  description = "ARN of the CloudFront Function that maps directory paths to index.html. Reusable by other distributions."
+  value       = aws_cloudfront_function.web_rewrite_index.arn
+}
+
+output "plan_role_name" {
+  description = "Name of the read-only plan role, for attaching extra read policies. null when plan_role is false."
+  value       = var.plan_role ? aws_iam_role.plan[0].name : null
+}

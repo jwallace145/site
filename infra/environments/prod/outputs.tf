@@ -64,3 +64,25 @@ output "standard_tags" {
   description = "Tags applied to every resource."
   value       = local.standard_tags
 }
+
+# -----------------------------------------------------------------------------
+# PR previews. All null when preview_enabled = false.
+# -----------------------------------------------------------------------------
+
+output "preview_url" {
+  description = "Base URL of PR previews."
+  value       = one(module.preview[*].preview_url)
+}
+
+output "preview_role_arn" {
+  description = "Role the preview workflow assumes."
+  value       = one(module.preview[*].preview_role_arn)
+}
+
+output "github_preview_environment_variables" {
+  description = "Everything to paste into the GitHub `preview` environment."
+  value = var.preview_enabled ? merge(
+    module.preview[0].github_environment_variables,
+    { AWS_REGION = var.aws_region },
+  ) : null
+}

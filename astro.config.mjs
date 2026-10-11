@@ -10,9 +10,11 @@ import { loadEnv } from "vite";
 import { remarkCodeMeta } from "./src/lib/remark-code-meta.ts";
 import { CONFIG } from "./src/data/config.ts";
 
-// SITE_URL comes from the environment (CI sets it from the `production`
-// GitHub Environment). It falls back to the placeholder in src/data/config.ts.
-const { SITE_URL } = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
+// SITE_URL and BASE_PATH come from the environment (CI sets them from the
+// GitHub Environment). SITE_URL falls back to the placeholder in
+// src/data/config.ts; BASE_PATH defaults to "/" and is only set for PR
+// previews, which are served under /pr-<n>/.
+const { SITE_URL, BASE_PATH } = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
 
 /** @type {import('rehype-pretty-code').Options} */
 const prettyCodeOptions = {
@@ -26,6 +28,7 @@ const prettyCodeOptions = {
 // https://astro.build/config
 export default defineConfig({
   site: SITE_URL || CONFIG.site.url,
+  base: BASE_PATH || "/",
 
   // Pure static output: every route becomes a self-contained HTML file in dist/.
   output: "static",

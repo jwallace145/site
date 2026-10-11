@@ -4,6 +4,7 @@ import { DATA } from "@/data/resume";
 import { CONFIG } from "@/data/config";
 import NavbarIsland from "@/components/NavbarIsland";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
+import { withBase } from "@/lib/utils";
 
 interface Props {
   title?: string;
@@ -21,8 +22,8 @@ const siteUrl = (Astro.site ?? new URL(CONFIG.site.url)).href.replace(/\/$/, "")
 const ogImage = image
   ? image.startsWith("http")
     ? image
-    : `${siteUrl}${image}`
-  : `${siteUrl}${DATA.ogImage}`;
+    : `${siteUrl}${withBase(image)}`
+  : `${siteUrl}${withBase(DATA.ogImage)}`;
 
 const { light, dark, radius } = CONFIG.theme;
 const { baseFontSize } = CONFIG.typography;
@@ -100,8 +101,8 @@ const { baseFontSize } = CONFIG.typography;
     ></style>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" type="image/x-icon" href={withBase("/favicon.ico")} />
 
     <!-- Primary meta -->
     <title>{pageTitle}</title>

@@ -3,7 +3,8 @@ import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DATA } from "@/data/resume";
-import Markdown from "react-markdown";
+import Markdown, { defaultUrlTransform } from "react-markdown";
+import { withBase } from "@/lib/utils";
 import ContactSection from "@/components/section/contact-section";
 import HackathonsSection from "@/components/section/hackathons-section";
 import PhotosSection from "@/components/section/photos-section";
@@ -12,6 +13,10 @@ import WorkSection from "@/components/section/work-section";
 import { ArrowUpRight } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
+
+// Root-relative links in DATA.summary (e.g. /#work) must stay inside the
+// current base path on PR previews.
+const markdownUrlTransform = (url: string) => withBase(defaultUrlTransform(url));
 
 const sectionComponents: Record<string, React.ReactNode> = {
   about: (
@@ -22,7 +27,7 @@ const sectionComponents: Record<string, React.ReactNode> = {
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
           <div className="prose max-w-full font-sans leading-relaxed text-pretty text-muted-foreground dark:prose-invert">
-            <Markdown>{DATA.summary}</Markdown>
+            <Markdown urlTransform={markdownUrlTransform}>{DATA.summary}</Markdown>
           </div>
         </BlurFade>
       </div>
@@ -161,7 +166,7 @@ export default function HomePage() {
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
               <Avatar className="size-24 rounded-full border shadow-lg ring-4 ring-muted md:size-32">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
+                <AvatarImage alt={DATA.name} src={withBase(DATA.avatarUrl)} />
                 <AvatarFallback>{DATA.initials}</AvatarFallback>
               </Avatar>
             </BlurFade>

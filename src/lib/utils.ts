@@ -36,3 +36,18 @@ export function formatDate(date: string) {
     return `${fullDate} (${yearsAgo}y ago)`;
   }
 }
+
+/**
+ * Prefix a root-relative path with Astro's `base` so links work when the
+ * site is served under a sub-path (PR previews are built with
+ * `BASE_PATH=/pr-<n>`). Absolute URLs, `mailto:`/`tel:` links and bare
+ * fragments are returned unchanged.
+ */
+export function withBase(path: string, base: string = import.meta.env.BASE_URL): string {
+  if (/^[a-z][a-z0-9+.-]*:/i.test(path) || path.startsWith("#")) {
+    return path;
+  }
+  const trimmedBase = base.replace(/\/+$/, "");
+  const trimmedPath = path.replace(/^\/+/, "");
+  return `${trimmedBase}/${trimmedPath}`;
+}

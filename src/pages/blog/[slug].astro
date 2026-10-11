@@ -3,7 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 import { DATA } from "@/data/resume";
 import { CONFIG } from "@/data/config";
-import { formatDate } from "@/lib/utils";
+import { formatDate, withBase } from "@/lib/utils";
 import { mdxComponents } from "@/mdx-components";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -29,6 +29,7 @@ const slug = post.id;
 
 const { Content } = await render(post);
 const siteUrl = (Astro.site ?? new URL(CONFIG.site.url)).href.replace(/\/$/, "");
+const postPath = withBase(`/blog/${slug}`);
 
 const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
@@ -42,7 +43,7 @@ const jsonLd = JSON.stringify({
       ? image
       : `${siteUrl}${image}`
     : `${siteUrl}/og_image.png`,
-  url: `${siteUrl}/blog/${slug}`,
+  url: `${siteUrl}${postPath}`,
   author: {
     "@type": "Person",
     name: DATA.name,
@@ -50,12 +51,12 @@ const jsonLd = JSON.stringify({
 }).replace(/</g, "\\u003c");
 ---
 
-<Layout title={title} description={summary} image={image} canonicalURL={`${siteUrl}/blog/${slug}`}>
+<Layout title={title} description={summary} image={image} canonicalURL={`${siteUrl}${postPath}`}>
   <section id="blog">
     <script is:inline type="application/ld+json" set:html={jsonLd} />
     <div class="flex justify-start gap-4 items-center">
       <a
-        href="/blog"
+        href={withBase("/blog")}
         class="text-sm text-muted-foreground hover:text-foreground transition-colors border border-border rounded-lg px-2 py-1 inline-flex items-center gap-1 mb-6 group"
         aria-label="Back to Blog"
       >

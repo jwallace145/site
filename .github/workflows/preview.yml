@@ -1,0 +1,175 @@
+name: Preview
+
+# Publishes a live preview of each pull request to the preview bucket under
+# <PREVIEW_KEY_PREFIX><number>/ and removes it when the PR closes. Fork PRs
+# receive no OIDC token, so both jobs only run for branches in this
+# repository. Informational: not a required check.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+# PREFIX is computed per job because PREVIEW_KEY_PREFIX is an environment
+# variable, only resolvable inside a job that declares `environment: preview`.
+env:
+  PR_NUMBER: ${{ github.event.pull_request.number }}
+  COMMENT_MARKER: "<!-- preview-deploy -->"
+
+jobs:
+  deploy:
+    name: deploy
+    if: >-
+      github.event.action != 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    environment:
+      name: preview
+      url: ${{ vars.SITE_URL }}/${{ vars.PREVIEW_KEY_PREFIX }}${{ github.event.pull_request.number }}/
+    permissions:
+      contents: read
+      id-token: write # OIDC token for the preview role
+      pull-requests: write # sticky preview comment
+    env:
+      PREFIX: ${{ vars.PREVIEW_KEY_PREFIX }}${{ github.event.pull_request.number }}
+    steps:
+      # actions/checkout v7.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup
+
+      - name: Build under /<prefix>
+        run: pnpm build
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          BASE_PATH: /${{ env.PREFIX }}
+
+      - name: Configure AWS credentials (OIDC, preview role)
+        # aws-actions/configure-aws-credentials v6.3.0
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: github-preview-pr${{ env.PR_NUMBER }}
+
+      - name: Sync to S3
+        env:
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+        run: |
+          set -euo pipefail
+          dest="s3://$S3_BUCKET/$PREFIX/"
+
+          # 1. Everything except HTML and hashed assets: short cache.
+          aws s3 sync dist/ "$dest" \
+            --delete \
+            --exclude "*.html" \
+            --exclude "_astro/*" \
+            --cache-control "public, max-age=300"
+
+          # 2. Hashed assets under _astro/: cache forever.
+          aws s3 sync dist/_astro/ "${dest}_astro/" \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable"
+
+          # 3. HTML: always revalidate so each push shows up immediately.
+          aws s3 sync dist/ "$dest" \
+            --delete \
+            --exclude "*" \
+            --include "*.html" \
+            --cache-control "public, max-age=0, must-revalidate" \
+            --content-type "text/html; charset=utf-8"
+
+      - name: Invalidate CloudFront
+        env:
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/$PREFIX/*" \
+            --query 'Invalidation.Id' --output text
+
+      - name: Comment preview URL
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          url="$SITE_URL/$PREFIX/"
+          body_file=$(mktemp)
+          {
+            echo "$COMMENT_MARKER"
+            echo "## Preview"
+            echo
+            echo "**$url**"
+            echo
+            echo "Built from $SHA. Updated on every push; removed when the PR closes."
+          } > "$body_file"
+          existing=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"$COMMENT_MARKER\")) | .id" | head -n1)
+          if [ -n "$existing" ]; then
+            gh api -X PATCH "repos/$GH_REPO/issues/comments/$existing" -F body=@"$body_file" >/dev/null
+          else
+            gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" -F body=@"$body_file" >/dev/null
+          fi
+          { echo "## Preview"; echo; echo "- $url"; } >> "$GITHUB_STEP_SUMMARY"
+
+  cleanup:
+    name: cleanup
+    if: >-
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    environment:
+      name: preview
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+    env:
+      PREFIX: ${{ vars.PREVIEW_KEY_PREFIX }}${{ github.event.pull_request.number }}
+    steps:
+      - name: Configure AWS credentials (OIDC, preview role)
+        # aws-actions/configure-aws-credentials v6.3.0
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+          role-session-name: github-preview-cleanup-pr${{ env.PR_NUMBER }}
+
+      - name: Remove preview objects
+        env:
+          S3_BUCKET: ${{ vars.S3_BUCKET }}
+        # `aws s3 rm --recursive` on an empty prefix exits 0.
+        run: aws s3 rm "s3://$S3_BUCKET/$PREFIX/" --recursive
+
+      - name: Invalidate CloudFront
+        env:
+          CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CLOUDFRONT_DISTRIBUTION_ID" \
+            --paths "/$PREFIX/*" \
+            --query 'Invalidation.Id' --output text
+
+      - name: Update preview comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          existing=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
+            --jq ".[] | select(.body | startswith(\"$COMMENT_MARKER\")) | .id" | head -n1)
+          if [ -n "$existing" ]; then
+            printf '%s\n## Preview\n\nRemoved: this pull request is closed.\n' "$COMMENT_MARKER" > body.md
+            gh api -X PATCH "repos/$GH_REPO/issues/comments/$existing" -F body=@body.md >/dev/null
+          else
+            echo "No preview comment to update."
+          fi

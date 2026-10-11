@@ -192,6 +192,25 @@ gh secret   set BUDGET_ALERT_EMAIL --repo "$REPO" --body "<same email as terrafo
 > (`gh api repos/$REPO/actions/oidc/customization/sub`). The IAM trust
 > policies in `infra/` accept both the immutable and the plain subject.
 
+## 5c. `preview` environment (PR previews)
+
+Created after `terraform apply` with `preview_enabled = true`. No branch
+policy: any PR from this repository may deploy a preview.
+
+```bash
+gh api -X PUT "repos/$REPO/environments/preview" --input - <<'JSON'
+{ "deployment_branch_policy": null }
+JSON
+
+# From infra/environments/prod/: terraform output github_preview_environment_variables
+gh variable set AWS_ROLE_ARN               --env preview --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-preview-github-role"
+gh variable set AWS_REGION                 --env preview --repo "$REPO" --body "us-east-1"
+gh variable set S3_BUCKET                  --env preview --repo "$REPO" --body "<preview bucket name>"
+gh variable set CLOUDFRONT_DISTRIBUTION_ID --env preview --repo "$REPO" --body "<preview distribution id>"
+gh variable set SITE_URL                   --env preview --repo "$REPO" --body "https://<preview cloudfront domain>"
+gh variable set PREVIEW_KEY_PREFIX         --env preview --repo "$REPO" --body "pr-"
+```
+
 ## 6. Verify
 
 ```bash
@@ -199,6 +218,7 @@ gh repo view "$REPO" --json squashMergeAllowed,mergeCommitAllowed,rebaseMergeAll
 gh api "repos/$REPO/rulesets" --jq '.[].name'
 gh secret list --repo "$REPO"
 gh variable list --env production --repo "$REPO"
+gh variable list --env preview --repo "$REPO"
 gh variable list --repo "$REPO"
 ```
 

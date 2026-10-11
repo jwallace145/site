@@ -107,3 +107,74 @@ variable "monthly_budget_usd" {
   type        = number
   default     = 5
 }
+
+# -----------------------------------------------------------------------------
+# PR previews
+# -----------------------------------------------------------------------------
+
+variable "preview_enabled" {
+  description = "Create the PR preview stack (bucket, distribution, OIDC role). false removes it."
+  type        = bool
+  default     = true
+}
+
+variable "preview_github_environment" {
+  description = "GitHub Environment whose jobs may publish previews."
+  type        = string
+  default     = "preview"
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_.-]+$", var.preview_github_environment))
+    error_message = "preview_github_environment must contain only letters, digits, '_', '.' and '-'."
+  }
+}
+
+variable "preview_key_prefix" {
+  description = "S3 key prefix per PR; the PR number is appended (pr- => pr-9/)."
+  type        = string
+  default     = "pr-"
+
+  validation {
+    condition     = can(regex("^[A-Za-z0-9_-]+$", var.preview_key_prefix))
+    error_message = "preview_key_prefix must be non-empty and contain only letters, digits, _ and - (no slashes)."
+  }
+}
+
+variable "preview_retention_days" {
+  description = "Days after which preview objects expire, in case a PR's cleanup never ran."
+  type        = number
+  default     = 30
+
+  validation {
+    condition     = var.preview_retention_days == floor(var.preview_retention_days) && var.preview_retention_days >= 1 && var.preview_retention_days <= 365
+    error_message = "preview_retention_days must be a whole number between 1 and 365."
+  }
+}
+
+variable "preview_price_class" {
+  description = "CloudFront price class for the preview distribution."
+  type        = string
+  default     = "PriceClass_100"
+
+  validation {
+    condition     = contains(["PriceClass_100", "PriceClass_200", "PriceClass_All"], var.preview_price_class)
+    error_message = "preview_price_class must be PriceClass_100, PriceClass_200 or PriceClass_All."
+  }
+}
+
+variable "preview_robots_tag" {
+  description = "X-Robots-Tag header on every preview response."
+  type        = string
+  default     = "noindex, nofollow"
+
+  validation {
+    condition     = length(trimspace(var.preview_robots_tag)) > 0
+    error_message = "preview_robots_tag must not be empty."
+  }
+}
+
+variable "preview_extra_response_headers" {
+  description = "Extra response headers (name => value) on every preview response."
+  type        = map(string)
+  default     = {}
+}
