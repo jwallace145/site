@@ -103,14 +103,14 @@ pnpm dev                   # http://localhost:4321
 
 These run in CI on every PR and (where it makes sense) in the pre-commit hook:
 
-| Command                                                   | What it checks                                     |
-| --------------------------------------------------------- | -------------------------------------------------- |
-| `pnpm format:check`                                       | Prettier formatting (`pnpm format` to fix)         |
-| `pnpm lint`                                               | ESLint (`pnpm lint:fix` to fix)                    |
-| `pnpm check`                                              | `astro check`: TypeScript and template diagnostics |
-| `pnpm build`                                              | Static build succeeds                              |
-| `pnpm test`                                               | commitlint rule unit tests                         |
-| `terraform fmt -check` / `terraform validate` in `infra/` | only when `infra/**` changes                       |
+| Command                                                                   | What it checks                                     |
+| ------------------------------------------------------------------------- | -------------------------------------------------- |
+| `pnpm format:check`                                                       | Prettier formatting (`pnpm format` to fix)         |
+| `pnpm lint`                                                               | ESLint (`pnpm lint:fix` to fix)                    |
+| `pnpm check`                                                              | `astro check`: TypeScript and template diagnostics |
+| `pnpm build`                                                              | Static build succeeds                              |
+| `pnpm test`                                                               | commitlint rule unit tests                         |
+| `terraform fmt -check` in `infra/`, `terraform validate` in `infra/live/` | only when `infra/**` changes                       |
 
 To skip the hooks once (e.g. a WIP commit you will squash): `LEFTHOOK=0 git commit ...`.
 CI still enforces everything.
@@ -143,7 +143,8 @@ src/data/config.ts       site URL, SEO, theme
 src/content/blog/        MDX posts
 src/components/          React islands and UI
 src/pages/               Astro routes
-infra/                   Terraform (S3, CloudFront, OIDC role, budget)
+infra/modules/           static-site Terraform module
+infra/live/              root that applies it (names, tags, backend)
 tools/commitlint/        custom commitlint rule + tests
 .github/workflows/       ci.yml (PR checks), release.yml (release + deploy)
 docs/repo-setup.md       one-time GitHub configuration

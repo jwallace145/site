@@ -1,24 +1,24 @@
 # -----------------------------------------------------------------------------
-# CloudFront distribution in front of the site bucket.
+# web: CloudFront distribution in front of the site bucket.
 # -----------------------------------------------------------------------------
 
 locals {
-  s3_origin_id = "s3-site"
+  web_origin_id = "s3-web"
 }
 
-resource "aws_cloudfront_origin_access_control" "site" {
-  name                              = "${var.name}-site-oac"
-  description                       = "OAC for the ${var.name} site bucket"
+resource "aws_cloudfront_origin_access_control" "web" {
+  name                              = local.names.web_oac
+  description                       = "OAC for ${local.names.web_bucket}"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
 
-# Astro's directory build format writes `/about/index.html`. S3 has no notion
-# of a default document for sub-paths, so this viewer-request function maps
-# `/about/` and `/about` to `/about/index.html` before the origin request.
-resource "aws_cloudfront_function" "rewrite_index" {
-  name    = "${var.name}-rewrite-index"
+# Astro's directory build format writes `/about/index.html`. S3 has no default
+# document for sub-paths, so this viewer-request function maps `/about/` and
+# `/about` to `/about/index.html` before the origin request.
+resource "aws_cloudfront_function" "web_rewrite_index" {
+  name    = local.names.web_rewrite_index
   runtime = "cloudfront-js-2.0"
   comment = "Rewrite directory and extensionless paths to index.html"
   publish = true
@@ -29,9 +29,9 @@ data "aws_cloudfront_cache_policy" "caching_optimized" {
   name = "Managed-CachingOptimized"
 }
 
-resource "aws_cloudfront_response_headers_policy" "security" {
-  name    = "${var.name}-security-headers"
-  comment = "Security headers for the ${var.name} site"
+resource "aws_cloudfront_response_headers_policy" "web_security" {
+  name    = local.names.web_security_headers
+  comment = "Security headers for ${local.names.web_cdn}"
 
   security_headers_config {
     strict_transport_security {
@@ -71,53 +71,53 @@ resource "aws_cloudfront_response_headers_policy" "security" {
   }
 }
 
-resource "aws_cloudfront_distribution" "site" {
+resource "aws_cloudfront_distribution" "web" {
   enabled             = true
-  comment             = "${var.name} static site"
+  comment             = local.names.web_cdn
   is_ipv6_enabled     = true
   http_version        = "http2and3"
-  price_class         = "PriceClass_100"
+  price_class         = var.price_class
   default_root_object = "index.html"
   wait_for_deployment = true
 
   aliases = local.use_custom_domain ? [var.domain_name] : []
 
   origin {
-    origin_id                = local.s3_origin_id
-    domain_name              = aws_s3_bucket.site.bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.site.id
+    origin_id                = local.web_origin_id
+    domain_name              = aws_s3_bucket.web.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.web.id
   }
 
   default_cache_behavior {
-    target_origin_id       = local.s3_origin_id
+    target_origin_id       = local.web_origin_id
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD"]
     compress               = true
 
     cache_policy_id            = data.aws_cloudfront_cache_policy.caching_optimized.id
-    response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.web_security.id
 
     function_association {
       event_type   = "viewer-request"
-      function_arn = aws_cloudfront_function.rewrite_index.arn
+      function_arn = aws_cloudfront_function.web_rewrite_index.arn
     }
   }
 
-  # S3 returns 403 for missing keys when the caller lacks ListBucket, so both
+  # S3 answers 403 for missing keys when the caller lacks ListBucket, so both
   # 403 and 404 become the site's 404 page with a 404 status.
   custom_error_response {
     error_code            = 403
     response_code         = 404
     response_page_path    = "/404.html"
-    error_caching_min_ttl = 60
+    error_caching_min_ttl = var.error_caching_min_ttl
   }
 
   custom_error_response {
     error_code            = 404
     response_code         = 404
     response_page_path    = "/404.html"
-    error_caching_min_ttl = 60
+    error_caching_min_ttl = var.error_caching_min_ttl
   }
 
   restrictions {
@@ -128,36 +128,36 @@ resource "aws_cloudfront_distribution" "site" {
 
   viewer_certificate {
     cloudfront_default_certificate = local.use_custom_domain ? null : true
-    acm_certificate_arn            = local.use_custom_domain ? aws_acm_certificate_validation.site[0].certificate_arn : null
+    acm_certificate_arn            = local.use_custom_domain ? aws_acm_certificate_validation.web[0].certificate_arn : null
     ssl_support_method             = local.use_custom_domain ? "sni-only" : null
     minimum_protocol_version       = local.use_custom_domain ? "TLSv1.2_2021" : "TLSv1"
   }
 
-  tags = {
-    Name = "${var.name}-site"
-  }
+  tags = merge(var.tags, { Name = local.names.web_cdn })
 }
 
 # -----------------------------------------------------------------------------
-# Optional custom domain: ACM certificate (us-east-1) + Route 53 alias records.
-# Only created when `domain_name` is set.
+# web: optional custom domain. ACM certificate (us-east-1) + Route 53 aliases.
+# Only created when domain_name is set.
 # -----------------------------------------------------------------------------
 
-resource "aws_acm_certificate" "site" {
+resource "aws_acm_certificate" "web" {
   count    = local.use_custom_domain ? 1 : 0
   provider = aws.us_east_1
 
   domain_name       = var.domain_name
   validation_method = "DNS"
 
+  tags = merge(var.tags, { Name = local.names.web_certificate })
+
   lifecycle {
     create_before_destroy = true
   }
 }
 
-resource "aws_route53_record" "acm_validation" {
+resource "aws_route53_record" "web_acm_validation" {
   for_each = local.use_custom_domain ? {
-    for dvo in aws_acm_certificate.site[0].domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.web[0].domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
@@ -172,15 +172,15 @@ resource "aws_route53_record" "acm_validation" {
   allow_overwrite = true
 }
 
-resource "aws_acm_certificate_validation" "site" {
+resource "aws_acm_certificate_validation" "web" {
   count    = local.use_custom_domain ? 1 : 0
   provider = aws.us_east_1
 
-  certificate_arn         = aws_acm_certificate.site[0].arn
-  validation_record_fqdns = [for r in aws_route53_record.acm_validation : r.fqdn]
+  certificate_arn         = aws_acm_certificate.web[0].arn
+  validation_record_fqdns = [for r in aws_route53_record.web_acm_validation : r.fqdn]
 }
 
-resource "aws_route53_record" "site" {
+resource "aws_route53_record" "web" {
   for_each = local.use_custom_domain ? toset(["A", "AAAA"]) : toset([])
 
   zone_id = var.hosted_zone_id
@@ -188,8 +188,8 @@ resource "aws_route53_record" "site" {
   type    = each.key
 
   alias {
-    name                   = aws_cloudfront_distribution.site.domain_name
-    zone_id                = aws_cloudfront_distribution.site.hosted_zone_id
+    name                   = aws_cloudfront_distribution.web.domain_name
+    zone_id                = aws_cloudfront_distribution.web.hosted_zone_id
     evaluate_target_health = false
   }
 }

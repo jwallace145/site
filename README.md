@@ -16,7 +16,7 @@ GitHub Actions.
 | ------- | ------------------------------------------------------------------------------------------------------- |
 | Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                  |
 | Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest |
-| Hosting | S3 (private, OAC) + CloudFront, Terraform in [`infra/`](infra/)                                         |
+| Hosting | S3 (private, OAC) + CloudFront, Terraform module in [`infra/`](infra/)                                  |
 | CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                  |
 
 ## Local development
@@ -83,7 +83,8 @@ Every change is a PR, squash-merged into `main` as a single one-line
 
 ```
 src/                 Astro site
-infra/               Terraform root module (S3, CloudFront, OIDC role, budget)
+infra/modules/       static-site Terraform module (S3, CloudFront, OIDC role, budget)
+infra/live/          thin root that applies the module with this project's names and tags
 tools/commitlint/    custom "one-line commit" rule and its tests
 .github/             workflows, composite setup action, templates, dependabot
 docs/repo-setup.md   one-time GitHub configuration (gh commands)

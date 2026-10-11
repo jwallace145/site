@@ -142,7 +142,7 @@ Delete the local `.pem` once stored.
 
 ## 5. `production` environment
 
-Created after `terraform apply` (see `infra/README.md`). The values are not
+Created after `terraform apply` in `infra/live/` (see `infra/README.md`). The values are not
 secret, so they are environment **variables**.
 
 ```bash
@@ -163,7 +163,7 @@ gh api -X POST "repos/$REPO/environments/production/deployment-branch-policies" 
 gh api -X POST "repos/$REPO/environments/production/deployment-branch-policies" \
   -f name='v*' -f type=tag
 
-# From infra/: terraform output github_environment_variables
+# From infra/live/: terraform output github_environment_variables
 gh variable set AWS_ROLE_ARN               --env production --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-github-deploy"
 gh variable set AWS_REGION                 --env production --repo "$REPO" --body "us-east-1"
 gh variable set S3_BUCKET                  --env production --repo "$REPO" --body "<site bucket name>"
