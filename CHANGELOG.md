@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/jwallace145/site/compare/v1.8.0...v1.9.0) (2026-10-11)
+
+
+### Features
+
+* **content:** add the cs survival guide and kit to projects ([#22](https://github.com/jwallace145/site/issues/22)) ([5bc6136](https://github.com/jwallace145/site/commit/5bc61360270f6becf8d00f5227344327d666f023))
+
 ## [1.8.0](https://github.com/jwallace145/site/compare/v1.7.0...v1.8.0) (2026-10-11)
 
 
