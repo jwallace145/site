@@ -1,6 +1,6 @@
 {
   "name": "site",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
   "type": "module",
   "description": "Personal website of Jimmy Wallace, built with Astro and deployed to AWS S3 + CloudFront.",

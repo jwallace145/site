@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/jwallace145/site/compare/v1.5.0...v1.6.0) (2026-10-11)
+
+
+### Features
+
+* **infra:** attach jwall.engineering to the site and previews ([#16](https://github.com/jwallace145/site/issues/16)) ([954a43f](https://github.com/jwallace145/site/commit/954a43f4c860c371f3beee46f1662e3e012cde8c))
+
 ## [1.5.0](https://github.com/jwallace145/site/compare/v1.4.0...v1.5.0) (2026-10-11)
 
 
