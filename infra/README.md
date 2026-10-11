@@ -18,6 +18,7 @@ infra/
     variables.tf  outputs.tf  versions.tf  function/
   modules/preview-site/  PR previews: preview bucket + CloudFront, OIDC preview role, shared 404 page
     naming.tf  main.tf  cloudfront.tf  iam.tf  variables.tf  outputs.tf  versions.tf  files/
+  modules/dns-zone/      Route 53 hosted zone + plain records
   environments/prod/     the root you run terraform in; dev/staging would be siblings
     main.tf              computes names + tags, calls the module
     variables.tf         the interface: validated variables, environment-neutral defaults
@@ -48,6 +49,8 @@ area (`web`, `deploy`, `billing`). With the default `project = "jwallace145-site
 | IAM role policy (plan)        | `jwallace145-site-deploy-github-plan-policy`   |
 | OIDC provider                 | `jwallace145-site-deploy-github-oidc` (Name tag) |
 | Budget                        | `jwallace145-site-billing-monthly`             |
+| Hosted zone                   | `jwallace145-site-dns-zone` (Name tag; zone `jwall.engineering`) |
+| ACM certificate (previews)    | `jwallace145-site-preview-certificate` (Name tag) |
 | S3 bucket (previews)          | `jwallace145-site-preview-bucket-<aws suffix>` |
 | Origin access control (previews) | `jwallace145-site-preview-oac`              |
 | CloudFront distribution (previews) | `jwallace145-site-preview-cdn`            |
@@ -194,13 +197,25 @@ committed `terraform.tfvars`.
 After apply: `terraform output github_preview_environment_variables` goes on
 the GitHub `preview` environment (`docs/repo-setup.md` section 5c).
 
-## Adding a custom domain later
+## DNS and custom domain
 
-1. Create the hosted zone in Route 53 and point the registrar at it.
-2. Set `domain.name` (and `dns.hosted_zone_id` for an external zone) in the committed `terraform.tfvars`, then
-   `terraform apply`.
-3. Update `SITE_URL` in the GitHub `production` environment and run the
-   Release workflow manually to redeploy.
+`modules/dns-zone` creates the `jwall.engineering` hosted zone. The site
+module attaches `domain.name` (the apex) plus `www.` as a 301 redirect, and
+the preview module attaches `preview.jwall.engineering`. Certificates are
+ACM in us-east-1 with DNS validation. Extra records (MX, TXT, ...) go in
+`dns.records` in `terraform.tfvars`; alias records are owned by the modules.
+
+Bringing up a new domain is two applies, because ACM validation needs the
+zone to be authoritative:
+
+1. `dns.zone_name` set, `domain.name = null`: apply, then set the four
+   nameservers from `terraform output dns_name_servers` at the registrar.
+   Check with `dig +norecurse @<a TLD nameserver> NS <zone>`.
+2. When the registry shows them, set `domain.name` and apply. Then update
+   `SITE_URL` on the `production` and `preview` GitHub environments and run
+   the Release workflow once to redeploy with the new canonical URL.
+
+The registrar is GoDaddy; only the nameservers point at Route 53.
 
 ## Cache behaviour
 

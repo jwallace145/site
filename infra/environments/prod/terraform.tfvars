@@ -23,7 +23,7 @@ dns = {
 }
 
 domain = {
-  name         = null
+  name         = "jwall.engineering"
   www_redirect = true
 }
 

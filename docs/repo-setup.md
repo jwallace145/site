@@ -168,7 +168,7 @@ gh variable set AWS_ROLE_ARN               --env production --repo "$REPO" --bod
 gh variable set AWS_REGION                 --env production --repo "$REPO" --body "us-east-1"
 gh variable set S3_BUCKET                  --env production --repo "$REPO" --body "<site bucket name>"
 gh variable set CLOUDFRONT_DISTRIBUTION_ID --env production --repo "$REPO" --body "<distribution id>"
-gh variable set SITE_URL                   --env production --repo "$REPO" --body "https://<domain or cloudfront domain>"
+gh variable set SITE_URL                   --env production --repo "$REPO" --body "https://jwall.engineering"
 ```
 
 Optional: add yourself as a required reviewer on the environment for a second
@@ -205,7 +205,7 @@ gh variable set AWS_ROLE_ARN               --env preview --repo "$REPO" --body "
 gh variable set AWS_REGION                 --env preview --repo "$REPO" --body "us-east-1"
 gh variable set S3_BUCKET                  --env preview --repo "$REPO" --body "<preview bucket name>"
 gh variable set CLOUDFRONT_DISTRIBUTION_ID --env preview --repo "$REPO" --body "<preview distribution id>"
-gh variable set SITE_URL                   --env preview --repo "$REPO" --body "https://<preview cloudfront domain>"
+gh variable set SITE_URL                   --env preview --repo "$REPO" --body "https://preview.jwall.engineering"
 gh variable set PREVIEW_KEY_PREFIX         --env preview --repo "$REPO" --body "pr-"
 ```
 
