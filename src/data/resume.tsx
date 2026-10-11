@@ -222,6 +222,29 @@ export const DATA = {
       video: "",
     },
     {
+      title: "CS Survival Kit",
+      href: "https://github.com/jwallace145/cs-survival-kit",
+      dates: "October 2026 - Present",
+      active: true,
+      description:
+        "Hand-written data structures and algorithms in Python, plus a stdlib-only benchmarking toolkit that measures how code scales and checks it against the complexity its docstring claims. Published on [PyPI](https://pypi.org/project/cs-survival-kit/) and developed in tandem with the [CS Survival Guide](https://survival-guide.jwall.engineering/), whose reference section is rendered straight from this package's source. An ongoing study of DSA: clarity over cleverness.",
+      technologies: ["Python", "Algorithms", "Data Structures", "Benchmarking", "PyPI"],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/jwallace145/cs-survival-kit",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Guide",
+          href: "https://survival-guide.jwall.engineering/",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "",
+    },
+    {
       title: "Personal Site",
       href: "https://github.com/jwallace145/site",
       dates: "October 2026 - Present",
