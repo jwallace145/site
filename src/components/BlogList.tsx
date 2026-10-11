@@ -1,5 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ChevronRight } from "lucide-react";
+import { withBase } from "@/lib/utils";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -53,7 +54,7 @@ export default function BlogList({
                   <BlurFade delay={BLUR_FADE_DELAY * 3 + id * 0.05} key={post.id}>
                     <a
                       className="group flex cursor-pointer items-start gap-x-2 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-                      href={`/blog/${post.id}`}
+                      href={withBase(`/blog/${post.id}`)}
                     >
                       <span className="mt-[5px] font-mono text-xs font-medium tabular-nums">
                         {String(indexNumber).padStart(2, "0")}.

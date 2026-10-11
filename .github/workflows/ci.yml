@@ -29,6 +29,18 @@ jobs:
           test -f dist/404.html
           test -d dist/_astro
 
+      - name: Build under a base path (PR previews)
+        # Previews are served from /pr-<n>/. Any root-relative link that
+        # ignores Astro's `base` would 404 there, so fail fast here.
+        run: |
+          BASE_PATH=/pr-0 pnpm build
+          leaks=$(grep -rEoh '(href|src)="/[^"]*' --include='*.html' dist | grep -vE '^(href|src)="/pr-0(/|$)' || true)
+          if [ -n "$leaks" ]; then
+            echo "$leaks"
+            echo "::error::Root-relative link(s) above ignore BASE_PATH; wrap them with withBase()"
+            exit 1
+          fi
+
   check:
     name: check
     runs-on: ubuntu-latest
