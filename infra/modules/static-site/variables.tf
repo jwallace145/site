@@ -34,6 +34,27 @@ variable "hosted_zone_id" {
   }
 }
 
+variable "redirect_hostnames" {
+  description = "Hostnames that 301-redirect to domain_name (e.g. www.example.com). Added to the certificate, the distribution aliases and the hosted zone. Requires domain_name."
+  type        = list(string)
+  default     = []
+
+  validation {
+    condition     = alltrue([for h in var.redirect_hostnames : can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", h))])
+    error_message = "redirect_hostnames must be lowercase fully qualified domain names."
+  }
+
+  validation {
+    condition     = length(var.redirect_hostnames) == 0 || var.domain_name != null
+    error_message = "redirect_hostnames requires domain_name."
+  }
+
+  validation {
+    condition     = !contains(var.redirect_hostnames, coalesce(var.domain_name, "-"))
+    error_message = "redirect_hostnames must not contain domain_name itself."
+  }
+}
+
 variable "price_class" {
   description = "CloudFront price class."
   type        = string

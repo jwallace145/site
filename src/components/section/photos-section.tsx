@@ -1,5 +1,6 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { DATA } from "@/data/resume";
+import { withBase } from "@/lib/utils";
 
 const BLUR_FADE_DELAY = 0.04;
 
@@ -40,7 +41,7 @@ export default function PhotosSection() {
                   delay={BLUR_FADE_DELAY * 14 + (colIdx * col.length + idx) * 0.05}
                 >
                   <img
-                    src={photo.src}
+                    src={withBase(photo.src)}
                     alt={photo.alt}
                     className={`w-full rounded-xl object-cover ${colAspects[colIdx][idx] ?? "aspect-square"}`}
                   />

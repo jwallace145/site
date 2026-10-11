@@ -4,6 +4,9 @@
 
 locals {
   web_origin_id = "s3-web"
+
+  # Every hostname the distribution answers for: the primary domain first.
+  alias_hostnames = local.use_custom_domain ? concat([var.domain_name], var.redirect_hostnames) : []
 }
 
 resource "aws_cloudfront_origin_access_control" "web" {
@@ -16,13 +19,18 @@ resource "aws_cloudfront_origin_access_control" "web" {
 
 # Astro's directory build format writes `/about/index.html`. S3 has no default
 # document for sub-paths, so this viewer-request function maps `/about/` and
-# `/about` to `/about/index.html` before the origin request.
+# `/about` to `/about/index.html` before the origin request. It also
+# 301-redirects redirect_hostnames (e.g. www) to domain_name. The preview
+# distribution reuses this function; its hostnames never match the list.
 resource "aws_cloudfront_function" "web_rewrite_index" {
   name    = local.names.web_rewrite_index
   runtime = "cloudfront-js-2.0"
-  comment = "Rewrite directory and extensionless paths to index.html"
+  comment = "Rewrite directory paths to index.html; redirect alternate hostnames"
   publish = true
-  code    = file("${path.module}/function/rewrite-index.js")
+  code = templatefile("${path.module}/function/rewrite-index.js.tftpl", {
+    primary_host   = var.domain_name != null ? var.domain_name : ""
+    redirect_hosts = jsonencode(var.redirect_hostnames)
+  })
 }
 
 data "aws_cloudfront_cache_policy" "caching_optimized" {
@@ -80,7 +88,7 @@ resource "aws_cloudfront_distribution" "web" {
   default_root_object = "index.html"
   wait_for_deployment = true
 
-  aliases = local.use_custom_domain ? [var.domain_name] : []
+  aliases = local.alias_hostnames
 
   origin {
     origin_id                = local.web_origin_id
@@ -145,8 +153,9 @@ resource "aws_acm_certificate" "web" {
   count    = local.use_custom_domain ? 1 : 0
   provider = aws.us_east_1
 
-  domain_name       = var.domain_name
-  validation_method = "DNS"
+  domain_name               = var.domain_name
+  subject_alternative_names = var.redirect_hostnames
+  validation_method         = "DNS"
 
   tags = merge(var.tags, { Name = local.names.web_certificate })
 
@@ -181,11 +190,16 @@ resource "aws_acm_certificate_validation" "web" {
 }
 
 resource "aws_route53_record" "web" {
-  for_each = local.use_custom_domain ? toset(["A", "AAAA"]) : toset([])
+  for_each = {
+    for pair in setproduct(local.alias_hostnames, ["A", "AAAA"]) : "${pair[0]}-${pair[1]}" => {
+      name = pair[0]
+      type = pair[1]
+    }
+  }
 
   zone_id = var.hosted_zone_id
-  name    = var.domain_name
-  type    = each.key
+  name    = each.value.name
+  type    = each.value.type
 
   alias {
     name                   = aws_cloudfront_distribution.web.domain_name

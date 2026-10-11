@@ -94,6 +94,32 @@ variable "rewrite_index_function_arn" {
 }
 
 # -----------------------------------------------------------------------------
+# Custom hostname (optional)
+# -----------------------------------------------------------------------------
+
+variable "domain_name" {
+  description = "Custom hostname for previews (e.g. preview.example.com). null serves them from the CloudFront domain."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.domain_name == null || can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", var.domain_name))
+    error_message = "domain_name must be a lowercase fully qualified domain name."
+  }
+}
+
+variable "hosted_zone_id" {
+  description = "Route 53 hosted zone that owns domain_name. Required when domain_name is set."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.domain_name == null || var.hosted_zone_id != null
+    error_message = "hosted_zone_id is required when domain_name is set."
+  }
+}
+
+# -----------------------------------------------------------------------------
 # Deploy identity (GitHub Actions OIDC)
 # -----------------------------------------------------------------------------
 

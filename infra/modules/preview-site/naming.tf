@@ -8,6 +8,7 @@ locals {
     preview_oac              = "${local.prefix}-preview-oac"
     preview_cdn              = "${local.prefix}-preview-cdn"
     preview_security_headers = "${local.prefix}-preview-security-headers"
+    preview_certificate      = "${local.prefix}-preview-certificate"
     preview_github_role      = "${local.prefix}-preview-github-role"
     preview_github_policy    = "${local.prefix}-preview-github-policy"
     preview_plan_policy      = "${local.prefix}-preview-github-plan-policy"

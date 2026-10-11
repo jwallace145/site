@@ -1,0 +1,61 @@
+// CloudFront Function (viewer-request, cloudfront-js-2.0). Rendered by
+// Terraform's templatefile(): the two placeholders below are substituted.
+//
+// 1. Hostname redirect: a request whose Host is one of REDIRECT_HOSTS (e.g.
+//    www.example.com) is 301-redirected to PRIMARY_HOST with its path and
+//    query string intact. Other hosts (the preview distribution, the raw
+//    cloudfront.net name) are left alone.
+// 2. Index rewrite: Astro's directory build format produces
+//    /about/index.html. S3 only serves a default document at the root, so
+//      /about/  -> /about/index.html
+//      /about   -> /about/index.html
+//    Paths whose last segment has an extension (e.g. /favicon.svg) pass
+//    through.
+
+var PRIMARY_HOST = "${primary_host}";
+var REDIRECT_HOSTS = ${redirect_hosts};
+
+function buildQueryString(querystring) {
+  var parts = [];
+  for (var key in querystring) {
+    var entry = querystring[key];
+    if (entry.multiValue) {
+      for (var i = 0; i < entry.multiValue.length; i++) {
+        parts.push(key + '=' + entry.multiValue[i].value);
+      }
+    } else if (entry.value === '') {
+      parts.push(key);
+    } else {
+      parts.push(key + '=' + entry.value);
+    }
+  }
+  return parts.length ? '?' + parts.join('&') : '';
+}
+
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+
+  var host = request.headers.host && request.headers.host.value;
+  if (PRIMARY_HOST && host && REDIRECT_HOSTS.indexOf(host) !== -1) {
+    return {
+      statusCode: 301,
+      statusDescription: 'Moved Permanently',
+      headers: {
+        location: { value: 'https://' + PRIMARY_HOST + uri + buildQueryString(request.querystring) }
+      }
+    };
+  }
+
+  if (uri.endsWith('/')) {
+    request.uri = uri + 'index.html';
+    return request;
+  }
+
+  var lastSegment = uri.substring(uri.lastIndexOf('/') + 1);
+  if (!lastSegment.includes('.')) {
+    request.uri = uri + '/index.html';
+  }
+
+  return request;
+}

@@ -41,8 +41,8 @@ const jsonLd = JSON.stringify({
   image: image
     ? image.startsWith("http")
       ? image
-      : `${siteUrl}${image}`
-    : `${siteUrl}/og_image.png`,
+      : `${siteUrl}${withBase(image)}`
+    : `${siteUrl}${withBase(DATA.ogImage)}`,
   url: `${siteUrl}${postPath}`,
   author: {
     "@type": "Person",
@@ -84,7 +84,7 @@ const jsonLd = JSON.stringify({
       <div class="flex flex-col sm:flex-row justify-between gap-4">
         {previousPost ? (
           <a
-            href={`/blog/${previousPost.id}`}
+            href={withBase(`/blog/${previousPost.id}`)}
             class="group flex-1 flex flex-col gap-1 p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors"
           >
             <span class="flex items-center gap-1 text-xs text-muted-foreground">
@@ -101,7 +101,7 @@ const jsonLd = JSON.stringify({
 
         {nextPost ? (
           <a
-            href={`/blog/${nextPost.id}`}
+            href={withBase(`/blog/${nextPost.id}`)}
             class="group flex-1 flex flex-col gap-1 p-4 rounded-lg border border-border hover:bg-accent/50 transition-colors text-right"
           >
             <span class="flex items-center justify-end gap-1 text-xs text-muted-foreground">

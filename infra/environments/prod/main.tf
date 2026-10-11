@@ -19,6 +19,32 @@ locals {
   )
 }
 
+# DNS: the hosted zone for the domain, plus any plain records from
+# dns_records. Alias records for CloudFront are created by the site modules.
+module "dns" {
+  source = "../../modules/dns-zone"
+  count  = var.dns_zone_name != null ? 1 : 0
+
+  name_prefix = local.name_prefix
+  zone_name   = var.dns_zone_name
+  comment     = "${var.project}: managed by Terraform in ${var.repository}"
+  records     = var.dns_records
+
+  tags = local.standard_tags
+}
+
+locals {
+  hosted_zone_id = var.dns_zone_name != null ? module.dns[0].zone_id : var.hosted_zone_id
+
+  redirect_hostnames = var.domain_name != null && var.www_redirect ? ["www.${var.domain_name}"] : []
+
+  preview_domain_name = (
+    var.domain_name != null && var.preview_enabled && var.preview_use_custom_domain
+    ? coalesce(var.preview_domain_name, "preview.${var.domain_name}")
+    : null
+  )
+}
+
 module "site" {
   source = "../../modules/static-site"
 
@@ -30,8 +56,9 @@ module "site" {
   name_prefix = local.name_prefix
 
   # Site
-  domain_name    = var.domain_name
-  hosted_zone_id = var.hosted_zone_id
+  domain_name        = var.domain_name
+  hosted_zone_id     = var.domain_name != null ? local.hosted_zone_id : null
+  redirect_hostnames = local.redirect_hostnames
 
   # Deploy identity
   github_repository    = var.github_repository
@@ -60,6 +87,11 @@ module "preview" {
   source = "../../modules/preview-site"
   count  = var.preview_enabled ? 1 : 0
 
+  providers = {
+    aws           = aws
+    aws.us_east_1 = aws.us_east_1
+  }
+
   name_prefix = local.name_prefix
 
   # Previews
@@ -69,6 +101,10 @@ module "preview" {
   robots_tag                 = var.preview_robots_tag
   extra_response_headers     = var.preview_extra_response_headers
   rewrite_index_function_arn = module.site.web_rewrite_index_function_arn
+
+  # Custom hostname (null keeps the CloudFront domain)
+  domain_name    = local.preview_domain_name
+  hosted_zone_id = local.preview_domain_name != null ? local.hosted_zone_id : null
 
   # Deploy identity
   oidc_provider_arn    = module.site.oidc_provider_arn

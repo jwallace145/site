@@ -29,8 +29,8 @@ output "preview_role_arn" {
 }
 
 output "preview_url" {
-  description = "Base URL previews are served from. A PR lives at <preview_url>/<key_prefix><number>/."
-  value       = "https://${aws_cloudfront_distribution.preview.domain_name}"
+  description = "Base URL previews are served from (custom hostname if set). A PR lives at <preview_url>/<key_prefix><number>/."
+  value       = "https://${local.preview_hostname}"
 }
 
 output "key_prefix" {
@@ -49,7 +49,7 @@ output "github_environment_variables" {
     AWS_ROLE_ARN               = aws_iam_role.preview.arn
     S3_BUCKET                  = aws_s3_bucket.preview.id
     CLOUDFRONT_DISTRIBUTION_ID = aws_cloudfront_distribution.preview.id
-    SITE_URL                   = "https://${aws_cloudfront_distribution.preview.domain_name}"
+    SITE_URL                   = "https://${local.preview_hostname}"
     PREVIEW_KEY_PREFIX         = var.key_prefix
   }
 }
