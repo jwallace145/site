@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/jwallace145/site/compare/v1.3.0...v1.4.0) (2026-10-11)
+
+
+### Features
+
+* add live previews for pull requests ([#11](https://github.com/jwallace145/site/issues/11)) ([1185eab](https://github.com/jwallace145/site/commit/1185eab5c79d8f9a83917908b4d0244cb728cc28))
+
 ## [1.3.0](https://github.com/jwallace145/site/compare/v1.2.0...v1.3.0) (2026-10-11)
 
 
