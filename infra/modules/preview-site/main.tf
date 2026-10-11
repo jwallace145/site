@@ -13,6 +13,9 @@
 
 resource "aws_s3_bucket" "preview" {
   bucket_prefix = "${local.names.preview_bucket}-"
+  # Contents are ephemeral PR builds, so preview_enabled = false must be able
+  # to remove the bucket even while previews (or their delete markers) exist.
+  force_destroy = true
 
   tags = merge(var.tags, { Name = local.names.preview_bucket })
 }
@@ -70,6 +73,23 @@ resource "aws_s3_bucket_lifecycle_configuration" "preview" {
 
     abort_incomplete_multipart_upload {
       days_after_initiation = 1
+    }
+  }
+
+  # Versioning is suspended, but every `aws s3 rm` still leaves a delete
+  # marker behind. Clear them so the bucket stays empty after cleanup.
+  rule {
+    id     = "expire-delete-markers"
+    status = "Enabled"
+
+    filter {}
+
+    expiration {
+      expired_object_delete_marker = true
+    }
+
+    noncurrent_version_expiration {
+      noncurrent_days = 1
     }
   }
 
