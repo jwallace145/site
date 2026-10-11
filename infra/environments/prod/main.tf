@@ -1,7 +1,8 @@
-# Live root for the jwallace145-site production stack.
+# Root for the jwallace145-site `prod` environment.
 #
 # This file is intentionally thin: standards (names and tags) are computed
-# here from a handful of variables and handed to the static-site module.
+# here from a handful of variables and handed to the static-site module. Other environments (dev, staging) would be
+# sibling directories under infra/environments/ with their own state key.
 
 locals {
   name_prefix = var.project
@@ -19,7 +20,7 @@ locals {
 }
 
 module "site" {
-  source = "../modules/static-site"
+  source = "../../modules/static-site"
 
   providers = {
     aws           = aws

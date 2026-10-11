@@ -1,7 +1,9 @@
 # Infrastructure
 
-Terraform for the site, split into a reusable module and a thin root that
-applies it with this project's standards. Applied manually by the owner; CI
+Terraform for the site, split into a reusable module and one thin root per
+environment that applies it with this project's standards. Only `prod` exists
+today; a `dev` or `staging` environment would be a sibling directory with its
+own `terraform.tfvars` and state key (`environment=<env>/terraform.tfstate`). Applied manually by the owner; CI
 runs `terraform fmt -check` and `terraform validate` only.
 
 ```
@@ -13,7 +15,7 @@ infra/
     iam.tf               deploy: deploy role (release) and read-only plan role (PRs)
     budget.tf            billing: monthly cost alert
     variables.tf  outputs.tf  versions.tf  function/
-  live/                  the root you run terraform in
+  environments/prod/     the root you run terraform in; dev/staging would be siblings
     main.tf              computes names + tags, calls the module
     variables.tf         the simple interface (one required input)
     providers.tf         default_tags carry the standard tags
@@ -83,7 +85,7 @@ infra/scripts/bootstrap-state-bucket.sh
 ## 2. Configure
 
 ```bash
-cd infra/live
+cd infra/environments/prod
 cp terraform.tfvars.example terraform.tfvars   # git-ignored
 $EDITOR terraform.tfvars                        # set budget_alert_email
 ```
@@ -131,7 +133,7 @@ has GitHub's **immutable OIDC subject** enabled, so tokens carry
 `repo:jwallace145@<user id>/site@<repo id>:...`. The trust policies accept
 both that and the plain `repo:jwallace145/site:...` form, so toggling the
 setting never breaks deploys. The IDs are plain variables in
-`live/variables.tf`.
+`environments/prod/variables.tf`.
 
 | Role                                      | Trusts                                   | Can                                                    |
 | ----------------------------------------- | ---------------------------------------- | ------------------------------------------------------ |

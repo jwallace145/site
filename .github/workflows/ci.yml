@@ -147,12 +147,12 @@ jobs:
       - name: terraform init
         if: steps.changes.outputs.infra == 'true'
         run: terraform init -backend=false -input=false
-        working-directory: infra/live
+        working-directory: infra/environments/prod
 
       - name: terraform validate
         if: steps.changes.outputs.infra == 'true'
         run: terraform validate -no-color
-        working-directory: infra/live
+        working-directory: infra/environments/prod
 
   terraform-plan:
     name: terraform-plan
@@ -205,7 +205,7 @@ jobs:
       - name: terraform init
         if: steps.changes.outputs.infra == 'true'
         run: terraform init -input=false
-        working-directory: infra/live
+        working-directory: infra/environments/prod
 
       - name: terraform plan
         if: steps.changes.outputs.infra == 'true'
@@ -221,7 +221,7 @@ jobs:
           cat plan.log
           if [ "$code" = "1" ]; then exit 1; fi
           terraform show -no-color tfplan > plan.txt
-        working-directory: infra/live
+        working-directory: infra/environments/prod
         env:
           TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
 
@@ -234,30 +234,30 @@ jobs:
           SHA: ${{ github.event.pull_request.head.sha }}
           EXITCODE: ${{ steps.plan.outputs.exitcode }}
         run: |
-          marker='<!-- terraform-plan:infra/live -->'
+          marker='<!-- terraform-plan:infra/environments/prod -->'
           case "$EXITCODE" in
             0) status='No changes. Prod matches this branch.' ;;
-            2) status="$(grep -E '^Plan:' infra/live/plan.txt || echo 'Changes detected.')" ;;
+            2) status="$(grep -E '^Plan:' infra/environments/prod/plan.txt || echo 'Changes detected.')" ;;
             *) status='Plan failed. See the job log.' ;;
           esac
           body_file=$(mktemp)
           {
             echo "$marker"
-            echo "## Terraform plan (\`infra/live\`) for $SHA"
+            echo "## Terraform plan (\`infra/environments/prod\`) for $SHA"
             echo
             echo "**$status**"
             echo
-            if [ -s infra/live/plan.txt ]; then
+            if [ -s infra/environments/prod/plan.txt ]; then
               echo '<details><summary>Full plan</summary>'
               echo
               echo '```hcl'
-              head -c 60000 infra/live/plan.txt
+              head -c 60000 infra/environments/prod/plan.txt
               echo
               echo '```'
               echo '</details>'
-            elif [ -s infra/live/plan.log ]; then
+            elif [ -s infra/environments/prod/plan.log ]; then
               echo '```'
-              tail -c 20000 infra/live/plan.log
+              tail -c 20000 infra/environments/prod/plan.log
               echo '```'
             fi
           } > "$body_file"

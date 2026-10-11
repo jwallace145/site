@@ -84,7 +84,7 @@ Every change is a PR, squash-merged into `main` as a single one-line
 ```
 src/                 Astro site
 infra/modules/       static-site Terraform module (S3, CloudFront, OIDC role, budget)
-infra/live/          thin root that applies the module with this project's names and tags
+infra/environments/  one root per environment (prod today) applying the module with the project's names and tags
 tools/commitlint/    custom "one-line commit" rule and its tests
 .github/             workflows, composite setup action, templates, dependabot
 docs/repo-setup.md   one-time GitHub configuration (gh commands)

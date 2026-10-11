@@ -60,4 +60,4 @@ aws s3api put-bucket-lifecycle-configuration --bucket "$BUCKET" --lifecycle-conf
   }]
 }'
 
-echo "Done. State keys live under <environment>/<stack>/terraform.tfstate, e.g. prod/live/terraform.tfstate."
+echo "Done. State keys live under <environment>/<stack>/terraform.tfstate, e.g. environment=prod/terraform.tfstate."
