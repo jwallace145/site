@@ -95,7 +95,6 @@ Replace `HEAD` with your branch (`owner:branch` from a fork).
 nvm use                    # Node version from .nvmrc
 corepack enable            # provides the pinned pnpm, or: npm i -g pnpm
 pnpm install               # also installs git hooks via lefthook
-cp .env.example .env       # optional: SITE_URL for local builds
 pnpm dev                   # http://localhost:4321
 ```
 
