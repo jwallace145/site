@@ -126,7 +126,7 @@ normal user.
 3. **Repository permissions:** `Contents: Read and write`,
    `Pull requests: Read and write`. Nothing else.
 4. **Where can this app be installed?** Only on this account. Create the app.
-5. Note the **App ID**. Under _Private keys_, **Generate a private key** and
+5. Note the **Client ID**. Under _Private keys_, **Generate a private key** and
    download the `.pem`.
 6. **Install App** (left sidebar) → your account → _Only select repositories_
    → `site`.
@@ -134,8 +134,8 @@ normal user.
 Then add the secrets:
 
 ```bash
-gh secret set RELEASE_APP_ID --repo "$REPO" --body "<app id>"
-gh secret set RELEASE_APP_PRIVATE_KEY --repo "$REPO" < /path/to/private-key.pem
+gh secret set RELEASE_BOT_CLIENT_ID --repo "$REPO" --body "<client id>"
+gh secret set RELEASE_BOT_PRIVATE_KEY --repo "$REPO" < /path/to/private-key.pem
 ```
 
 Delete the local `.pem` once stored.
