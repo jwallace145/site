@@ -28,6 +28,11 @@ output "deploy_role_arn" {
   value       = aws_iam_role.deploy.arn
 }
 
+output "plan_role_arn" {
+  description = "ARN of the read-only role pull_request workflows assume for terraform plan. null when plan_role is false."
+  value       = var.plan_role ? aws_iam_role.plan[0].arn : null
+}
+
 output "site_url" {
   description = "Public URL of the site: the custom domain if set, else the CloudFront domain."
   value       = local.use_custom_domain ? "https://${var.domain_name}" : "https://${aws_cloudfront_distribution.web.domain_name}"

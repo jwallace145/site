@@ -34,8 +34,15 @@ module "site" {
 
   # Deploy identity
   github_repository    = var.github_repository
+  github_owner_id      = var.github_owner_id
+  github_repository_id = var.github_repository_id
   github_environment   = var.github_environment
   create_oidc_provider = var.create_oidc_provider
+
+  # Read-only plan role for pull requests
+  plan_role              = true
+  terraform_state_bucket = local.terraform_state.bucket
+  terraform_state_key    = local.terraform_state.key
 
   # Billing
   budget_alert_email = var.budget_alert_email

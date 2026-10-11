@@ -11,15 +11,23 @@ terraform {
   # Remote state in S3 with native lockfile locking (no DynamoDB table).
   #
   # Bucket: created once by infra/scripts/bootstrap-state-bucket.sh.
-  # Key:    <environment>/<stack>/terraform.tfstate, so one bucket can hold
-  #         every stack of this project, e.g.
-  #           prod/live/terraform.tfstate      (this root)
-  #           prod/backend/terraform.tfstate   (future API stack)
+  # Key:    environment=<env>/terraform.tfstate. Terraform writes the lock
+  #         beside it as terraform.tfstate.tflock while a write is in flight.
+  #
+  # Backend blocks cannot reference variables, so these literals are repeated
+  # in local.terraform_state below for the plan role. Keep them in sync.
   backend "s3" {
     bucket       = "jwallace145-site-tfstate"
-    key          = "prod/live/terraform.tfstate"
+    key          = "environment=prod/terraform.tfstate"
     region       = "us-east-1"
     use_lockfile = true
     encrypt      = true
+  }
+}
+
+locals {
+  terraform_state = {
+    bucket = "jwallace145-site-tfstate"
+    key    = "environment=prod/terraform.tfstate"
   }
 }

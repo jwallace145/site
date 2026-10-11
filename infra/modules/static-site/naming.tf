@@ -19,6 +19,8 @@ locals {
     deploy_github_role   = "${local.prefix}-deploy-github-role"
     deploy_github_policy = "${local.prefix}-deploy-github-policy"
     deploy_oidc_provider = "${local.prefix}-deploy-github-oidc"
+    plan_github_role     = "${local.prefix}-deploy-github-plan-role"
+    plan_github_policy   = "${local.prefix}-deploy-github-plan-policy"
 
     # billing
     billing_monthly = "${local.prefix}-billing-monthly"

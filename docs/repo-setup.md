@@ -175,6 +175,23 @@ Optional: add yourself as a required reviewer on the environment for a second
 human gate before deploys. Merging the release PR is already the gate, so this
 is off by default.
 
+## 5b. Repository variables for the PR plan check
+
+The `terraform-plan` CI job assumes a read-only role on pull requests. These
+are **repository** variables (not environment), plus one secret so the plan
+can evaluate the budget variable:
+
+```bash
+# From infra/live/: terraform output github_repository_variables
+gh variable set AWS_PLAN_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-deploy-github-plan-role"
+gh variable set AWS_REGION        --repo "$REPO" --body "us-east-1"
+gh secret   set BUDGET_ALERT_EMAIL --repo "$REPO" --body "<same email as terraform.tfvars>"
+```
+
+> This repository has GitHub's immutable OIDC subject enabled
+> (`gh api repos/$REPO/actions/oidc/customization/sub`). The IAM trust
+> policies in `infra/` accept both the immutable and the plain subject.
+
 ## 6. Verify
 
 ```bash
@@ -182,6 +199,7 @@ gh repo view "$REPO" --json squashMergeAllowed,mergeCommitAllowed,rebaseMergeAll
 gh api "repos/$REPO/rulesets" --jq '.[].name'
 gh secret list --repo "$REPO"
 gh variable list --env production --repo "$REPO"
+gh variable list --repo "$REPO"
 ```
 
 Open a trivial PR (e.g. `docs: test pr checks`) and confirm all six checks

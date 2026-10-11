@@ -10,14 +10,14 @@ infra/
     naming.tf            <prefix>-<domain>-<resource> naming standard, all names in one place
     main.tf              web: site bucket
     cloudfront.tf        web: distribution, headers, function, optional ACM + Route 53
-    iam.tf               deploy: OIDC provider and role
+    iam.tf               deploy: deploy role (release) and read-only plan role (PRs)
     budget.tf            billing: monthly cost alert
     variables.tf  outputs.tf  versions.tf  function/
   live/                  the root you run terraform in
     main.tf              computes names + tags, calls the module
     variables.tf         the simple interface (one required input)
     providers.tf         default_tags carry the standard tags
-    backend.tf           S3 backend: jwallace145-site-tfstate, key prod/live/terraform.tfstate
+    backend.tf           S3 backend: jwallace145-site-tfstate, key environment=prod/terraform.tfstate
     outputs.tf           values for the GitHub `production` environment
     terraform.tfvars.example
   scripts/
@@ -37,8 +37,10 @@ area (`web`, `deploy`, `billing`). With the default `project = "jwallace145-site
 | Response headers policy       | `jwallace145-site-web-security-headers`        |
 | CloudFront function           | `jwallace145-site-web-rewrite-index`           |
 | ACM certificate (optional)    | `jwallace145-site-web-certificate` (Name tag)  |
-| IAM role                      | `jwallace145-site-deploy-github-role`          |
-| IAM role policy               | `jwallace145-site-deploy-github-policy`        |
+| IAM role (deploy)             | `jwallace145-site-deploy-github-role`          |
+| IAM role policy (deploy)      | `jwallace145-site-deploy-github-policy`        |
+| IAM role (plan, read-only)    | `jwallace145-site-deploy-github-plan-role`     |
+| IAM role policy (plan)        | `jwallace145-site-deploy-github-plan-policy`   |
 | OIDC provider                 | `jwallace145-site-deploy-github-oidc` (Name tag) |
 | Budget                        | `jwallace145-site-billing-monthly`             |
 
@@ -66,9 +68,9 @@ Add more with `extra_tags`.
 ## 1. Bootstrap the state bucket (once)
 
 State lives in `s3://jwallace145-site-tfstate` with native lockfile locking,
-so no DynamoDB table is needed. Keys are `<environment>/<stack>/terraform.tfstate`
-(this root uses `prod/live/terraform.tfstate`), so one bucket holds every
-stack of the project.
+so no DynamoDB table is needed. The key is `environment=prod/terraform.tfstate`;
+Terraform writes `environment=prod/terraform.tfstate.tflock` beside it while a
+write is in flight and removes it afterwards.
 
 The bucket is created outside Terraform by a script that applies the same
 standard tags, plus versioning, encryption, public-access block and a
@@ -112,12 +114,37 @@ domain it also waits for ACM DNS validation.
 ## 4. Wire up GitHub
 
 ```bash
-terraform output github_environment_variables
+terraform output github_environment_variables   # -> `production` environment variables
+terraform output github_repository_variables    # -> repository variables (PR plan check)
 ```
 
-Create the GitHub Environment `production` and add each key as an environment
-**variable** (none are secret). `docs/repo-setup.md` section 5 has the `gh`
-commands.
+The first set goes on the GitHub Environment `production` as environment
+**variables**. The second set goes on the repository itself, plus a
+`BUDGET_ALERT_EMAIL` secret, for the `terraform-plan` PR check.
+`docs/repo-setup.md` section 5 has the `gh` commands.
+
+## GitHub OIDC trust
+
+Both roles trust the account's existing `token.actions.githubusercontent.com`
+provider (owned by another project; this stack only reads it). The repository
+has GitHub's **immutable OIDC subject** enabled, so tokens carry
+`repo:jwallace145@<user id>/site@<repo id>:...`. The trust policies accept
+both that and the plain `repo:jwallace145/site:...` form, so toggling the
+setting never breaks deploys. The IDs are plain variables in
+`live/variables.tf`.
+
+| Role                                      | Trusts                                   | Can                                                    |
+| ----------------------------------------- | ---------------------------------------- | ------------------------------------------------------ |
+| `jwallace145-site-deploy-github-role`      | jobs in the `production` environment     | write the site bucket, invalidate CloudFront           |
+| `jwallace145-site-deploy-github-plan-role` | `pull_request` workflows in this repo    | read state and the stack's resources (`terraform plan`) |
+
+## PR plan check
+
+The `terraform-plan` job in `.github/workflows/ci.yml` runs when a PR touches
+`infra/**`, assumes the plan role, runs `terraform plan -lock=false` against
+prod, and posts the result as a sticky PR comment. It is informational, not a
+required check: PRs from forks get no OIDC token, so it only runs for branches
+in this repository.
 
 ## Adding a custom domain later
 
