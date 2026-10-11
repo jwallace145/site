@@ -83,22 +83,32 @@ export default function WorkSection() {
                     </div>
                   </div>
                   {/* One block per role. Several roles under one company read
-                      as a promotion, each with its own dates. */}
-                  <div className={cn("flex flex-col", multiRole ? "gap-2.5" : "gap-0.5")}>
-                    {work.roles.map((role) => (
-                      <div key={role.title} className="flex flex-col gap-0.5">
-                        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-3">
-                          <div className="font-sans text-sm text-foreground/90">{role.title}</div>
-                          {multiRole && (
+                      as a promotion: they hang off a vertical timeline, nested
+                      under the company, each with its own dates. */}
+                  {multiRole ? (
+                    <div className="mt-2 ml-1.5 flex flex-col gap-5 border-l border-border pl-5">
+                      {work.roles.map((role) => (
+                        <div key={role.title} className="relative flex flex-col gap-0.5">
+                          <span
+                            aria-hidden
+                            className="absolute top-1 -left-[25.5px] size-2.5 rounded-full border-2 border-background bg-muted-foreground"
+                          />
+                          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between sm:gap-x-3">
+                            <div className="font-sans text-sm text-foreground/90">{role.title}</div>
                             <div className="flex flex-none sm:text-right">
                               <DateRange start={role.start} end={role.end} />
                             </div>
-                          )}
+                          </div>
+                          <div className="font-sans text-xs text-muted-foreground">{role.team}</div>
                         </div>
-                        <div className="font-sans text-xs text-muted-foreground">{role.team}</div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-0.5">
+                      <div className="font-sans text-sm text-foreground/90">{newest.title}</div>
+                      <div className="font-sans text-xs text-muted-foreground">{newest.team}</div>
+                    </div>
+                  )}
                 </div>
               </div>
             </AccordionTrigger>
