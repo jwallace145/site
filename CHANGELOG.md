@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/jwallace145/site/compare/v1.9.0...v1.10.0) (2026-10-11)
+
+
+### Features
+
+* **content:** add employer and university logos to experience and education ([#24](https://github.com/jwallace145/site/issues/24)) ([f3e018b](https://github.com/jwallace145/site/commit/f3e018b7e78584bc9e1bfa9128a8103627b582e0))
+
 ## [1.9.0](https://github.com/jwallace145/site/compare/v1.8.0...v1.9.0) (2026-10-11)
 
 
