@@ -2,7 +2,7 @@
 // `DATA` and should not need to change. Content mirrors the latest release of
 // https://github.com/jwallace145/resume.
 import { Icons } from "@/components/icons";
-import { House, Library } from "lucide-react";
+import { House, Library, Package } from "lucide-react";
 import { Typescript } from "@/components/ui/svgs/typescript";
 import { Python } from "@/components/ui/svgs/python";
 import { Java } from "@/components/ui/svgs/java";
@@ -222,23 +222,33 @@ export const DATA = {
       video: "",
     },
     {
-      title: "CS Survival Kit",
-      href: "https://github.com/jwallace145/cs-survival-kit",
+      title: "CS Survival Guide & Kit",
+      href: "https://survival-guide.jwall.engineering/",
       dates: "October 2026 - Present",
       active: true,
       description:
-        "Hand-written data structures and algorithms in Python, plus a stdlib-only benchmarking toolkit that measures how code scales and checks it against the complexity its docstring claims. Published on [PyPI](https://pypi.org/project/cs-survival-kit/) and developed in tandem with the [CS Survival Guide](https://survival-guide.jwall.engineering/), whose reference section is rendered straight from this package's source. An ongoing study of DSA: clarity over cleverness.",
-      technologies: ["Python", "Algorithms", "Data Structures", "Benchmarking", "PyPI"],
+        "A field guide to computer science fundamentals: algorithms, data structures, system design, databases, networking, operating systems, and AI. Its companion library, the CS Survival Kit, is every data structure and algorithm from the guide hand-written in Python, published on PyPI with a stdlib-only benchmarking toolkit that checks real scaling against the complexity each docstring claims. The guide's reference section renders straight from the kit's source. An ongoing study of CS and DSA: clarity over cleverness.",
+      technologies: ["Python", "Algorithms", "Data Structures", "System Design", "Benchmarking"],
       links: [
-        {
-          type: "Source",
-          href: "https://github.com/jwallace145/cs-survival-kit",
-          icon: <Icons.github className="size-3" />,
-        },
         {
           type: "Guide",
           href: "https://survival-guide.jwall.engineering/",
           icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Guide Source",
+          href: "https://github.com/jwallace145/cs-survival-guide",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Kit Source",
+          href: "https://github.com/jwallace145/cs-survival-kit",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "PyPI",
+          href: "https://pypi.org/project/cs-survival-kit/",
+          icon: <Package className="size-3" />,
         },
       ],
       image: "",
