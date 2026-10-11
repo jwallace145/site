@@ -238,6 +238,15 @@ data "aws_iam_policy_document" "plan" {
     resources = [local.oidc_provider_arn]
   }
 
+  # The aws_iam_openid_connect_provider data source lists providers to find
+  # the one matching the URL. List has no resource-level scope.
+  statement {
+    sid       = "ListOidcProviders"
+    effect    = "Allow"
+    actions   = ["iam:ListOpenIDConnectProviders"]
+    resources = ["*"]
+  }
+
   statement {
     sid    = "ReadBudget"
     effect = "Allow"
