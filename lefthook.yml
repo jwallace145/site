@@ -9,7 +9,7 @@ pre-commit:
       run: pnpm exec prettier --check {staged_files}
     lint:
       glob: "*.{js,mjs,cjs,ts,tsx,astro}"
-      run: pnpm exec eslint {staged_files}
+      run: pnpm exec eslint --no-warn-ignored {staged_files}
 
 commit-msg:
   commands:

@@ -1,0 +1,59 @@
+name: Bug report
+description: Something on the site or in the repo is broken
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. **Security issues must not be filed here**; use
+        [private vulnerability reporting](https://github.com/jwallace145/site/security/advisories/new) instead.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you see, and what did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: If the bug is on the live site, which page?
+      placeholder: https://example.com/blog/...
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Live site (visual or behaviour)
+        - Local development (pnpm dev / build / check)
+        - CI or release workflow
+        - Infrastructure (Terraform)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and OS for site bugs; Node and pnpm versions for local issues.
+      placeholder: |
+        Browser: Firefox 130 / macOS 15
+        Node: 24.x, pnpm: 10.x
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste relevant console output or attach screenshots.
+      render: shell
