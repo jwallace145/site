@@ -32,3 +32,13 @@ describe("withBase", () => {
     expect(withBase("blog", "/pr-9")).toBe("/pr-9/blog");
   });
 });
+
+describe("withBase edge cases", () => {
+  it("returns an empty path unchanged so optional media stays empty", () => {
+    expect(withBase("", "/pr-9")).toBe("");
+  });
+
+  it("leaves protocol-relative URLs alone", () => {
+    expect(withBase("//cdn.example.com/a.png", "/pr-9")).toBe("//cdn.example.com/a.png");
+  });
+});

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { DATA } from "@/data/resume";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, withBase } from "@/lib/utils";
 
 function LogoImage({ src, alt }: { src: string; alt: string }) {
   const [imageError, setImageError] = useState(false);
@@ -40,7 +40,7 @@ export default function WorkSection() {
           <AccordionTrigger className="group cursor-pointer rounded-none p-0 transition-colors hover:no-underline [&>svg]:hidden">
             <div className="flex w-full items-center justify-between gap-x-3 text-left">
               <div className="flex min-w-0 flex-1 items-center gap-x-3">
-                <LogoImage src={work.logoUrl} alt={work.company} />
+                <LogoImage src={withBase(work.logoUrl)} alt={work.company} />
                 <div className="flex min-w-0 flex-1 flex-col gap-0.5">
                   <div className="flex items-center gap-2 leading-none font-semibold">
                     {work.company}

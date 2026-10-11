@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, withBase } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 import Markdown from "react-markdown";
@@ -59,7 +59,7 @@ export function ProjectCard({
         <a href={href || "#"} target="_blank" rel="noopener noreferrer" className="block">
           {video ? (
             <video
-              src={video}
+              src={withBase(video)}
               autoPlay
               loop
               muted
@@ -67,7 +67,7 @@ export function ProjectCard({
               className="h-48 w-full object-cover"
             />
           ) : image ? (
-            <ProjectImage src={image} alt={title} />
+            <ProjectImage src={withBase(image)} alt={title} />
           ) : (
             <div className="h-48 w-full bg-muted" />
           )}

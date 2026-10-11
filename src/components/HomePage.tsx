@@ -16,7 +16,7 @@ const BLUR_FADE_DELAY = 0.04;
 
 // Root-relative links in DATA.summary (e.g. /#work) must stay inside the
 // current base path on PR previews.
-const markdownUrlTransform = (url: string) => withBase(defaultUrlTransform(url));
+const markdownUrlTransform = (url: string) => withBase(defaultUrlTransform(url)); // "" stays ""
 
 const sectionComponents: Record<string, React.ReactNode> = {
   about: (
@@ -63,7 +63,7 @@ const sectionComponents: Record<string, React.ReactNode> = {
                 <div className="flex min-w-0 flex-1 items-center gap-x-3">
                   {education.logoUrl ? (
                     <img
-                      src={education.logoUrl}
+                      src={withBase(education.logoUrl)}
                       alt={education.school}
                       className="size-8 flex-none overflow-hidden rounded-full border object-contain p-1 shadow ring-2 ring-border md:size-10"
                     />
