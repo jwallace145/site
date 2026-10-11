@@ -1,30 +1,28 @@
 # -----------------------------------------------------------------------------
-# Standards: identity and tags. Defaults match this project; override only if
-# you are standing up a copy somewhere else.
+# Standards: identity and tags. The environment's values live in the committed
+# terraform.tfvars next to this file; only environment-neutral defaults are
+# set here. Secrets, if any ever appear, are declared `sensitive = true` with
+# no default and passed at plan/apply time via TF_VAR_<name> or -var.
 # -----------------------------------------------------------------------------
 
 variable "project" {
   description = "Project identifier. Used as the resource name prefix and the Project tag."
   type        = string
-  default     = "jwallace145-site"
 }
 
 variable "owner" {
   description = "Owner tag value."
   type        = string
-  default     = "jwallace145"
 }
 
 variable "environment" {
   description = "Environment tag value."
   type        = string
-  default     = "prod"
 }
 
 variable "repository" {
   description = "Repository tag value: where the IaC lives."
   type        = string
-  default     = "github.com/jwallace145/site"
 }
 
 variable "extra_tags" {
@@ -50,7 +48,6 @@ variable "aws_region" {
 variable "dns_zone_name" {
   description = "Domain for the Terraform-managed Route 53 hosted zone. null manages no zone; then hosted_zone_id must point at an existing one for domain_name."
   type        = string
-  default     = "jwall.engineering"
 
   validation {
     condition     = var.dns_zone_name == null || can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", var.dns_zone_name))
@@ -125,19 +122,16 @@ variable "dns_records" {
 variable "github_repository" {
   description = "GitHub repository (owner/name) allowed to assume the deploy role."
   type        = string
-  default     = "jwallace145/site"
 }
 
 variable "github_owner_id" {
-  description = "Numeric GitHub ID of jwallace145 (gh api users/jwallace145 --jq .id). Needed because the repo uses immutable OIDC subjects."
+  description = "Numeric GitHub ID of the repository owner (gh api users/<owner> --jq .id). Needed when the repo uses immutable OIDC subjects."
   type        = number
-  default     = 35950238
 }
 
 variable "github_repository_id" {
-  description = "Numeric GitHub ID of jwallace145/site (gh api repos/jwallace145/site --jq .id)."
+  description = "Numeric GitHub ID of the repository (gh api repos/<owner>/<name> --jq .id)."
   type        = number
-  default     = 1413965497
 }
 
 variable "github_environment" {
@@ -147,9 +141,9 @@ variable "github_environment" {
 }
 
 variable "create_oidc_provider" {
-  description = "Create the GitHub OIDC provider. The target account already has one, so the module looks it up by default."
+  description = "Create the GitHub OIDC provider. false looks up the account's existing one (one per account)."
   type        = bool
-  default     = false
+  default     = true
 }
 
 # -----------------------------------------------------------------------------
@@ -157,7 +151,7 @@ variable "create_oidc_provider" {
 # -----------------------------------------------------------------------------
 
 variable "budget_alert_email" {
-  description = "Email that receives budget alerts. The only required input."
+  description = "Email that receives budget alerts."
   type        = string
 }
 

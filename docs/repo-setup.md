@@ -178,14 +178,12 @@ is off by default.
 ## 5b. Repository variables for the PR plan check
 
 The `terraform-plan` CI job assumes a read-only role on pull requests. These
-are **repository** variables (not environment), plus one secret so the plan
-can evaluate the budget variable:
+are **repository** variables (not environment):
 
 ```bash
 # From infra/environments/prod/: terraform output github_repository_variables
 gh variable set AWS_PLAN_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-deploy-github-plan-role"
 gh variable set AWS_REGION        --repo "$REPO" --body "us-east-1"
-gh secret   set BUDGET_ALERT_EMAIL --repo "$REPO" --body "<same email as terraform.tfvars>"
 ```
 
 > This repository has GitHub's immutable OIDC subject enabled
