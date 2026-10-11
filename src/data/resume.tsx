@@ -155,7 +155,7 @@ export const DATA = {
       roles: [
         {
           title: "Senior Associate Software Engineer",
-          team: "Delivery Experience · Containers (ECS Fargate), Team Fargo",
+          team: "Delivery Experience · Containers (ECS Fargate)",
           start: "July 2021",
           end: "August 2022",
           bullets: [
@@ -164,7 +164,7 @@ export const DATA = {
         },
         {
           title: "Associate Software Engineer",
-          team: "Commercial Data, Strategy & Engineering (CDSE) · Auto Pilots (RPA), Commercial Bank",
+          team: "Commercial Bank · Robotic Process Automation (RPA)",
           start: "August 2020",
           end: "July 2021",
           bullets: [
