@@ -4,6 +4,9 @@
 
 locals {
   preview_origin_id = "s3-preview"
+
+  use_custom_domain = var.domain_name != null
+  preview_hostname  = local.use_custom_domain ? var.domain_name : aws_cloudfront_distribution.preview.domain_name
 }
 
 resource "aws_cloudfront_origin_access_control" "preview" {
@@ -85,6 +88,8 @@ resource "aws_cloudfront_distribution" "preview" {
   # /index.html, which does not exist, and so returns the 404 page.
   wait_for_deployment = true
 
+  aliases = local.use_custom_domain ? [var.domain_name] : []
+
   origin {
     origin_id                = local.preview_origin_id
     domain_name              = aws_s3_bucket.preview.bucket_regional_domain_name
@@ -130,8 +135,69 @@ resource "aws_cloudfront_distribution" "preview" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    cloudfront_default_certificate = local.use_custom_domain ? null : true
+    acm_certificate_arn            = local.use_custom_domain ? aws_acm_certificate_validation.preview[0].certificate_arn : null
+    ssl_support_method             = local.use_custom_domain ? "sni-only" : null
+    minimum_protocol_version       = local.use_custom_domain ? "TLSv1.2_2021" : "TLSv1"
   }
 
   tags = merge(var.tags, { Name = local.names.preview_cdn })
+}
+
+# -----------------------------------------------------------------------------
+# preview: optional custom hostname. ACM certificate (us-east-1) + Route 53
+# aliases. Only created when domain_name is set.
+# -----------------------------------------------------------------------------
+
+resource "aws_acm_certificate" "preview" {
+  count    = local.use_custom_domain ? 1 : 0
+  provider = aws.us_east_1
+
+  domain_name       = var.domain_name
+  validation_method = "DNS"
+
+  tags = merge(var.tags, { Name = local.names.preview_certificate })
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "preview_acm_validation" {
+  for_each = local.use_custom_domain ? {
+    for dvo in aws_acm_certificate.preview[0].domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  } : {}
+
+  zone_id         = var.hosted_zone_id
+  name            = each.value.name
+  type            = each.value.type
+  records         = [each.value.record]
+  ttl             = 60
+  allow_overwrite = true
+}
+
+resource "aws_acm_certificate_validation" "preview" {
+  count    = local.use_custom_domain ? 1 : 0
+  provider = aws.us_east_1
+
+  certificate_arn         = aws_acm_certificate.preview[0].arn
+  validation_record_fqdns = [for r in aws_route53_record.preview_acm_validation : r.fqdn]
+}
+
+resource "aws_route53_record" "preview" {
+  for_each = local.use_custom_domain ? toset(["A", "AAAA"]) : toset([])
+
+  zone_id = var.hosted_zone_id
+  name    = var.domain_name
+  type    = each.key
+
+  alias {
+    name                   = aws_cloudfront_distribution.preview.domain_name
+    zone_id                = aws_cloudfront_distribution.preview.hosted_zone_id
+    evaluate_target_health = false
+  }
 }
