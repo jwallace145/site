@@ -2,7 +2,7 @@
 // `DATA` and should not need to change. Content mirrors the latest release of
 // https://github.com/jwallace145/resume.
 import { Icons } from "@/components/icons";
-import { House, Library } from "lucide-react";
+import { House, Library, Package } from "lucide-react";
 import { Typescript } from "@/components/ui/svgs/typescript";
 import { Python } from "@/components/ui/svgs/python";
 import { Java } from "@/components/ui/svgs/java";
@@ -216,6 +216,29 @@ export const DATA = {
           type: "Website",
           href: "https://progstrength.fitness",
           icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "",
+    },
+    {
+      title: "CS Survival Guide & Kit",
+      href: "https://survival-guide.jwall.engineering/",
+      dates: "October 2026 - Present",
+      active: true,
+      description:
+        "A field guide to computer science fundamentals: algorithms, data structures, system design, databases, networking, operating systems, and AI. Its companion library, the CS Survival Kit, is every data structure and algorithm from the guide hand-written in Python, published on PyPI with a stdlib-only benchmarking toolkit that checks real scaling against the complexity each docstring claims. The guide's reference section renders straight from the kit's source. An ongoing study of CS and DSA: clarity over cleverness.",
+      technologies: ["Python", "Algorithms", "Data Structures", "System Design", "Benchmarking"],
+      links: [
+        {
+          type: "Guide",
+          href: "https://survival-guide.jwall.engineering/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "PyPI",
+          href: "https://pypi.org/project/cs-survival-kit/",
+          icon: <Package className="size-3" />,
         },
       ],
       image: "",
