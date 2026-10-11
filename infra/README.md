@@ -86,12 +86,16 @@ cp terraform.tfvars.example terraform.tfvars   # git-ignored
 $EDITOR terraform.tfvars                        # set budget_alert_email
 ```
 
-Everything else defaults to the project standards. Set
-`create_oidc_provider = false` if the account already has a provider for
-`token.actions.githubusercontent.com`:
+Everything else defaults to the project standards. The account already has
+an OIDC provider for `token.actions.githubusercontent.com`, so
+`create_oidc_provider` defaults to `false` and the module looks it up. Confirm
+it accepts the `sts.amazonaws.com` audience the deploy role trusts:
 
 ```bash
-aws iam list-open-id-connect-providers
+aws iam get-open-id-connect-provider \
+  --open-id-connect-provider-arn "$(aws iam list-open-id-connect-providers \
+    --query 'OpenIDConnectProviderList[?contains(Arn, `token.actions.githubusercontent.com`)].Arn' --output text)" \
+  --query ClientIDList
 ```
 
 ## 3. Init, plan, apply
