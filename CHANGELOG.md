@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/jwallace145/site/compare/v1.6.0...v1.7.0) (2026-10-11)
+
+
+### Features
+
+* **infra:** point survival-guide.jwall.engineering at github pages ([#18](https://github.com/jwallace145/site/issues/18)) ([cb02a81](https://github.com/jwallace145/site/commit/cb02a8179bffe7cd02e521c4b35043fb65d068b0))
+
 ## [1.6.0](https://github.com/jwallace145/site/compare/v1.5.0...v1.6.0) (2026-10-11)
 
 
