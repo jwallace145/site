@@ -44,8 +44,9 @@ Content lives in three places; search for `TODO:` to find every placeholder.
 | `src/data/config.ts`     | Site URL, SEO, theme colours, font size                    |
 | `src/content/blog/*.mdx` | Blog posts (`example-post.mdx` is a template)              |
 
-The footer shows the site version from `package.json`, which Release Please
-bumps on every release, linked to that release on GitHub.
+The footer links to this repository and shows the site version from
+`package.json`, which Release Please bumps on every release, linked to that
+release on GitHub.
 
 Two optional build-time variables, read in `astro.config.mjs`: `SITE_URL`
 overrides the public URL in `src/data/config.ts` (CI sets it per GitHub

@@ -244,24 +244,6 @@ export const DATA = {
       image: "",
       video: "",
     },
-    {
-      title: "Personal Site",
-      href: "https://github.com/jwallace145/site",
-      dates: "October 2026 - Present",
-      active: true,
-      description:
-        "This site. A static Astro build served from S3 and CloudFront, provisioned with Terraform and released through Release Please and GitHub Actions with OIDC-based deploys and no long-lived keys.",
-      technologies: ["Astro", "TypeScript", "Tailwind CSS", "Terraform", "AWS"],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/jwallace145/site",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "",
-      video: "",
-    },
   ],
   // TODO: hackathons, if any. The section is disabled above until you add some.
   hackathons: [
