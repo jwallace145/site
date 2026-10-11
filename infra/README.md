@@ -15,6 +15,8 @@ infra/
     iam.tf               deploy: deploy role (release) and read-only plan role (PRs)
     budget.tf            billing: monthly cost alert
     variables.tf  outputs.tf  versions.tf  function/
+  modules/preview-site/  PR previews: preview bucket + CloudFront, OIDC preview role, shared 404 page
+    naming.tf  main.tf  cloudfront.tf  iam.tf  variables.tf  outputs.tf  versions.tf  files/
   environments/prod/     the root you run terraform in; dev/staging would be siblings
     main.tf              computes names + tags, calls the module
     variables.tf         the simple interface (one required input)
@@ -45,6 +47,13 @@ area (`web`, `deploy`, `billing`). With the default `project = "jwallace145-site
 | IAM role policy (plan)        | `jwallace145-site-deploy-github-plan-policy`   |
 | OIDC provider                 | `jwallace145-site-deploy-github-oidc` (Name tag) |
 | Budget                        | `jwallace145-site-billing-monthly`             |
+| S3 bucket (previews)          | `jwallace145-site-preview-bucket-<aws suffix>` |
+| Origin access control (previews) | `jwallace145-site-preview-oac`              |
+| CloudFront distribution (previews) | `jwallace145-site-preview-cdn`            |
+| Response headers policy (previews) | `jwallace145-site-preview-security-headers` |
+| IAM role (previews)           | `jwallace145-site-preview-github-role`         |
+| IAM role policy (previews)    | `jwallace145-site-preview-github-policy`       |
+| IAM role policy (plan → previews) | `jwallace145-site-preview-github-plan-policy` |
 
 `terraform output resource_names` prints the full list.
 
@@ -139,6 +148,7 @@ setting never breaks deploys. The IDs are plain variables in
 | ----------------------------------------- | ---------------------------------------- | ------------------------------------------------------ |
 | `jwallace145-site-deploy-github-role`      | jobs in the `production` environment     | write the site bucket, invalidate CloudFront           |
 | `jwallace145-site-deploy-github-plan-role` | `pull_request` workflows in this repo    | read state and the stack's resources (`terraform plan`) |
+| `jwallace145-site-preview-github-role`     | jobs in the `preview` environment        | write `pr-*/` in the preview bucket, invalidate the preview CDN |
 
 ## PR plan check
 
@@ -147,6 +157,18 @@ The `terraform-plan` job in `.github/workflows/ci.yml` runs when a PR touches
 prod, and posts the result as a sticky PR comment. It is informational, not a
 required check: PRs from forks get no OIDC token, so it only runs for branches
 in this repository.
+
+## PR previews
+
+`modules/preview-site` is applied from the prod root when
+`preview_enabled = true` (default). One private bucket and one distribution
+host every open PR under `pr-<n>/`; a lifecycle rule expires those keys after
+`preview_retention_days`. The shared `404.html` at the bucket root is
+uploaded by Terraform. Every knob (`preview_*` in
+`environments/prod/variables.tf`) is set from `terraform.tfvars`.
+
+After apply: `terraform output github_preview_environment_variables` goes on
+the GitHub `preview` environment (`docs/repo-setup.md` section 5c).
 
 ## Adding a custom domain later
 

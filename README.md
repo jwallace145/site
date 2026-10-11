@@ -76,6 +76,16 @@ Every change is a PR, squash-merged into `main` as a single one-line
 - Release PRs are never auto-merged. Merging one _is_ the release.
 - The deploy job assumes an AWS role via OIDC; there are no long-lived keys.
 - `workflow_dispatch` on the Release workflow redeploys the latest (or a given) tag.
+
+### PR previews
+
+Every pull request from a branch in this repository is built with
+`BASE_PATH=/pr-<n>` and published to a separate preview bucket + CloudFront
+distribution at `https://<preview-cdn>/pr-<n>/`. The URL is posted as a
+sticky comment and as the PR's `preview` deployment; the prefix is deleted
+when the PR closes. Previews send `X-Robots-Tag: noindex`. Forks get no
+preview (no OIDC token). See [`infra/README.md`](infra/README.md).
+
 - Details: [CONTRIBUTING.md](CONTRIBUTING.md), [infra/README.md](infra/README.md),
   [docs/repo-setup.md](docs/repo-setup.md).
 
@@ -83,10 +93,10 @@ Every change is a PR, squash-merged into `main` as a single one-line
 
 ```
 src/                 Astro site
-infra/modules/       static-site Terraform module (S3, CloudFront, OIDC role, budget)
+infra/modules/       static-site (S3, CloudFront, OIDC role, budget) and preview-site Terraform modules
 infra/environments/  one root per environment (prod today) applying the module with the project's names and tags
 tools/commitlint/    custom "one-line commit" rule and its tests
-.github/             workflows, composite setup action, templates, dependabot
+.github/             workflows (ci, release, preview), composite setup action, templates, dependabot
 docs/repo-setup.md   one-time GitHub configuration (gh commands)
 ```
 

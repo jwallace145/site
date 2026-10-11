@@ -111,9 +111,16 @@ These run in CI on every PR and (where it makes sense) in the pre-commit hook:
 | `pnpm build`                                                                           | Static build succeeds                              |
 | `pnpm test`                                                                            | commitlint rule unit tests                         |
 | `terraform fmt -check` in `infra/`, `terraform validate` in `infra/environments/prod/` | only when `infra/**` changes                       |
+| `BASE_PATH=/pr-0 pnpm build`                                                           | links honour Astro `base` (needed for PR previews) |
 
 To skip the hooks once (e.g. a WIP commit you will squash): `LEFTHOOK=0 git commit ...`.
 CI still enforces everything.
+
+Internal links must go through `withBase()` from `src/lib/utils.ts` (or
+Astro's own URL helpers) so they work when the site is served under
+`/pr-<n>/` on previews. The build check above fails on any `href="/..."`
+that bypasses it. PRs from branches in this repo get a live preview comment;
+fork PRs do not.
 
 ## Releases
 
