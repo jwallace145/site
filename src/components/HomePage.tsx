@@ -65,7 +65,7 @@ const sectionComponents: Record<string, React.ReactNode> = {
                     <img
                       src={withBase(education.logoUrl)}
                       alt={education.school}
-                      className="size-8 flex-none overflow-hidden rounded-full border object-contain p-1 shadow ring-2 ring-border md:size-10"
+                      className="size-8 flex-none overflow-hidden rounded-full border bg-white object-contain p-1 shadow ring-2 ring-border md:size-10"
                     />
                   ) : (
                     <div className="size-8 flex-none rounded-full border bg-muted p-1 shadow ring-2 ring-border md:size-10" />

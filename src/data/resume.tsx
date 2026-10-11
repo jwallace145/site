@@ -120,7 +120,7 @@ export const DATA = {
       badges: [],
       location: "Denver, CO",
       title: "Lead DevOps Engineer, Data Lake Platforms",
-      logoUrl: "",
+      logoUrl: "/logos/charter.svg",
       start: "July 2025",
       end: undefined,
       description: (
@@ -139,7 +139,7 @@ export const DATA = {
       badges: [],
       location: "Arlington, VA",
       title: "Software Development Engineer II, EC2 Metering",
-      logoUrl: "",
+      logoUrl: "/logos/aws.svg",
       start: "August 2022",
       end: "April 2025",
       description: (
@@ -159,7 +159,7 @@ export const DATA = {
       badges: [],
       location: "Richmond, VA",
       title: "Senior Associate Software Engineer",
-      logoUrl: "",
+      logoUrl: "/logos/capital-one.svg",
       start: "August 2020",
       end: "August 2022",
       description: (
@@ -196,7 +196,7 @@ export const DATA = {
       school: "The Ohio State University",
       href: "https://engineering.osu.edu",
       degree: "B.S. Computer Science and Engineering · Minor in Mathematics, AI concentration",
-      logoUrl: "",
+      logoUrl: "/logos/ohio-state.svg",
       start: "2016",
       end: "2020",
     },
