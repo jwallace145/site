@@ -6,7 +6,7 @@
 # Files:
 #   naming.tf      the <prefix>-<domain>-<resource> naming standard
 #   main.tf        site bucket (domain: web)
-#   cloudfront.tf  distribution, headers, function, optional ACM/Route 53 (web)
+#   cloudfront.tf  distribution, headers, function (index rewrite + www redirect), optional ACM/Route 53 (web)
 #   iam.tf         OIDC provider and deploy role (domain: deploy)
 #   budget.tf      cost alert (domain: billing)
 #
