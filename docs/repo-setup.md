@@ -142,7 +142,7 @@ Delete the local `.pem` once stored.
 
 ## 5. `production` environment
 
-Created after `terraform apply` in `infra/live/` (see `infra/README.md`). The values are not
+Created after `terraform apply` in `infra/environments/prod/` (see `infra/README.md`). The values are not
 secret, so they are environment **variables**.
 
 ```bash
@@ -163,7 +163,7 @@ gh api -X POST "repos/$REPO/environments/production/deployment-branch-policies" 
 gh api -X POST "repos/$REPO/environments/production/deployment-branch-policies" \
   -f name='v*' -f type=tag
 
-# From infra/live/: terraform output github_environment_variables
+# From infra/environments/prod/: terraform output github_environment_variables
 gh variable set AWS_ROLE_ARN               --env production --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-github-deploy"
 gh variable set AWS_REGION                 --env production --repo "$REPO" --body "us-east-1"
 gh variable set S3_BUCKET                  --env production --repo "$REPO" --body "<site bucket name>"
@@ -182,7 +182,7 @@ are **repository** variables (not environment), plus one secret so the plan
 can evaluate the budget variable:
 
 ```bash
-# From infra/live/: terraform output github_repository_variables
+# From infra/environments/prod/: terraform output github_repository_variables
 gh variable set AWS_PLAN_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-deploy-github-plan-role"
 gh variable set AWS_REGION        --repo "$REPO" --body "us-east-1"
 gh secret   set BUDGET_ALERT_EMAIL --repo "$REPO" --body "<same email as terraform.tfvars>"
