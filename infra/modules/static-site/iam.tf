@@ -14,7 +14,7 @@ locals {
   github_oidc_url  = "https://token.actions.githubusercontent.com"
   github_oidc_host = "token.actions.githubusercontent.com"
 
-  oidc_provider_arn = var.create_oidc_provider ? aws_iam_openid_connect_provider.github[0].arn : data.aws_iam_openid_connect_provider.github[0].arn
+  oidc_provider_arn = var.github.create_oidc_provider ? aws_iam_openid_connect_provider.github[0].arn : data.aws_iam_openid_connect_provider.github[0].arn
 
   # GitHub can issue the `sub` claim in two shapes:
   #   plain:     repo:owner/name:...
@@ -22,15 +22,15 @@ locals {
   #              "use immutable subject", on for this repository)
   # Both are accepted when the IDs are supplied, so toggling the setting does
   # not break deploys.
-  github_owner = split("/", var.github_repository)[0]
-  github_name  = split("/", var.github_repository)[1]
+  github_owner = split("/", var.github.repository)[0]
+  github_name  = split("/", var.github.repository)[1]
 
   github_subject_prefixes = compact([
-    "repo:${var.github_repository}",
-    var.github_owner_id != null ? "repo:${local.github_owner}@${var.github_owner_id}/${local.github_name}@${var.github_repository_id}" : null,
+    "repo:${var.github.repository}",
+    var.github.owner_id != null ? "repo:${local.github_owner}@${var.github.owner_id}/${local.github_name}@${var.github.repository_id}" : null,
   ])
 
-  deploy_subjects = [for p in local.github_subject_prefixes : "${p}:environment:${var.github_environment}"]
+  deploy_subjects = [for p in local.github_subject_prefixes : "${p}:environment:${var.github.environment}"]
   plan_subjects   = [for p in local.github_subject_prefixes : "${p}:pull_request"]
 
   account_id = data.aws_caller_identity.current.account_id
@@ -40,7 +40,7 @@ locals {
 # An account holds one provider per URL. With create_oidc_provider = false the
 # existing one is looked up instead.
 resource "aws_iam_openid_connect_provider" "github" {
-  count = var.create_oidc_provider ? 1 : 0
+  count = var.github.create_oidc_provider ? 1 : 0
 
   url            = local.github_oidc_url
   client_id_list = ["sts.amazonaws.com"]
@@ -56,7 +56,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 data "aws_iam_openid_connect_provider" "github" {
-  count = var.create_oidc_provider ? 0 : 1
+  count = var.github.create_oidc_provider ? 0 : 1
 
   url = local.github_oidc_url
 }
@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "deploy_assume_role" {
 
 resource "aws_iam_role" "deploy" {
   name                 = local.names.deploy_github_role
-  description          = "Assumed by GitHub Actions (${var.github_repository}, ${var.github_environment}) to deploy ${local.names.web_cdn}"
+  description          = "Assumed by GitHub Actions (${var.github.repository}, ${var.github.environment}) to deploy ${local.names.web_cdn}"
   assume_role_policy   = data.aws_iam_policy_document.deploy_assume_role.json
   max_session_duration = 3600
 
@@ -138,7 +138,7 @@ resource "aws_iam_role_policy" "deploy" {
 # -----------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "plan_assume_role" {
-  count = var.plan_role ? 1 : 0
+  count = var.plan.enabled ? 1 : 0
 
   statement {
     sid     = "GitHubActionsPullRequestOIDC"
@@ -165,10 +165,10 @@ data "aws_iam_policy_document" "plan_assume_role" {
 }
 
 resource "aws_iam_role" "plan" {
-  count = var.plan_role ? 1 : 0
+  count = var.plan.enabled ? 1 : 0
 
   name                 = local.names.plan_github_role
-  description          = "Read-only role for terraform plan in ${var.github_repository} pull requests"
+  description          = "Read-only role for terraform plan in ${var.github.repository} pull requests"
   assume_role_policy   = data.aws_iam_policy_document.plan_assume_role[0].json
   max_session_duration = 3600
 
@@ -176,7 +176,7 @@ resource "aws_iam_role" "plan" {
 }
 
 data "aws_iam_policy_document" "plan" {
-  count = var.plan_role ? 1 : 0
+  count = var.plan.enabled ? 1 : 0
 
   # State: read the one state object. `terraform plan -lock=false` never
   # writes, so no Put/Delete on the lockfile.
@@ -184,14 +184,14 @@ data "aws_iam_policy_document" "plan" {
     sid       = "ReadStateObject"
     effect    = "Allow"
     actions   = ["s3:GetObject", "s3:GetObjectVersion"]
-    resources = ["arn:${local.partition}:s3:::${var.terraform_state_bucket}/${var.terraform_state_key}"]
+    resources = ["arn:${local.partition}:s3:::${var.plan.state_bucket}/${var.plan.state_key}"]
   }
 
   statement {
     sid       = "ListStateBucket"
     effect    = "Allow"
     actions   = ["s3:ListBucket"]
-    resources = ["arn:${local.partition}:s3:::${var.terraform_state_bucket}"]
+    resources = ["arn:${local.partition}:s3:::${var.plan.state_bucket}"]
   }
 
   # Refresh needs bucket-level configuration of the web bucket. Bucket-level
@@ -275,7 +275,7 @@ data "aws_iam_policy_document" "plan" {
 }
 
 resource "aws_iam_role_policy" "plan" {
-  count = var.plan_role ? 1 : 0
+  count = var.plan.enabled ? 1 : 0
 
   name   = local.names.plan_github_policy
   role   = aws_iam_role.plan[0].id

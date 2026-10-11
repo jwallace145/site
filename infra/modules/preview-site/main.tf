@@ -64,11 +64,11 @@ resource "aws_s3_bucket_lifecycle_configuration" "preview" {
     status = "Enabled"
 
     filter {
-      prefix = var.key_prefix
+      prefix = var.previews.key_prefix
     }
 
     expiration {
-      days = var.retention_days
+      days = var.previews.retention_days
     }
 
     abort_incomplete_multipart_upload {

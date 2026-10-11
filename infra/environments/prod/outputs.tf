@@ -23,7 +23,7 @@ output "deploy_role_arn" {
 
 output "aws_region" {
   description = "AWS_REGION"
-  value       = var.aws_region
+  value       = var.aws.region
 }
 
 output "site_url" {
@@ -40,7 +40,7 @@ output "github_repository_variables" {
   description = "Repository-level (not environment) variables read by the PR terraform-plan check."
   value = {
     AWS_PLAN_ROLE_ARN = module.site.plan_role_arn
-    AWS_REGION        = var.aws_region
+    AWS_REGION        = var.aws.region
   }
 }
 
@@ -48,7 +48,7 @@ output "github_environment_variables" {
   description = "Everything to paste into the GitHub `production` environment."
   value = {
     AWS_ROLE_ARN               = module.site.deploy_role_arn
-    AWS_REGION                 = var.aws_region
+    AWS_REGION                 = var.aws.region
     S3_BUCKET                  = module.site.web_bucket_name
     CLOUDFRONT_DISTRIBUTION_ID = module.site.web_distribution_id
     SITE_URL                   = module.site.site_url
@@ -81,9 +81,9 @@ output "preview_role_arn" {
 
 output "github_preview_environment_variables" {
   description = "Everything to paste into the GitHub `preview` environment."
-  value = var.preview_enabled ? merge(
+  value = var.preview.enabled ? merge(
     module.preview[0].github_environment_variables,
-    { AWS_REGION = var.aws_region },
+    { AWS_REGION = var.aws.region },
   ) : null
 }
 

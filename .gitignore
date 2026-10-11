@@ -30,8 +30,11 @@ pnpm-debug.log*
 **/.terraform/
 *.tfstate
 *.tfstate.*
-*.tfvars
-!*.tfvars.example
+# Environment tfvars are committed (nothing in them is secret). Personal
+# overrides and anything named like a secret stay local.
+*.local.tfvars
+*.auto.tfvars
+*secret*.tfvars
 *.tfplan
 crash.log
 crash.*.log

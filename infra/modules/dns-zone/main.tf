@@ -6,8 +6,8 @@
 # records (MX, TXT, CNAME, ...).
 
 resource "aws_route53_zone" "this" {
-  name    = var.zone_name
-  comment = var.comment
+  name    = var.zone.name
+  comment = var.zone.comment
 
   tags = merge(var.tags, { Name = local.names.dns_zone })
 }
@@ -15,16 +15,16 @@ resource "aws_route53_zone" "this" {
 locals {
   # "@" -> zone apex; "mail" -> mail.<zone>; "x.<zone>" -> unchanged.
   record_fqdns = {
-    for key, r in var.records : key => (
-      key == "@" ? var.zone_name :
-      endswith(key, var.zone_name) ? key :
-      "${key}.${var.zone_name}"
+    for key, r in var.zone.records : key => (
+      key == "@" ? var.zone.name :
+      endswith(key, var.zone.name) ? key :
+      "${key}.${var.zone.name}"
     )
   }
 }
 
 resource "aws_route53_record" "this" {
-  for_each = var.records
+  for_each = var.zone.records
 
   zone_id = aws_route53_zone.this.zone_id
   name    = local.record_fqdns[each.key]

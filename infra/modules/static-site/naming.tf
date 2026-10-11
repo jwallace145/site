@@ -26,5 +26,5 @@ locals {
     billing_monthly = "${local.prefix}-billing-monthly"
   }
 
-  use_custom_domain = var.domain_name != null
+  use_custom_domain = var.site.domain_name != null
 }

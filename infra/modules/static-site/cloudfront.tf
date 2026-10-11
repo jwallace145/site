@@ -6,7 +6,7 @@ locals {
   web_origin_id = "s3-web"
 
   # Every hostname the distribution answers for: the primary domain first.
-  alias_hostnames = local.use_custom_domain ? concat([var.domain_name], var.redirect_hostnames) : []
+  alias_hostnames = local.use_custom_domain ? concat([var.site.domain_name], var.site.redirect_hostnames) : []
 }
 
 resource "aws_cloudfront_origin_access_control" "web" {
@@ -28,8 +28,8 @@ resource "aws_cloudfront_function" "web_rewrite_index" {
   comment = "Rewrite directory paths to index.html; redirect alternate hostnames"
   publish = true
   code = templatefile("${path.module}/function/rewrite-index.js.tftpl", {
-    primary_host   = var.domain_name != null ? var.domain_name : ""
-    redirect_hosts = jsonencode(var.redirect_hostnames)
+    primary_host   = var.site.domain_name != null ? var.site.domain_name : ""
+    redirect_hosts = jsonencode(var.site.redirect_hostnames)
   })
 }
 
@@ -84,7 +84,7 @@ resource "aws_cloudfront_distribution" "web" {
   comment             = local.names.web_cdn
   is_ipv6_enabled     = true
   http_version        = "http2and3"
-  price_class         = var.price_class
+  price_class         = var.site.price_class
   default_root_object = "index.html"
   wait_for_deployment = true
 
@@ -118,14 +118,14 @@ resource "aws_cloudfront_distribution" "web" {
     error_code            = 403
     response_code         = 404
     response_page_path    = "/404.html"
-    error_caching_min_ttl = var.error_caching_min_ttl
+    error_caching_min_ttl = var.site.error_caching_min_ttl
   }
 
   custom_error_response {
     error_code            = 404
     response_code         = 404
     response_page_path    = "/404.html"
-    error_caching_min_ttl = var.error_caching_min_ttl
+    error_caching_min_ttl = var.site.error_caching_min_ttl
   }
 
   restrictions {
@@ -153,8 +153,8 @@ resource "aws_acm_certificate" "web" {
   count    = local.use_custom_domain ? 1 : 0
   provider = aws.us_east_1
 
-  domain_name               = var.domain_name
-  subject_alternative_names = var.redirect_hostnames
+  domain_name               = var.site.domain_name
+  subject_alternative_names = var.site.redirect_hostnames
   validation_method         = "DNS"
 
   tags = merge(var.tags, { Name = local.names.web_certificate })
@@ -173,7 +173,7 @@ resource "aws_route53_record" "web_acm_validation" {
     }
   } : {}
 
-  zone_id         = var.hosted_zone_id
+  zone_id         = var.site.hosted_zone_id
   name            = each.value.name
   type            = each.value.type
   records         = [each.value.record]
@@ -197,7 +197,7 @@ resource "aws_route53_record" "web" {
     }
   }
 
-  zone_id = var.hosted_zone_id
+  zone_id = var.site.hosted_zone_id
   name    = each.value.name
   type    = each.value.type
 

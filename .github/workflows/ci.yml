@@ -234,8 +234,6 @@ jobs:
           if [ "$code" = "1" ]; then exit 1; fi
           terraform show -no-color tfplan > plan.txt
         working-directory: infra/environments/prod
-        env:
-          TF_VAR_budget_alert_email: ${{ secrets.BUDGET_ALERT_EMAIL }}
 
       - name: Comment plan on PR
         if: steps.changes.outputs.infra == 'true' && always()

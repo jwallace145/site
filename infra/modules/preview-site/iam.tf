@@ -7,16 +7,16 @@
 locals {
   github_oidc_host = "token.actions.githubusercontent.com"
 
-  github_owner = split("/", var.github_repository)[0]
-  github_name  = split("/", var.github_repository)[1]
+  github_owner = split("/", var.github.repository)[0]
+  github_name  = split("/", var.github.repository)[1]
 
   # Plain and immutable subject shapes, as in the static-site module.
   github_subject_prefixes = compact([
-    "repo:${var.github_repository}",
-    var.github_owner_id != null ? "repo:${local.github_owner}@${var.github_owner_id}/${local.github_name}@${var.github_repository_id}" : null,
+    "repo:${var.github.repository}",
+    var.github.owner_id != null ? "repo:${local.github_owner}@${var.github.owner_id}/${local.github_name}@${var.github.repository_id}" : null,
   ])
 
-  preview_subjects = [for p in local.github_subject_prefixes : "${p}:environment:${var.github_environment}"]
+  preview_subjects = [for p in local.github_subject_prefixes : "${p}:environment:${var.github.environment}"]
 }
 
 data "aws_iam_policy_document" "preview_assume_role" {
@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "preview_assume_role" {
 
     principals {
       type        = "Federated"
-      identifiers = [var.oidc_provider_arn]
+      identifiers = [var.shared.oidc_provider_arn]
     }
 
     condition {
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "preview_assume_role" {
 
 resource "aws_iam_role" "preview" {
   name                 = local.names.preview_github_role
-  description          = "Assumed by GitHub Actions (${var.github_repository}, ${var.github_environment}) to publish PR previews to ${local.names.preview_cdn}"
+  description          = "Assumed by GitHub Actions (${var.github.repository}, ${var.github.environment}) to publish PR previews to ${local.names.preview_cdn}"
   assume_role_policy   = data.aws_iam_policy_document.preview_assume_role.json
   max_session_duration = 3600
 
@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "preview" {
       "s3:PutObject",
       "s3:DeleteObject",
     ]
-    resources = ["${aws_s3_bucket.preview.arn}/${var.key_prefix}*"]
+    resources = ["${aws_s3_bucket.preview.arn}/${var.previews.key_prefix}*"]
   }
 
   statement {
@@ -93,7 +93,7 @@ resource "aws_iam_role_policy" "preview" {
 # -----------------------------------------------------------------------------
 
 data "aws_iam_policy_document" "plan_read" {
-  count = var.plan_role_name != null ? 1 : 0
+  count = var.shared.plan_role_name != null ? 1 : 0
 
   statement {
     sid       = "ReadPreviewBucketConfig"
@@ -125,9 +125,9 @@ data "aws_iam_policy_document" "plan_read" {
 }
 
 resource "aws_iam_role_policy" "plan_read" {
-  count = var.plan_role_name != null ? 1 : 0
+  count = var.shared.plan_role_name != null ? 1 : 0
 
   name   = local.names.preview_plan_policy
-  role   = var.plan_role_name
+  role   = var.shared.plan_role_name
   policy = data.aws_iam_policy_document.plan_read[0].json
 }

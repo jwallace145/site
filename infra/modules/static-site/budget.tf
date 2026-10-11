@@ -5,7 +5,7 @@
 resource "aws_budgets_budget" "billing_monthly" {
   name         = local.names.billing_monthly
   budget_type  = "COST"
-  limit_amount = tostring(var.monthly_budget_usd)
+  limit_amount = tostring(var.billing.monthly_budget_usd)
   limit_unit   = "USD"
   time_unit    = "MONTHLY"
 
@@ -14,7 +14,7 @@ resource "aws_budgets_budget" "billing_monthly" {
     threshold                  = 80
     threshold_type             = "PERCENTAGE"
     notification_type          = "ACTUAL"
-    subscriber_email_addresses = [var.budget_alert_email]
+    subscriber_email_addresses = [var.billing.alert_email]
   }
 
   notification {
@@ -22,7 +22,7 @@ resource "aws_budgets_budget" "billing_monthly" {
     threshold                  = 100
     threshold_type             = "PERCENTAGE"
     notification_type          = "FORECASTED"
-    subscriber_email_addresses = [var.budget_alert_email]
+    subscriber_email_addresses = [var.billing.alert_email]
   }
 
   tags = merge(var.tags, { Name = local.names.billing_monthly })
