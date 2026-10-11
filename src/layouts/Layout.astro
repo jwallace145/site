@@ -5,6 +5,7 @@ import { CONFIG } from "@/data/config";
 import NavbarIsland from "@/components/NavbarIsland";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import { withBase } from "@/lib/utils";
+import pkg from "../../package.json";
 
 interface Props {
   title?: string;
@@ -24,6 +25,11 @@ const ogImage = image
     ? image
     : `${siteUrl}${withBase(image)}`
   : `${siteUrl}${withBase(DATA.ogImage)}`;
+
+// Release Please bumps package.json on every release, so a deployed build
+// shows the version it was tagged with.
+const version = pkg.version;
+const releaseUrl = `${pkg.repository.url.replace(/\.git$/, "")}/releases/tag/v${version}`;
 
 const { light, dark, radius } = CONFIG.theme;
 const { baseFontSize } = CONFIG.typography;
@@ -149,6 +155,17 @@ const { baseFontSize } = CONFIG.typography;
     <!-- Main content wrapper - matches template's z-10 container exactly -->
     <div class="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
       <slot />
+      <footer class="mt-14 flex justify-end font-mono text-xs text-muted-foreground">
+        <a
+          href={releaseUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="transition-colors hover:text-foreground"
+          aria-label={`Site version ${version}, view release on GitHub`}
+        >
+          v{version}
+        </a>
+      </footer>
     </div>
 
     <!-- Navbar: ThemeProvider + TooltipProvider + Navbar all in one React island -->
