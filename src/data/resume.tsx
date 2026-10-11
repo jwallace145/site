@@ -181,8 +181,8 @@ export const DATA = {
       href: "https://engineering.osu.edu",
       degree: "B.S. Computer Science and Engineering · Minor in Mathematics, AI concentration",
       logoUrl: "/logos/ohio-state.svg",
-      start: "2016",
-      end: "2020",
+      start: "August 2016",
+      end: "May 2020",
     },
   ],
   // `image` or `video` is optional.
