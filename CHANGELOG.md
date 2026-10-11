@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/jwallace145/site/compare/v1.1.0...v1.2.0) (2026-10-11)
+
+
+### Features
+
+* **infra:** add pr terraform plan check, immutable oidc subjects and environment state key ([#6](https://github.com/jwallace145/site/issues/6)) ([d77eded](https://github.com/jwallace145/site/commit/d77eded4ff020ec339581370c332f7a3a2e55a20))
+
 ## [1.1.0](https://github.com/jwallace145/site/compare/v1.0.0...v1.1.0) (2026-10-11)
 
 
