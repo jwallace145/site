@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/jwallace145/site/compare/v1.12.0...v1.13.0) (2026-10-11)
+
+
+### Features
+
+* **content:** show every role at a company under one logo with its own dates ([#31](https://github.com/jwallace145/site/issues/31)) ([175fc91](https://github.com/jwallace145/site/commit/175fc91d8117bbb9281037b6aa0e19dc9393cd41))
+
 ## [1.12.0](https://github.com/jwallace145/site/compare/v1.11.0...v1.12.0) (2026-10-11)
 
 
