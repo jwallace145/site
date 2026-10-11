@@ -86,3 +86,17 @@ output "github_preview_environment_variables" {
     { AWS_REGION = var.aws_region },
   ) : null
 }
+
+# -----------------------------------------------------------------------------
+# DNS. Null when dns_zone_name is null.
+# -----------------------------------------------------------------------------
+
+output "dns_zone_id" {
+  description = "Hosted zone ID of the managed zone."
+  value       = one(module.dns[*].zone_id)
+}
+
+output "dns_name_servers" {
+  description = "Nameservers to set at the registrar for dns_zone_name."
+  value       = one(module.dns[*].name_servers)
+}

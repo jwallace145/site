@@ -44,19 +44,78 @@ variable "aws_region" {
 }
 
 # -----------------------------------------------------------------------------
-# Site
+# DNS and custom domain
 # -----------------------------------------------------------------------------
 
+variable "dns_zone_name" {
+  description = "Domain for the Terraform-managed Route 53 hosted zone. null manages no zone; then hosted_zone_id must point at an existing one for domain_name."
+  type        = string
+  default     = "jwall.engineering"
+
+  validation {
+    condition     = var.dns_zone_name == null || can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", var.dns_zone_name))
+    error_message = "dns_zone_name must be a lowercase fully qualified domain name."
+  }
+}
+
 variable "domain_name" {
-  description = "Custom domain (e.g. example.com). Leave null to serve from the CloudFront domain."
+  description = "Hostname the site is served from. null serves it from the CloudFront domain. Set only after the zone's nameservers are live at the registrar (ACM validates via DNS)."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.domain_name == null || can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", var.domain_name))
+    error_message = "domain_name must be a lowercase fully qualified domain name."
+  }
+
+  validation {
+    condition     = var.domain_name == null || var.dns_zone_name == null || var.domain_name == var.dns_zone_name || endswith(var.domain_name, ".${var.dns_zone_name}")
+    error_message = "domain_name must be dns_zone_name or a subdomain of it."
+  }
 }
 
 variable "hosted_zone_id" {
-  description = "Route 53 hosted zone ID for domain_name. Required when domain_name is set."
+  description = "Existing Route 53 hosted zone for domain_name, used only when dns_zone_name is null."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.domain_name == null || var.dns_zone_name != null || var.hosted_zone_id != null
+    error_message = "hosted_zone_id is required when domain_name is set and dns_zone_name is null."
+  }
+}
+
+variable "www_redirect" {
+  description = "Redirect www.<domain_name> to domain_name. Ignored when domain_name is null."
+  type        = bool
+  default     = true
+}
+
+variable "preview_use_custom_domain" {
+  description = "Serve PR previews from preview_domain_name instead of the CloudFront domain. Ignored when domain_name is null."
+  type        = bool
+  default     = true
+}
+
+variable "preview_domain_name" {
+  description = "Hostname for PR previews. null derives preview.<domain_name>."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.preview_domain_name == null || can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", var.preview_domain_name))
+    error_message = "preview_domain_name must be a lowercase fully qualified domain name."
+  }
+}
+
+variable "dns_records" {
+  description = "Extra records in the managed zone, keyed by name (\"@\" = apex, \"mail\" = mail.<zone>). See modules/dns-zone."
+  type = map(object({
+    type   = string
+    ttl    = optional(number, 300)
+    values = list(string)
+  }))
+  default = {}
 }
 
 # -----------------------------------------------------------------------------
