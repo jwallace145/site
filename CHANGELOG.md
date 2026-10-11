@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/jwallace145/site/compare/v1.4.0...v1.5.0) (2026-10-11)
+
+
+### Features
+
+* **infra:** serve the site from jwall.engineering ([#13](https://github.com/jwallace145/site/issues/13)) ([c34bfe8](https://github.com/jwallace145/site/commit/c34bfe8dde26314b8977cfd43b3ee3bb1eb27053))
+
 ## [1.4.0](https://github.com/jwallace145/site/compare/v1.3.0...v1.4.0) (2026-10-11)
 
 
