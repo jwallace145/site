@@ -3,9 +3,9 @@ export const CONFIG = {
   // Site Settings
   // ---------------------------------------------------------------------------
   site: {
-    // TODO: replace with the production URL. Overridden by the SITE_URL
-    // environment variable at build time (see astro.config.mjs).
-    url: "https://example.com",
+    // Production URL. Overridden by the SITE_URL environment variable at
+    // build time (see astro.config.mjs), which previews use.
+    url: "https://jwall.engineering",
     locale: "en_US",
     // TODO: replace with your X/Twitter handle, or leave empty.
     twitterHandle: "",

@@ -4,7 +4,7 @@ Personal website of Jimmy Wallace. A static [Astro](https://astro.build) site
 served from AWS S3 + CloudFront, released with Release Please and deployed by
 GitHub Actions.
 
-**Live:** <!-- TODO: live URL --> `https://example.com`
+**Live:** <https://jwall.engineering>
 
 [![CI](https://github.com/jwallace145/site/actions/workflows/ci.yml/badge.svg)](https://github.com/jwallace145/site/actions/workflows/ci.yml)
 [![Release](https://github.com/jwallace145/site/actions/workflows/release.yml/badge.svg)](https://github.com/jwallace145/site/actions/workflows/release.yml)
