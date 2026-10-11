@@ -1,44 +1,22 @@
 import type { SVGProps } from "react";
 
 const Nodejs = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    {...props}
-    viewBox="0 0 256 292"
-    xmlnsXlink="http://www.w3.org/1999/xlink"
-  >
+  <svg {...props} viewBox="0 0 256 292" xmlnsXlink="http://www.w3.org/1999/xlink">
     <defs>
-      <linearGradient
-        id="a"
-        x1="68.188%"
-        x2="27.823%"
-        y1="17.487%"
-        y2="89.755%"
-      >
+      <linearGradient id="a" x1="68.188%" x2="27.823%" y1="17.487%" y2="89.755%">
         <stop offset="0%" stopColor="#41873F" />
         <stop offset="32.88%" stopColor="#418B3D" />
         <stop offset="63.52%" stopColor="#419637" />
         <stop offset="93.19%" stopColor="#3FA92D" />
         <stop offset="100%" stopColor="#3FAE2A" />
       </linearGradient>
-      <linearGradient
-        id="c"
-        x1="43.277%"
-        x2="159.245%"
-        y1="55.169%"
-        y2="-18.306%"
-      >
+      <linearGradient id="c" x1="43.277%" x2="159.245%" y1="55.169%" y2="-18.306%">
         <stop offset="13.76%" stopColor="#41873F" />
         <stop offset="40.32%" stopColor="#54A044" />
         <stop offset="71.36%" stopColor="#66B848" />
         <stop offset="90.81%" stopColor="#6CC04A" />
       </linearGradient>
-      <linearGradient
-        id="f"
-        x1="-4.389%"
-        x2="101.499%"
-        y1="49.997%"
-        y2="49.997%"
-      >
+      <linearGradient id="f" x1="-4.389%" x2="101.499%" y1="49.997%" y2="49.997%">
         <stop offset="9.192%" stopColor="#6CC04A" />
         <stop offset="28.64%" stopColor="#66B848" />
         <stop offset="59.68%" stopColor="#54A044" />

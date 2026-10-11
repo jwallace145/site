@@ -14,10 +14,7 @@ const NextjsLogoDark = (props: SVGProps<SVGSVGElement>) => (
       d="M183.32 0.0661486H165.506L229.312 79.3721H247.178L215.271 39.7464L247.127 0.126654L229.312 0.154184L206.352 28.6697L183.32 0.0661486Z"
       fill="white"
     />
-    <path
-      d="M201.6 56.7148L192.679 45.6229L165.455 79.4326H183.32L201.6 56.7148Z"
-      fill="white"
-    />
+    <path d="M201.6 56.7148L192.679 45.6229L165.455 79.4326H183.32L201.6 56.7148Z" fill="white" />
     <path
       fillRule="evenodd"
       clipRule="evenodd"

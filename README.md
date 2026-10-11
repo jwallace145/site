@@ -23,11 +23,11 @@ pnpm check        # astro check (types + templates)
 
 Content lives in three places:
 
-| File | Controls |
-| --- | --- |
-| `src/data/resume.tsx` | Name, bio, work, education, projects, skills, social links |
-| `src/data/config.ts` | Site URL, SEO, theme colors, font size |
-| `src/content/blog/*.mdx` | Blog posts |
+| File                     | Controls                                                   |
+| ------------------------ | ---------------------------------------------------------- |
+| `src/data/resume.tsx`    | Name, bio, work, education, projects, skills, social links |
+| `src/data/config.ts`     | Site URL, SEO, theme colors, font size                     |
+| `src/content/blog/*.mdx` | Blog posts                                                 |
 
 Search for `TODO:` to find every placeholder.
 

@@ -98,5 +98,4 @@ export const CONFIG = {
       ring: "oklch(0.556 0 0)",
     },
   },
-
 } as const;

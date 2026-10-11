@@ -12,12 +12,7 @@ interface Props {
   canonicalURL?: string;
 }
 
-const {
-  title,
-  description = DATA.description,
-  image,
-  canonicalURL = Astro.url.href,
-} = Astro.props;
+const { title, description = DATA.description, image, canonicalURL = Astro.url.href } = Astro.props;
 
 const pageTitle = title
   ? CONFIG.seo.titleTemplate.replace("%s", title).replace("%n", DATA.name)
@@ -33,10 +28,7 @@ const { light, dark, radius } = CONFIG.theme;
 const { baseFontSize } = CONFIG.typography;
 ---
 
-<html
-  lang={CONFIG.site.locale.split("_")[0]}
-  style={`font-size: ${baseFontSize}%;`}
->
+<html lang={CONFIG.site.locale.split("_")[0]} style={`font-size: ${baseFontSize}%;`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -46,20 +38,20 @@ const { baseFontSize } = CONFIG.typography;
     <script is:inline>
       (function () {
         try {
-          var theme = localStorage.getItem("theme");
+          const theme = localStorage.getItem("theme");
           if (
             theme === "dark" ||
-            (!theme &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
+            (!theme && window.matchMedia("(prefers-color-scheme: dark)").matches)
           ) {
             document.documentElement.classList.add("dark");
           } else {
             document.documentElement.classList.remove("dark");
           }
-        } catch (_) {}
+        } catch {
+          // localStorage may be unavailable (privacy mode); fall back to default theme.
+        }
       })();
     </script>
-
     <!-- Theme variables from config.ts -->
     <style
       set:html={`

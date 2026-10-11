@@ -12,7 +12,8 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
   const title = props["data-title"];
 
   const handleCopy = async () => {
-    const text = (document.activeElement?.closest(".group")?.querySelector("code")?.textContent) ?? "";
+    const text =
+      document.activeElement?.closest(".group")?.querySelector("code")?.textContent ?? "";
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
@@ -23,9 +24,9 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
   };
 
   return (
-    <div className="group relative rounded-xl overflow-hidden border border-border my-6">
+    <div className="group relative my-6 overflow-hidden rounded-xl border border-border">
       {title && (
-        <div className="px-4 py-2 text-xs font-medium border-b border-border bg-muted/50 text-foreground">
+        <div className="border-b border-border bg-muted/50 px-4 py-2 text-xs font-medium text-foreground">
           {title}
         </div>
       )}
@@ -34,14 +35,14 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
         variant="outline"
         size="icon"
         className={cn(
-          "absolute size-8 text-primary cursor-pointer right-3 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity rounded-md border border-border shadow-none",
-          title ? "top-13" : "top-3"
+          "absolute right-3 size-8 cursor-pointer rounded-md border border-border text-primary opacity-100 shadow-none transition-opacity lg:opacity-0 lg:group-hover:opacity-100",
+          title ? "top-13" : "top-3",
         )}
         aria-label="Copy code"
       >
         {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
       </Button>
-      <pre {...props} className={cn("p-4 m-0! overflow-x-auto text-sm", props.className)}>
+      <pre {...props} className={cn("m-0! overflow-x-auto p-4 text-sm", props.className)}>
         {children}
       </pre>
     </div>

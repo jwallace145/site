@@ -29,7 +29,12 @@ interface DockContextValue {
 
 const DockContext = createContext<DockContextValue | null>(null);
 
-const Dock = ({ className, children, magnification = DEFAULT_MAGNIFICATION, distance = DEFAULT_DISTANCE }: DockProps) => {
+const Dock = ({
+  className,
+  children,
+  magnification = DEFAULT_MAGNIFICATION,
+  distance = DEFAULT_DISTANCE,
+}: DockProps) => {
   const mouseX = useMotionValue(Infinity);
 
   return (
@@ -37,7 +42,10 @@ const Dock = ({ className, children, magnification = DEFAULT_MAGNIFICATION, dist
       <motion.div
         onMouseMove={(e) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
-        className={cn("mx-auto w-max h-full flex items-end justify-center overflow-visible rounded-full border", className)}
+        className={cn(
+          "mx-auto flex h-full w-max items-end justify-center overflow-visible rounded-full border",
+          className,
+        )}
       >
         {children}
       </motion.div>
@@ -62,18 +70,25 @@ const DockIcon = ({ className, children }: DockIconProps) => {
 
   const containerSize = useSpring(
     useTransform(distanceCalc, [-distance, 0, distance], [BASE_SIZE, magnification, BASE_SIZE]),
-    SPRING
+    SPRING,
   );
   const iconSize = useSpring(
-    useTransform(distanceCalc, [-distance, 0, distance], [BASE_ICON_SIZE, magnification * ICON_SIZE_RATIO, BASE_ICON_SIZE]),
-    SPRING
+    useTransform(
+      distanceCalc,
+      [-distance, 0, distance],
+      [BASE_ICON_SIZE, magnification * ICON_SIZE_RATIO, BASE_ICON_SIZE],
+    ),
+    SPRING,
   );
 
   return (
     <motion.div
       ref={ref}
       style={{ width: containerSize, height: containerSize }}
-      className={cn("relative flex aspect-square items-center justify-center rounded-full shrink-0", className)}
+      className={cn(
+        "relative flex aspect-square shrink-0 items-center justify-center rounded-full",
+        className,
+      )}
     >
       <motion.div
         style={{ width: iconSize, height: iconSize }}

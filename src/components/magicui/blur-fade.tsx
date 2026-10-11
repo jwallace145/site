@@ -1,4 +1,10 @@
-import { AnimatePresence, motion, useInView, type Variants } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  type UseInViewOptions,
+  type Variants,
+} from "motion/react";
 import { useRef } from "react";
 
 interface BlurFadeProps {
@@ -29,7 +35,7 @@ const BlurFade = ({
   const ref = useRef(null);
   const inViewResult = useInView(ref, {
     once: true,
-    ...(inViewMargin ? { margin: inViewMargin as any } : {})
+    ...(inViewMargin ? { margin: inViewMargin as NonNullable<UseInViewOptions["margin"]> } : {}),
   });
   const isInView = !inView || inViewResult;
   const defaultVariants: Variants = {

@@ -1,0 +1,17 @@
+# Git hooks, installed by `pnpm install` via the `prepare` script.
+# Skip once with: LEFTHOOK=0 git commit ...
+
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{js,mjs,cjs,ts,tsx,astro,mdx,md,json,yml,yaml,css}"
+      run: pnpm exec prettier --check {staged_files}
+    lint:
+      glob: "*.{js,mjs,cjs,ts,tsx,astro}"
+      run: pnpm exec eslint {staged_files}
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm exec commitlint --edit {1}

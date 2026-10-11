@@ -19,7 +19,14 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "commitlint": "commitlint",
+    "prepare": "lefthook install"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
@@ -55,8 +62,24 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@commitlint/lint": "^21.2.3",
+    "@commitlint/load": "^21.2.3",
+    "@eslint/js": "^10.0.1",
+    "@types/mdast": "^4.0.4",
+    "eslint": "^10.12.0",
+    "eslint-plugin-astro": "^3.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "lefthook": "^2.2.1",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "typescript": "^6.0.3",
-    "vite": "^7.3.2"
+    "typescript-eslint": "^8.71.1",
+    "vite": "^7.3.2",
+    "vitest": "^5.0.3"
   },
   "pnpm": {
     "overrides": {
@@ -69,6 +92,7 @@
     },
     "onlyBuiltDependencies": [
       "esbuild",
+      "lefthook",
       "sharp"
     ]
   }

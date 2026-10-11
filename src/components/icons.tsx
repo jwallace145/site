@@ -106,12 +106,7 @@ export const Icons = {
     </svg>
   ),
   github: (props: IconProps) => (
-    <svg
-      viewBox="0 0 438.549 438.549"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      {...props}
-    >
+    <svg viewBox="0 0 438.549 438.549" xmlns="http://www.w3.org/2000/svg" role="img" {...props}>
       <title>GitHub</title>
       <path
         fill="currentColor"
@@ -174,11 +169,7 @@ export const Icons = {
     </svg>
   ),
   whatsapp: (props: IconProps) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 175.216 175.552"
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 175.216 175.552" {...props}>
       <defs>
         <linearGradient
           id="b"

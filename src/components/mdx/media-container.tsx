@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 interface MediaContainerProps {
   src: string;
   alt?: string;
@@ -14,21 +12,22 @@ export function MediaContainer({
   className = "",
 }: MediaContainerProps) {
   return (
-    <div className={`ring-4 ring-muted w-full h-[300px] rounded-lg overflow-hidden flex items-center justify-center ${className}`}>
+    <div
+      className={`flex h-[300px] w-full items-center justify-center overflow-hidden rounded-lg ring-4 ring-muted ${className}`}
+    >
       {type === "image" ? (
         <img
           src={src}
           alt={alt}
-          className="w-full h-full object-cover object-center max-w-full max-h-full"
+          className="h-full max-h-full w-full max-w-full object-cover object-center"
         />
       ) : (
         <video
           src={src}
-          className="w-full h-full object-cover object-center max-w-full max-h-full"
+          className="h-full max-h-full w-full max-w-full object-cover object-center"
           controls
         />
       )}
     </div>
   );
 }
-

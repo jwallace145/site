@@ -1,19 +1,28 @@
+import type { Code, Root } from "mdast";
+
+type CodeWithData = Code & {
+  data?: { hProperties?: Record<string, string> };
+};
+
+type Node = { type: string; children?: Node[] };
+
 export function remarkCodeMeta() {
-  return (tree: any) => {
-    const walk = (node: any) => {
+  return (tree: Root) => {
+    const walk = (node: Node) => {
       if (!node || typeof node !== "object") return;
 
       if (node.type === "code") {
-        const meta: string | undefined = node.meta;
+        const code = node as CodeWithData;
+        const meta = code.meta ?? undefined;
         if (meta) {
-          node.data ||= {};
-          node.data.hProperties ||= {};
+          code.data ||= {};
+          code.data.hProperties ||= {};
 
-          node.data.hProperties["data-meta"] = meta;
+          code.data.hProperties["data-meta"] = meta;
 
           const titleMatch = meta.match(/title="([^"]+)"/);
           if (titleMatch?.[1]) {
-            node.data.hProperties["data-title"] = titleMatch[1];
+            code.data.hProperties["data-title"] = titleMatch[1];
           }
         }
       }

@@ -21,7 +21,7 @@ const sectionComponents: Record<string, React.ReactNode> = {
           <h2 className="text-xl font-bold">{DATA.sections.about.heading}</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <div className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
+          <div className="prose max-w-full font-sans leading-relaxed text-pretty text-muted-foreground dark:prose-invert">
             <Markdown>{DATA.summary}</Markdown>
           </div>
         </BlurFade>
@@ -53,28 +53,35 @@ const sectionComponents: Record<string, React.ReactNode> = {
                 href={education.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-x-3 justify-between group"
+                className="group flex items-center justify-between gap-x-3"
               >
-                <div className="flex items-center gap-x-3 flex-1 min-w-0">
+                <div className="flex min-w-0 flex-1 items-center gap-x-3">
                   {education.logoUrl ? (
                     <img
                       src={education.logoUrl}
                       alt={education.school}
-                      className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border overflow-hidden object-contain flex-none"
+                      className="size-8 flex-none overflow-hidden rounded-full border object-contain p-1 shadow ring-2 ring-border md:size-10"
                     />
                   ) : (
-                    <div className="size-8 md:size-10 p-1 border rounded-full shadow ring-2 ring-border bg-muted flex-none" />
+                    <div className="size-8 flex-none rounded-full border bg-muted p-1 shadow ring-2 ring-border md:size-10" />
                   )}
-                  <div className="flex-1 min-w-0 flex flex-col gap-0.5">
-                    <div className="font-semibold leading-none flex items-center gap-2">
+                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <div className="flex items-center gap-2 leading-none font-semibold">
                       {education.school}
-                      <ArrowUpRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200" aria-hidden />
+                      <ArrowUpRight
+                        className="h-3.5 w-3.5 -translate-x-2 text-muted-foreground opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100"
+                        aria-hidden
+                      />
                     </div>
-                    <div className="font-sans text-sm text-muted-foreground">{education.degree}</div>
+                    <div className="font-sans text-sm text-muted-foreground">
+                      {education.degree}
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
-                  <span>{education.start} - {education.end}</span>
+                <div className="flex flex-none items-center gap-1 text-right text-xs text-muted-foreground tabular-nums">
+                  <span>
+                    {education.start} - {education.end}
+                  </span>
                 </div>
               </a>
             </BlurFade>
@@ -92,9 +99,11 @@ const sectionComponents: Record<string, React.ReactNode> = {
         <div className="flex flex-wrap gap-2">
           {DATA.skills.map((skill, id) => (
             <BlurFade key={skill.name} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-              <div className="border bg-background border-border ring-2 ring-border/20 rounded-xl h-8 w-fit px-4 flex items-center gap-2">
-                {skill.icon && <skill.icon className="size-4 rounded overflow-hidden object-contain" />}
-                <span className="text-foreground text-sm font-medium">{skill.name}</span>
+              <div className="flex h-8 w-fit items-center gap-2 rounded-xl border border-border bg-background px-4 ring-2 ring-border/20">
+                {skill.icon && (
+                  <skill.icon className="size-4 overflow-hidden rounded object-contain" />
+                )}
+                <span className="text-sm font-medium text-foreground">{skill.name}</span>
               </div>
             </BlurFade>
           ))}
@@ -133,11 +142,11 @@ export default function HomePage() {
     .map(([key]) => key);
 
   return (
-    <main className="min-h-dvh flex flex-col gap-14 relative">
+    <main className="relative flex min-h-dvh flex-col gap-14">
       <section id="hero">
         <div className="mx-auto w-full max-w-2xl space-y-8">
-          <div className="gap-2 gap-y-6 flex flex-col md:flex-row justify-between">
-            <div className="gap-2 flex flex-col order-2 md:order-1">
+          <div className="flex flex-col justify-between gap-2 gap-y-6 md:flex-row">
+            <div className="order-2 flex flex-col gap-2 md:order-1">
               <BlurFadeText
                 delay={BLUR_FADE_DELAY}
                 className="text-3xl font-semibold tracking-tighter sm:text-4xl lg:text-5xl"
@@ -145,13 +154,13 @@ export default function HomePage() {
                 text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
               />
               <BlurFadeText
-                className="text-muted-foreground max-w-[600px] md:text-lg lg:text-xl"
+                className="max-w-[600px] text-muted-foreground md:text-lg lg:text-xl"
                 delay={BLUR_FADE_DELAY}
                 text={DATA.description}
               />
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
-              <Avatar className="size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted">
+              <Avatar className="size-24 rounded-full border shadow-lg ring-4 ring-muted md:size-32">
                 <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
                 <AvatarFallback>{DATA.initials}</AvatarFallback>
               </Avatar>
@@ -160,9 +169,7 @@ export default function HomePage() {
         </div>
       </section>
       {orderedSections.map((key) => (
-        <React.Fragment key={key}>
-          {sectionComponents[key]}
-        </React.Fragment>
+        <React.Fragment key={key}>{sectionComponents[key]}</React.Fragment>
       ))}
     </main>
   );
