@@ -236,16 +236,6 @@ export const DATA = {
           icon: <Icons.globe className="size-3" />,
         },
         {
-          type: "Guide Source",
-          href: "https://github.com/jwallace145/cs-survival-guide",
-          icon: <Icons.github className="size-3" />,
-        },
-        {
-          type: "Kit Source",
-          href: "https://github.com/jwallace145/cs-survival-kit",
-          icon: <Icons.github className="size-3" />,
-        },
-        {
           type: "PyPI",
           href: "https://pypi.org/project/cs-survival-kit/",
           icon: <Package className="size-3" />,
