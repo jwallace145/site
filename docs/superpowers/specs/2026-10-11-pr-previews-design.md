@@ -68,6 +68,7 @@ Behaviour:
   `X-Robots-Tag: noindex, nofollow` so previews are never indexed. 403 and 404
   from S3 map to a 404 status with no custom page: CloudFront accepts a single
   error page path, but each PR's `404.html` lives under its own prefix.
+  Terraform uploads a minimal shared `404.html` to the bucket root instead.
 - **Role** trusts `repo:<owner>/<name>:environment:<github_environment>` in
   both plain and immutable subject shapes, exactly as the deploy role does.
   Permissions: `s3:ListBucket` on the preview bucket, `s3:PutObject` and
@@ -103,10 +104,12 @@ derived from the GitHub inputs) are passed by the live root from
 - `oidc_provider_arn`
 - `web_rewrite_index_function_arn`
 
-`static-site` also gets one new variable, `preview_distribution_arn`
-(default `null`), so the read-only plan role can be granted access to refresh
-the preview resources. Without it, the PR `terraform-plan` check would fail
-on the next infra change.
+- `plan_role_name`
+
+The preview module takes `plan_role_name` (nullable) and attaches a small
+read-only policy to that role so the PR `terraform-plan` check can refresh
+the preview resources. This keeps the dependency one-way (preview depends on
+static-site, never the reverse).
 
 ### Live root changes (`infra/environments/prod`)
 
@@ -120,7 +123,7 @@ on the next infra change.
 - `terraform.tfvars.example`: documents every preview knob.
 - `outputs.tf`: `github_preview_environment_variables` map with
   `AWS_ROLE_ARN`, `AWS_REGION`, `S3_BUCKET`, `CLOUDFRONT_DISTRIBUTION_ID`,
-  `PREVIEW_BASE_URL`, mirroring the production map.
+  `SITE_URL`, `PREVIEW_KEY_PREFIX`, mirroring the production map.
 
 ## 2. Workflow: `.github/workflows/preview.yml`
 
@@ -136,10 +139,12 @@ Both jobs guard on `github.event.pull_request.head.repo.full_name == github.repo
 
 **deploy** (`action != closed`)
 
-- `environment: { name: preview, url: <PREVIEW_BASE_URL>/pr-<n>/ }`
+- `environment: { name: preview, url: <SITE_URL>/<PREVIEW_KEY_PREFIX><n>/ }`;
+  the environment's `SITE_URL` is the preview CDN and `PREVIEW_KEY_PREFIX`
+  comes from Terraform, so the workflow and the bucket policy always agree.
 - permissions: `id-token: write`, `pull-requests: write`
 - steps: checkout (no persisted creds) → setup action → `pnpm build` with
-  `SITE_URL=<PREVIEW_BASE_URL>` and `BASE_PATH=/pr-<n>` → assume preview role
+  `SITE_URL=<preview cdn>` and `BASE_PATH=/pr-<n>` → assume preview role
   → sync `dist/` to `s3://<bucket>/pr-<n>/` using the same three
   cache-control tiers as the release workflow, `--delete` scoped to the prefix
   → invalidate `/pr-<n>/*` → sticky comment (marker
@@ -193,6 +198,6 @@ Terraform output. `docs/repo-setup.md` gets a section with the `gh` commands.
 
 ## Out of scope
 
-- Styled 404 pages on previews.
+- Per-PR styled 404 pages on previews (a shared plain page is served).
 - Previews for fork PRs.
 - Subdomain-per-PR; revisit when a custom domain exists.
