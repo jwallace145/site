@@ -53,3 +53,30 @@ module "site" {
   # self-contained if it is ever used without default_tags.
   tags = local.standard_tags
 }
+
+# PR previews: one bucket + distribution shared by every open PR, each under
+# its own key prefix. Switched off entirely with preview_enabled = false.
+module "preview" {
+  source = "../../modules/preview-site"
+  count  = var.preview_enabled ? 1 : 0
+
+  name_prefix = local.name_prefix
+
+  # Previews
+  key_prefix                 = var.preview_key_prefix
+  retention_days             = var.preview_retention_days
+  price_class                = var.preview_price_class
+  robots_tag                 = var.preview_robots_tag
+  extra_response_headers     = var.preview_extra_response_headers
+  rewrite_index_function_arn = module.site.web_rewrite_index_function_arn
+
+  # Deploy identity
+  oidc_provider_arn    = module.site.oidc_provider_arn
+  github_repository    = var.github_repository
+  github_owner_id      = var.github_owner_id
+  github_repository_id = var.github_repository_id
+  github_environment   = var.preview_github_environment
+  plan_role_name       = module.site.plan_role_name
+
+  tags = local.standard_tags
+}

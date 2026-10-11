@@ -16,3 +16,12 @@ budget_alert_email = "you@example.com"
 
 # Extra tags on top of Project / Owner / Environment / ManagedBy / Repository.
 # extra_tags = { CostCenter = "personal" }
+
+# PR previews (https://<preview cdn>/pr-<n>/). All optional.
+# preview_enabled                = true
+# preview_github_environment     = "preview"
+# preview_key_prefix             = "pr-"
+# preview_retention_days         = 30
+# preview_price_class            = "PriceClass_100"
+# preview_robots_tag             = "noindex, nofollow"
+# preview_extra_response_headers = { X-Preview = "true" }
