@@ -1,0 +1,17 @@
+# Copy to terraform.tfvars (git-ignored). Only budget_alert_email is required;
+# everything else defaults to this project's standards.
+
+budget_alert_email = "you@example.com"
+
+# aws_region         = "us-east-1"
+# monthly_budget_usd = 5
+
+# Optional custom domain. Set both together.
+# domain_name    = "example.com"
+# hosted_zone_id = "Z0123456789ABCDEFGHIJ"
+
+# Set false if the account already has a GitHub OIDC provider.
+# create_oidc_provider = true
+
+# Extra tags on top of Project / Owner / Environment / ManagedBy / Repository.
+# extra_tags = { CostCenter = "personal" }

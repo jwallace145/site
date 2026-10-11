@@ -147,9 +147,9 @@ jobs:
       - name: terraform init
         if: steps.changes.outputs.infra == 'true'
         run: terraform init -backend=false -input=false
-        working-directory: infra
+        working-directory: infra/live
 
       - name: terraform validate
         if: steps.changes.outputs.infra == 'true'
         run: terraform validate -no-color
-        working-directory: infra
+        working-directory: infra/live
