@@ -9,13 +9,16 @@ terraform {
   }
 
   # Remote state in S3 with native lockfile locking (no DynamoDB table).
-  # Bucket and region are supplied at init so nothing account-specific is
-  # committed:
-  #   terraform init \
-  #     -backend-config="bucket=<state-bucket>" \
-  #     -backend-config="region=<region>"
+  #
+  # Bucket: created once by infra/scripts/bootstrap-state-bucket.sh.
+  # Key:    <environment>/<stack>/terraform.tfstate, so one bucket can hold
+  #         every stack of this project, e.g.
+  #           prod/live/terraform.tfstate      (this root)
+  #           prod/backend/terraform.tfstate   (future API stack)
   backend "s3" {
-    key          = "jwallace145-site/live/terraform.tfstate"
+    bucket       = "jwallace145-site-tfstate"
+    key          = "prod/live/terraform.tfstate"
+    region       = "us-east-1"
     use_lockfile = true
     encrypt      = true
   }
