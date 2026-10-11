@@ -35,7 +35,7 @@ output "preview_url" {
 
 output "key_prefix" {
   description = "Key prefix the workflow must write under; it appends the PR number and a slash."
-  value       = var.key_prefix
+  value       = var.previews.key_prefix
 }
 
 output "resource_names" {
@@ -50,6 +50,6 @@ output "github_environment_variables" {
     S3_BUCKET                  = aws_s3_bucket.preview.id
     CLOUDFRONT_DISTRIBUTION_ID = aws_cloudfront_distribution.preview.id
     SITE_URL                   = "https://${local.preview_hostname}"
-    PREVIEW_KEY_PREFIX         = var.key_prefix
+    PREVIEW_KEY_PREFIX         = var.previews.key_prefix
   }
 }

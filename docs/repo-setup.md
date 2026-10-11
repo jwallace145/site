@@ -192,7 +192,7 @@ gh variable set AWS_REGION        --repo "$REPO" --body "us-east-1"
 
 ## 5c. `preview` environment (PR previews)
 
-Created after `terraform apply` with `preview_enabled = true`. No branch
+Created after `terraform apply` with `preview.enabled = true`. No branch
 policy: any PR from this repository may deploy a preview.
 
 ```bash

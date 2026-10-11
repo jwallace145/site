@@ -69,7 +69,7 @@ area (`web`, `deploy`, `billing`). With the default `project = "jwallace145-site
 | `Repository`  | `github.com/jwallace145/site` |
 | `Name`        | the resource's name above   |
 
-Add more with `extra_tags`.
+Add more with `identity.extra_tags`.
 
 ## Prerequisites
 
@@ -92,6 +92,27 @@ standard tags, plus versioning, encryption, public-access block and a
 infra/scripts/bootstrap-state-bucket.sh
 ```
 
+## Variables
+
+The root takes one object per concern; every field has a validation where
+its value has a shape, and `terraform.tfvars` sets them all:
+
+| Object     | Fields                                                                                                      |
+| ---------- | ----------------------------------------------------------------------------------------------------------- |
+| `identity` | `project`, `owner`, `environment`, `repository`, `extra_tags`                                               |
+| `aws`      | `region`                                                                                                    |
+| `dns`      | `zone_name` (managed zone) or `hosted_zone_id` (existing), `records`                                        |
+| `domain`   | `name`, `www_redirect`                                                                                      |
+| `site`     | `price_class`, `error_caching_min_ttl`                                                                      |
+| `github`   | `repository`, `owner_id`, `repository_id`, `environment`, `create_oidc_provider`                            |
+| `preview`  | `enabled`, `github_environment`, `key_prefix`, `retention_days`, `price_class`, `error_caching_min_ttl`, `robots_tag`, `extra_response_headers`, `use_custom_domain`, `domain_name` |
+| `billing`  | `alert_email`, `monthly_budget_usd`                                                                         |
+
+The modules follow the same style: `static-site` takes `site`, `github`,
+`plan`, `billing`; `preview-site` takes `previews`, `domain`, `github`,
+`shared`; `dns-zone` takes `zone`. `terraform-docs`-style detail lives in
+each module's `variables.tf` descriptions.
+
 ## 2. Configure
 
 `infra/environments/prod/terraform.tfvars` is committed and describes the
@@ -103,7 +124,7 @@ repository secret the same way. Personal overrides go in a git-ignored
 `*.local.tfvars` passed with `-var-file`.
 
 The account already has an OIDC provider for
-`token.actions.githubusercontent.com`, so `create_oidc_provider = false` and
+`token.actions.githubusercontent.com`, so `github.create_oidc_provider = false` and
 the module looks it up. Confirm it accepts the `sts.amazonaws.com` audience
 the deploy role trusts:
 
@@ -164,11 +185,11 @@ in this repository.
 ## PR previews
 
 `modules/preview-site` is applied from the prod root when
-`preview_enabled = true` (default). One private bucket and one distribution
-host every open PR under `pr-<n>/`; a lifecycle rule expires those keys after
-`preview_retention_days`. The shared `404.html` at the bucket root is
-uploaded by Terraform. Every knob (`preview_*` in
-`environments/prod/variables.tf`) is set in the committed `terraform.tfvars`.
+`preview.enabled = true`. One private bucket and one distribution host every
+open PR under `pr-<n>/`; a lifecycle rule expires those keys after
+`preview.retention_days`. The shared `404.html` at the bucket root is
+uploaded by Terraform. Every knob is a field of the `preview` object in the
+committed `terraform.tfvars`.
 
 After apply: `terraform output github_preview_environment_variables` goes on
 the GitHub `preview` environment (`docs/repo-setup.md` section 5c).
@@ -176,7 +197,7 @@ the GitHub `preview` environment (`docs/repo-setup.md` section 5c).
 ## Adding a custom domain later
 
 1. Create the hosted zone in Route 53 and point the registrar at it.
-2. Set `domain_name` and `hosted_zone_id` in the committed `terraform.tfvars`, then
+2. Set `domain.name` (and `dns.hosted_zone_id` for an external zone) in the committed `terraform.tfvars`, then
    `terraform apply`.
 3. Update `SITE_URL` in the GitHub `production` environment and run the
    Release workflow manually to redeploy.

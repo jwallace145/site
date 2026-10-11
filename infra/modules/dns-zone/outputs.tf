@@ -5,7 +5,7 @@ output "zone_id" {
 
 output "zone_name" {
   description = "The zone's domain name."
-  value       = var.zone_name
+  value       = var.zone.name
 }
 
 output "name_servers" {

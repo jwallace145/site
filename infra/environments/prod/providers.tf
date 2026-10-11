@@ -1,7 +1,7 @@
 # Standard tags are applied through default_tags so every taggable resource
 # carries them without the module having to remember.
 provider "aws" {
-  region = var.aws_region
+  region = var.aws.region
 
   default_tags {
     tags = local.standard_tags

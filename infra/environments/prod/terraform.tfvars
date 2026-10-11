@@ -4,39 +4,53 @@
 # declared `sensitive = true` in variables.tf with no default and supplied at
 # plan/apply time with TF_VAR_<name> or -var.
 
-# Identity and tags
-project     = "jwallace145-site"
-owner       = "jwallace145"
-environment = "prod"
-repository  = "github.com/jwallace145/site"
+identity = {
+  project     = "jwallace145-site"
+  owner       = "jwallace145"
+  environment = "prod"
+  repository  = "github.com/jwallace145/site"
+}
 
-# AWS
-aws_region = "us-east-1"
+aws = {
+  region = "us-east-1"
+}
 
-# DNS and custom domain. Two-phase: the zone first, domain_name once the
-# registrar delegates to it (see infra/README.md).
-dns_zone_name = "jwall.engineering"
-domain_name   = null
-www_redirect  = true
-dns_records   = {}
+# Two-phase: the zone first, domain.name once the registrar delegates to it
+# (see infra/README.md).
+dns = {
+  zone_name = "jwall.engineering"
+  records   = {}
+}
 
-# Deploy identity (GitHub Actions OIDC)
-github_repository    = "jwallace145/site"
-github_owner_id      = 35950238
-github_repository_id = 1413965497
-github_environment   = "production"
-create_oidc_provider = false # the account already has one
+domain = {
+  name         = null
+  www_redirect = true
+}
 
-# PR previews
-preview_enabled            = true
-preview_github_environment = "preview"
-preview_key_prefix         = "pr-"
-preview_retention_days     = 30
-preview_price_class        = "PriceClass_100"
-preview_robots_tag         = "noindex, nofollow"
-preview_use_custom_domain  = true
-preview_domain_name        = null # derives preview.<domain_name>
+site = {
+  price_class = "PriceClass_100"
+}
 
-# Billing
-budget_alert_email = "jimmy.wallace145@gmail.com"
-monthly_budget_usd = 5
+github = {
+  repository           = "jwallace145/site"
+  owner_id             = 35950238
+  repository_id        = 1413965497
+  environment          = "production"
+  create_oidc_provider = false # the account already has one
+}
+
+preview = {
+  enabled            = true
+  github_environment = "preview"
+  key_prefix         = "pr-"
+  retention_days     = 30
+  price_class        = "PriceClass_100"
+  robots_tag         = "noindex, nofollow"
+  use_custom_domain  = true
+  domain_name        = null # derives preview.<domain.name>
+}
+
+billing = {
+  alert_email        = "jimmy.wallace145@gmail.com"
+  monthly_budget_usd = 5
+}

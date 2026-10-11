@@ -5,8 +5,8 @@
 locals {
   preview_origin_id = "s3-preview"
 
-  use_custom_domain = var.domain_name != null
-  preview_hostname  = local.use_custom_domain ? var.domain_name : aws_cloudfront_distribution.preview.domain_name
+  use_custom_domain = var.domain.name != null
+  preview_hostname  = local.use_custom_domain ? var.domain.name : aws_cloudfront_distribution.preview.domain_name
 }
 
 resource "aws_cloudfront_origin_access_control" "preview" {
@@ -57,7 +57,7 @@ resource "aws_cloudfront_response_headers_policy" "preview_security" {
   custom_headers_config {
     items {
       header   = "X-Robots-Tag"
-      value    = var.robots_tag
+      value    = var.previews.robots_tag
       override = true
     }
 
@@ -68,7 +68,7 @@ resource "aws_cloudfront_response_headers_policy" "preview_security" {
     }
 
     dynamic "items" {
-      for_each = var.extra_response_headers
+      for_each = var.previews.extra_response_headers
       content {
         header   = items.key
         value    = items.value
@@ -83,12 +83,12 @@ resource "aws_cloudfront_distribution" "preview" {
   comment         = local.names.preview_cdn
   is_ipv6_enabled = true
   http_version    = "http2and3"
-  price_class     = var.price_class
+  price_class     = var.previews.price_class
   # No default_root_object: "/" goes through the rewrite function to
   # /index.html, which does not exist, and so returns the 404 page.
   wait_for_deployment = true
 
-  aliases = local.use_custom_domain ? [var.domain_name] : []
+  aliases = local.use_custom_domain ? [var.domain.name] : []
 
   origin {
     origin_id                = local.preview_origin_id
@@ -108,7 +108,7 @@ resource "aws_cloudfront_distribution" "preview" {
 
     function_association {
       event_type   = "viewer-request"
-      function_arn = var.rewrite_index_function_arn
+      function_arn = var.shared.rewrite_index_function_arn
     }
   }
 
@@ -118,14 +118,14 @@ resource "aws_cloudfront_distribution" "preview" {
     error_code            = 403
     response_code         = 404
     response_page_path    = "/404.html"
-    error_caching_min_ttl = var.error_caching_min_ttl
+    error_caching_min_ttl = var.previews.error_caching_min_ttl
   }
 
   custom_error_response {
     error_code            = 404
     response_code         = 404
     response_page_path    = "/404.html"
-    error_caching_min_ttl = var.error_caching_min_ttl
+    error_caching_min_ttl = var.previews.error_caching_min_ttl
   }
 
   restrictions {
@@ -153,7 +153,7 @@ resource "aws_acm_certificate" "preview" {
   count    = local.use_custom_domain ? 1 : 0
   provider = aws.us_east_1
 
-  domain_name       = var.domain_name
+  domain_name       = var.domain.name
   validation_method = "DNS"
 
   tags = merge(var.tags, { Name = local.names.preview_certificate })
@@ -172,7 +172,7 @@ resource "aws_route53_record" "preview_acm_validation" {
     }
   } : {}
 
-  zone_id         = var.hosted_zone_id
+  zone_id         = var.domain.hosted_zone_id
   name            = each.value.name
   type            = each.value.type
   records         = [each.value.record]
@@ -191,8 +191,8 @@ resource "aws_acm_certificate_validation" "preview" {
 resource "aws_route53_record" "preview" {
   for_each = local.use_custom_domain ? toset(["A", "AAAA"]) : toset([])
 
-  zone_id = var.hosted_zone_id
-  name    = var.domain_name
+  zone_id = var.domain.hosted_zone_id
+  name    = var.domain.name
   type    = each.key
 
   alias {
