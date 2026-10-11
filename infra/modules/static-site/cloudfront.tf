@@ -28,7 +28,7 @@ resource "aws_cloudfront_function" "web_rewrite_index" {
   comment = "Rewrite directory paths to index.html; redirect alternate hostnames"
   publish = true
   code = templatefile("${path.module}/function/rewrite-index.js.tftpl", {
-    primary_host   = coalesce(var.domain_name, "")
+    primary_host   = var.domain_name != null ? var.domain_name : ""
     redirect_hosts = jsonencode(var.redirect_hostnames)
   })
 }
