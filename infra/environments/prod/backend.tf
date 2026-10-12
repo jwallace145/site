@@ -17,7 +17,7 @@ terraform {
   # Backend blocks cannot reference variables, so these literals are repeated
   # in local.terraform_state below for the plan role. Keep them in sync.
   backend "s3" {
-    bucket       = "jwallace145-site-tfstate"
+    bucket       = "jwall-engineering-site-tfstate"
     key          = "environment=prod/terraform.tfstate"
     region       = "us-east-1"
     use_lockfile = true
@@ -27,7 +27,7 @@ terraform {
 
 locals {
   terraform_state = {
-    bucket = "jwallace145-site-tfstate"
+    bucket = "jwall-engineering-site-tfstate"
     key    = "environment=prod/terraform.tfstate"
   }
 }

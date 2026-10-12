@@ -1,10 +1,10 @@
 variable "name_prefix" {
-  description = "Prefix for resource Name tags, e.g. jwallace145-site."
+  description = "Prefix for resource Name tags, e.g. jwall-engineering-site."
   type        = string
 
   validation {
-    condition     = can(regex("^[a-z0-9][a-z0-9-]{1,24}$", var.name_prefix))
-    error_message = "name_prefix must be lowercase letters, digits and hyphens, 2-25 characters."
+    condition     = can(regex("^[a-z0-9][a-z0-9-]{1,35}$", var.name_prefix))
+    error_message = "name_prefix must be lowercase letters, digits and hyphens, 2-36 characters."
   }
 }
 

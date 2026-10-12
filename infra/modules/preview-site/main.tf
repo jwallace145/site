@@ -12,7 +12,8 @@
 #   files/         the shared 404 page uploaded to the bucket root
 
 resource "aws_s3_bucket" "preview" {
-  bucket_prefix = "${local.names.preview_bucket}-"
+  # Deterministic name, as for the site bucket.
+  bucket = local.names.preview_bucket
   # Contents are ephemeral PR builds, so preview_enabled = false must be able
   # to remove the bucket even while previews (or their delete markers) exist.
   force_destroy = true

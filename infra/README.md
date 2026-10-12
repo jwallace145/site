@@ -24,7 +24,7 @@ infra/
     variables.tf         the interface: validated variables, environment-neutral defaults
     terraform.tfvars     the prod environment's values (committed; nothing secret)
     providers.tf         default_tags carry the standard tags
-    backend.tf           S3 backend: jwallace145-site-tfstate, key environment=prod/terraform.tfstate
+    backend.tf           S3 backend: jwall-engineering-site-tfstate, key environment=prod/terraform.tfstate
     outputs.tf           values for the GitHub `production` and `preview` environments
   scripts/
     bootstrap-state-bucket.sh   creates the state bucket with the standard tags
@@ -33,31 +33,33 @@ infra/
 ## Standards
 
 **Names** follow `<project>-<domain>-<resource>`, where `domain` is the logical
-area (`web`, `deploy`, `billing`). With the default `project = "jwallace145-site"`:
+area (`web`, `deploy`, `billing`). Bucket names are deterministic (no random
+suffix): they are global, so `project` must be distinctive, and the state
+bucket is `<project>-tfstate`. With `project = "jwall-engineering-site"`:
 
 | Resource                      | Name                                          |
 | ----------------------------- | --------------------------------------------- |
-| S3 bucket                     | `jwallace145-site-web-bucket-<aws suffix>`     |
-| Origin access control         | `jwallace145-site-web-oac`                     |
-| CloudFront distribution       | `jwallace145-site-web-cdn` (comment + Name tag) |
-| Response headers policy       | `jwallace145-site-web-security-headers`        |
-| CloudFront function           | `jwallace145-site-web-rewrite-index`           |
-| ACM certificate (optional)    | `jwallace145-site-web-certificate` (Name tag)  |
-| IAM role (deploy)             | `jwallace145-site-deploy-github-role`          |
-| IAM role policy (deploy)      | `jwallace145-site-deploy-github-policy`        |
-| IAM role (plan, read-only)    | `jwallace145-site-deploy-github-plan-role`     |
-| IAM role policy (plan)        | `jwallace145-site-deploy-github-plan-policy`   |
-| OIDC provider                 | `jwallace145-site-deploy-github-oidc` (Name tag) |
-| Budget                        | `jwallace145-site-billing-monthly`             |
-| Hosted zone                   | `jwallace145-site-dns-zone` (Name tag; zone `jwall.engineering`) |
-| ACM certificate (previews)    | `jwallace145-site-preview-certificate` (Name tag) |
-| S3 bucket (previews)          | `jwallace145-site-preview-bucket-<aws suffix>` |
-| Origin access control (previews) | `jwallace145-site-preview-oac`              |
-| CloudFront distribution (previews) | `jwallace145-site-preview-cdn`            |
-| Response headers policy (previews) | `jwallace145-site-preview-security-headers` |
-| IAM role (previews)           | `jwallace145-site-preview-github-role`         |
-| IAM role policy (previews)    | `jwallace145-site-preview-github-policy`       |
-| IAM role policy (plan → previews) | `jwallace145-site-preview-github-plan-policy` |
+| S3 bucket                     | `jwall-engineering-site-web-bucket`     |
+| Origin access control         | `jwall-engineering-site-web-oac`                     |
+| CloudFront distribution       | `jwall-engineering-site-web-cdn` (comment + Name tag) |
+| Response headers policy       | `jwall-engineering-site-web-security-headers`        |
+| CloudFront function           | `jwall-engineering-site-web-rewrite-index`           |
+| ACM certificate (optional)    | `jwall-engineering-site-web-certificate` (Name tag)  |
+| IAM role (deploy)             | `jwall-engineering-site-deploy-github-role`          |
+| IAM role policy (deploy)      | `jwall-engineering-site-deploy-github-policy`        |
+| IAM role (plan, read-only)    | `jwall-engineering-site-deploy-github-plan-role`     |
+| IAM role policy (plan)        | `jwall-engineering-site-deploy-github-plan-policy`   |
+| OIDC provider                 | `jwall-engineering-site-deploy-github-oidc` (Name tag) |
+| Budget                        | `jwall-engineering-site-billing-monthly`             |
+| Hosted zone                   | `jwall-engineering-site-dns-zone` (Name tag; zone `jwall.engineering`) |
+| ACM certificate (previews)    | `jwall-engineering-site-preview-certificate` (Name tag) |
+| S3 bucket (previews)          | `jwall-engineering-site-preview-bucket` |
+| Origin access control (previews) | `jwall-engineering-site-preview-oac`              |
+| CloudFront distribution (previews) | `jwall-engineering-site-preview-cdn`            |
+| Response headers policy (previews) | `jwall-engineering-site-preview-security-headers` |
+| IAM role (previews)           | `jwall-engineering-site-preview-github-role`         |
+| IAM role policy (previews)    | `jwall-engineering-site-preview-github-policy`       |
+| IAM role policy (plan → previews) | `jwall-engineering-site-preview-github-plan-policy` |
 
 `terraform output resource_names` prints the full list.
 
@@ -65,7 +67,7 @@ area (`web`, `deploy`, `billing`). With the default `project = "jwallace145-site
 
 | Tag           | Default value               |
 | ------------- | --------------------------- |
-| `Project`     | `jwallace145-site`          |
+| `Project`     | `jwall-engineering-site`          |
 | `Owner`       | `jwallace145`               |
 | `Environment` | `prod`                      |
 | `ManagedBy`   | `terraform`                 |
@@ -82,7 +84,7 @@ Add more with `identity.extra_tags`.
 
 ## 1. Bootstrap the state bucket (once)
 
-State lives in `s3://jwallace145-site-tfstate` with native lockfile locking,
+State lives in `s3://jwall-engineering-site-tfstate` with native lockfile locking,
 so no DynamoDB table is needed. The key is `environment=prod/terraform.tfstate`;
 Terraform writes `environment=prod/terraform.tfstate.tflock` beside it while a
 write is in flight and removes it afterwards.
@@ -94,6 +96,16 @@ standard tags, plus versioning, encryption, public-access block and a
 ```bash
 infra/scripts/bootstrap-state-bucket.sh
 ```
+
+**Renaming the project** (changing `identity.project`) renames every resource.
+Most update in place, but buckets, IAM roles, the CloudFront function and the
+budget are replaced. The site bucket is the one that matters: remove it and its
+configuration from state (`terraform state rm`), apply with `-target` on the
+new bucket, `aws s3 sync` the old bucket into it, then apply the rest. That
+keeps the distribution serving the old bucket until the new one is full. State
+moves with a fresh bootstrap of `<project>-tfstate`, the new name in
+`backend.tf`, and `terraform init -migrate-state`. Finish by updating the role
+ARNs and bucket names on the GitHub environments and deleting the old buckets.
 
 ## Variables
 
@@ -173,9 +185,9 @@ setting never breaks deploys. The IDs are plain variables in
 
 | Role                                      | Trusts                                   | Can                                                    |
 | ----------------------------------------- | ---------------------------------------- | ------------------------------------------------------ |
-| `jwallace145-site-deploy-github-role`      | jobs in the `production` environment     | write the site bucket, invalidate CloudFront           |
-| `jwallace145-site-deploy-github-plan-role` | `pull_request` workflows in this repo    | read state and the stack's resources (`terraform plan`) |
-| `jwallace145-site-preview-github-role`     | jobs in the `preview` environment        | write `pr-*/` in the preview bucket, invalidate the preview CDN |
+| `jwall-engineering-site-deploy-github-role`      | jobs in the `production` environment     | write the site bucket, invalidate CloudFront           |
+| `jwall-engineering-site-deploy-github-plan-role` | `pull_request` workflows in this repo    | read state and the stack's resources (`terraform plan`) |
+| `jwall-engineering-site-preview-github-role`     | jobs in the `preview` environment        | write `pr-*/` in the preview bucket, invalidate the preview CDN |
 
 ## PR plan check
 

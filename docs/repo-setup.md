@@ -164,7 +164,7 @@ gh api -X POST "repos/$REPO/environments/production/deployment-branch-policies" 
   -f name='v*' -f type=tag
 
 # From infra/environments/prod/: terraform output github_environment_variables
-gh variable set AWS_ROLE_ARN               --env production --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-github-deploy"
+gh variable set AWS_ROLE_ARN               --env production --repo "$REPO" --body "arn:aws:iam::<account>:role/jwall-engineering-site-deploy-github-role"
 gh variable set AWS_REGION                 --env production --repo "$REPO" --body "us-east-1"
 gh variable set S3_BUCKET                  --env production --repo "$REPO" --body "<site bucket name>"
 gh variable set CLOUDFRONT_DISTRIBUTION_ID --env production --repo "$REPO" --body "<distribution id>"
@@ -182,7 +182,7 @@ are **repository** variables (not environment):
 
 ```bash
 # From infra/environments/prod/: terraform output github_repository_variables
-gh variable set AWS_PLAN_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-deploy-github-plan-role"
+gh variable set AWS_PLAN_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::<account>:role/jwall-engineering-site-deploy-github-plan-role"
 gh variable set AWS_REGION        --repo "$REPO" --body "us-east-1"
 ```
 
@@ -201,7 +201,7 @@ gh api -X PUT "repos/$REPO/environments/preview" --input - <<'JSON'
 JSON
 
 # From infra/environments/prod/: terraform output github_preview_environment_variables
-gh variable set AWS_ROLE_ARN               --env preview --repo "$REPO" --body "arn:aws:iam::<account>:role/jwallace145-site-preview-github-role"
+gh variable set AWS_ROLE_ARN               --env preview --repo "$REPO" --body "arn:aws:iam::<account>:role/jwall-engineering-site-preview-github-role"
 gh variable set AWS_REGION                 --env preview --repo "$REPO" --body "us-east-1"
 gh variable set S3_BUCKET                  --env preview --repo "$REPO" --body "<preview bucket name>"
 gh variable set CLOUDFRONT_DISTRIBUTION_ID --env preview --repo "$REPO" --body "<preview distribution id>"

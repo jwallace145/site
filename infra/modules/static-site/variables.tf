@@ -3,13 +3,14 @@
 # -----------------------------------------------------------------------------
 
 variable "name_prefix" {
-  description = "Prefix for every resource name, e.g. jwallace145-site. Names become <name_prefix>-<domain>-<resource>."
+  description = "Prefix for every resource name, e.g. jwall-engineering-site. Names become <name_prefix>-<domain>-<resource>."
   type        = string
 
   validation {
-    # Leaves room for "-web-bucket-" plus the 26-char suffix AWS appends to bucket_prefix (63 max).
-    condition     = can(regex("^[a-z0-9][a-z0-9-]{1,24}$", var.name_prefix))
-    error_message = "name_prefix must be lowercase letters, digits and hyphens, 2-25 characters."
+    # The longest name this module builds is <prefix>-deploy-github-plan-role;
+    # IAM caps role names at 64 characters and S3 caps bucket names at 63.
+    condition     = can(regex("^[a-z0-9][a-z0-9-]{1,35}$", var.name_prefix))
+    error_message = "name_prefix must be lowercase letters, digits and hyphens, 2-36 characters."
   }
 }
 
