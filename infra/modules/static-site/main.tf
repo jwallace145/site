@@ -18,9 +18,9 @@
 # -----------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "web" {
-  # AWS appends a random suffix so the name is globally unique without
-  # committing an account ID or hand-picked name.
-  bucket_prefix = "${local.names.web_bucket}-"
+  # Bucket names are global. The prefix carries the project's domain, which is
+  # unique enough; a deterministic name keeps the bucket findable by name.
+  bucket = local.names.web_bucket
 
   tags = merge(var.tags, { Name = local.names.web_bucket })
 }

@@ -5,7 +5,7 @@
 # plan/apply time with TF_VAR_<name> or -var.
 
 identity = {
-  project     = "jwallace145-site"
+  project     = "jwall-engineering-site"
   owner       = "jwallace145"
   environment = "prod"
   repository  = "github.com/jwallace145/site"

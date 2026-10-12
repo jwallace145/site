@@ -31,6 +31,13 @@ resource "aws_cloudfront_function" "web_rewrite_index" {
     primary_host   = var.site.domain_name != null ? var.site.domain_name : ""
     redirect_hosts = jsonencode(var.site.redirect_hostnames)
   })
+
+  # The name is immutable and CloudFront refuses to delete a function while a
+  # distribution references it, so a rename must create the new function and
+  # re-point the distributions before the old one goes.
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "aws_cloudfront_cache_policy" "caching_optimized" {

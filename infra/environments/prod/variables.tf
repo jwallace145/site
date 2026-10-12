@@ -9,7 +9,7 @@
 variable "identity" {
   description = <<-EOT
     Who owns this stack. Drives resource names and the standard tags.
-      project      name prefix and Project tag, e.g. jwallace145-site
+      project      name prefix and Project tag, e.g. jwall-engineering-site
       owner        Owner tag
       environment  Environment tag, e.g. prod
       repository   Repository tag: where the IaC lives
@@ -24,8 +24,10 @@ variable "identity" {
   })
 
   validation {
-    condition     = can(regex("^[a-z0-9][a-z0-9-]{1,20}$", var.identity.project))
-    error_message = "identity.project must be lowercase letters, digits and hyphens, 2-21 characters (it prefixes every resource name)."
+    # 36 leaves room for the longest suffix any module appends (IAM role names
+    # are capped at 64 characters, bucket names at 63).
+    condition     = can(regex("^[a-z0-9][a-z0-9-]{1,35}$", var.identity.project))
+    error_message = "identity.project must be lowercase letters, digits and hyphens, 2-36 characters (it prefixes every resource name)."
   }
 }
 

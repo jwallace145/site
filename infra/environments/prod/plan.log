@@ -1,0 +1,1742 @@
+module.site.data.aws_cloudfront_cache_policy.caching_optimized: Reading...
+module.preview[0].data.aws_cloudfront_cache_policy.caching_optimized: Reading...
+module.site.data.aws_iam_openid_connect_provider.github[0]: Reading...
+module.site.data.aws_partition.current: Reading...
+module.site.data.aws_caller_identity.current: Reading...
+module.dns[0].aws_route53_zone.this: Refreshing state... [id=Z029546536VUFGDCPXZ21]
+module.site.aws_cloudfront_response_headers_policy.web_security: Refreshing state... [id=806ef426-61cc-4e66-9a65-9cc87d219777]
+module.preview[0].aws_cloudfront_response_headers_policy.preview_security: Refreshing state... [id=7124df90-79b8-4dad-a50d-693e3b1ae02a]
+module.site.aws_s3_bucket.web: Refreshing state... [id=jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226]
+module.site.data.aws_partition.current: Read complete after 0s [id=aws]
+module.preview[0].aws_s3_bucket.preview: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09]
+module.site.aws_budgets_budget.billing_monthly: Refreshing state... [id=650503560686:jwallace145-site-billing-monthly]
+module.site.data.aws_caller_identity.current: Read complete after 0s [id=650503560686]
+module.preview[0].aws_cloudfront_origin_access_control.preview: Refreshing state... [id=ELYJZL9VW8O6P]
+module.site.aws_cloudfront_origin_access_control.web: Refreshing state... [id=E3NW0SI08LOHIB]
+module.site.data.aws_iam_openid_connect_provider.github[0]: Read complete after 0s [id=arn:aws:iam::650503560686:oidc-provider/token.actions.githubusercontent.com]
+module.site.data.aws_iam_policy_document.deploy_assume_role: Reading...
+module.site.data.aws_iam_policy_document.plan_assume_role[0]: Reading...
+module.site.data.aws_iam_policy_document.plan_assume_role[0]: Read complete after 0s [id=1712039646]
+module.site.data.aws_iam_policy_document.deploy_assume_role: Read complete after 0s [id=3915551509]
+module.site.aws_iam_role.deploy: Refreshing state... [id=jwallace145-site-deploy-github-role]
+module.site.aws_iam_role.plan[0]: Refreshing state... [id=jwallace145-site-deploy-github-plan-role]
+module.preview[0].data.aws_cloudfront_cache_policy.caching_optimized: Read complete after 0s [id=658327ea-f89d-4fab-a63d-7e88639e58f6]
+module.site.data.aws_cloudfront_cache_policy.caching_optimized: Read complete after 0s [id=658327ea-f89d-4fab-a63d-7e88639e58f6]
+module.site.aws_cloudfront_function.web_rewrite_index: Refreshing state... [id=jwallace145-site-web-rewrite-index]
+module.dns[0].aws_route53_record.this["_github-pages-challenge-jwallace145"]: Refreshing state... [id=Z029546536VUFGDCPXZ21__github-pages-challenge-jwallace145.jwall.engineering_TXT]
+module.dns[0].aws_route53_record.this["survival-guide"]: Refreshing state... [id=Z029546536VUFGDCPXZ21_survival-guide.jwall.engineering_CNAME]
+module.preview[0].aws_acm_certificate.preview[0]: Refreshing state... [id=arn:aws:acm:us-east-1:650503560686:certificate/db34f003-9355-4a35-8147-3f3917acb0df]
+module.site.aws_acm_certificate.web[0]: Refreshing state... [id=arn:aws:acm:us-east-1:650503560686:certificate/b40264d2-ed3f-4268-9f6a-86d0e73196e8]
+module.preview[0].aws_route53_record.preview_acm_validation["preview.jwall.engineering"]: Refreshing state... [id=Z029546536VUFGDCPXZ21__ac68753063c1e92b61e034bf91b7eea5.preview.jwall.engineering._CNAME]
+module.site.aws_route53_record.web_acm_validation["www.jwall.engineering"]: Refreshing state... [id=Z029546536VUFGDCPXZ21__119d0f373575a0b3704b546724c25da8.www.jwall.engineering._CNAME]
+module.site.aws_route53_record.web_acm_validation["jwall.engineering"]: Refreshing state... [id=Z029546536VUFGDCPXZ21__d2513a54b4f553810828a82f4235ca90.jwall.engineering._CNAME]
+module.preview[0].aws_acm_certificate_validation.preview[0]: Refreshing state... [id=2026-10-11 19:56:18.353 +0000 UTC]
+module.site.aws_acm_certificate_validation.web[0]: Refreshing state... [id=2026-10-11 19:56:18.277 +0000 UTC]
+module.preview[0].data.aws_iam_policy_document.preview_assume_role: Reading...
+module.preview[0].data.aws_iam_policy_document.preview_assume_role: Read complete after 0s [id=4149343052]
+module.preview[0].aws_iam_role.preview: Refreshing state... [id=jwallace145-site-preview-github-role]
+module.site.aws_s3_bucket_public_access_block.web: Refreshing state... [id=jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226]
+module.preview[0].aws_s3_bucket_public_access_block.preview: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09]
+module.preview[0].aws_s3_object.not_found: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/404.html]
+module.preview[0].aws_s3_bucket_server_side_encryption_configuration.preview: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09]
+module.site.aws_s3_bucket_server_side_encryption_configuration.web: Refreshing state... [id=jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226]
+module.preview[0].aws_s3_bucket_versioning.preview: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09]
+module.site.aws_s3_bucket_versioning.web: Refreshing state... [id=jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226]
+module.site.aws_cloudfront_distribution.web: Refreshing state... [id=E2JW9QLQWM6E9S]
+module.preview[0].aws_cloudfront_distribution.preview: Refreshing state... [id=E3RPZJYKPFZ4Z3]
+module.preview[0].aws_s3_bucket_ownership_controls.preview: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09]
+module.site.aws_s3_bucket_ownership_controls.web: Refreshing state... [id=jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226]
+module.site.aws_iam_role_policy.plan[0]: Refreshing state... [id=jwallace145-site-deploy-github-plan-role:jwallace145-site-deploy-github-plan-policy]
+module.preview[0].aws_route53_record.preview["AAAA"]: Refreshing state... [id=Z029546536VUFGDCPXZ21_preview.jwall.engineering_AAAA]
+module.preview[0].aws_route53_record.preview["A"]: Refreshing state... [id=Z029546536VUFGDCPXZ21_preview.jwall.engineering_A]
+module.preview[0].aws_s3_bucket_policy.preview: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09]
+module.site.aws_route53_record.web["jwall.engineering-A"]: Refreshing state... [id=Z029546536VUFGDCPXZ21_jwall.engineering_A]
+module.site.aws_route53_record.web["www.jwall.engineering-A"]: Refreshing state... [id=Z029546536VUFGDCPXZ21_www.jwall.engineering_A]
+module.site.aws_route53_record.web["www.jwall.engineering-AAAA"]: Refreshing state... [id=Z029546536VUFGDCPXZ21_www.jwall.engineering_AAAA]
+module.site.aws_route53_record.web["jwall.engineering-AAAA"]: Refreshing state... [id=Z029546536VUFGDCPXZ21_jwall.engineering_AAAA]
+module.site.aws_iam_role_policy.deploy: Refreshing state... [id=jwallace145-site-deploy-github-role:jwallace145-site-deploy-github-policy]
+module.site.aws_s3_bucket_policy.web: Refreshing state... [id=jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226]
+module.preview[0].aws_iam_role_policy.preview: Refreshing state... [id=jwallace145-site-preview-github-role:jwallace145-site-preview-github-policy]
+module.preview[0].aws_iam_role_policy.plan_read[0]: Refreshing state... [id=jwallace145-site-deploy-github-plan-role:jwallace145-site-preview-github-plan-policy]
+module.preview[0].aws_s3_bucket_lifecycle_configuration.preview: Refreshing state... [id=jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  ~ update in-place
+-/+ destroy and then create replacement
++/- create replacement and then destroy
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # module.dns[0].aws_route53_zone.this will be updated in-place
+  ~ resource "aws_route53_zone" "this" {
+      ~ comment                     = "jwallace145-site: managed by Terraform in github.com/jwallace145/site" -> "jwall-engineering-site: managed by Terraform in github.com/jwallace145/site"
+        id                          = "Z029546536VUFGDCPXZ21"
+        name                        = "jwall.engineering"
+      ~ tags                        = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-dns-zone" -> "jwall-engineering-site-dns-zone"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                    = {
+          ~ "Name"        = "jwallace145-site-dns-zone" -> "jwall-engineering-site-dns-zone"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+        # (7 unchanged attributes hidden)
+    }
+
+  # module.preview[0].data.aws_iam_policy_document.plan_read[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "plan_read" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:Get*",
+              + "s3:List*",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ReadPreviewBucketConfig"
+        }
+      + statement {
+          + actions   = [
+              + "s3:GetObject",
+              + "s3:GetObjectTagging",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ReadNotFoundObject"
+        }
+      + statement {
+          + actions   = [
+              + "iam:GetRole",
+              + "iam:GetRolePolicy",
+              + "iam:ListAttachedRolePolicies",
+              + "iam:ListInstanceProfilesForRole",
+              + "iam:ListRolePolicies",
+              + "iam:ListRoleTags",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ReadPreviewRole"
+        }
+    }
+
+  # module.preview[0].data.aws_iam_policy_document.preview will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "preview" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:ListBucket",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ListPreviewBucket"
+        }
+      + statement {
+          + actions   = [
+              + "s3:DeleteObject",
+              + "s3:PutObject",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "WritePreviewObjects"
+        }
+      + statement {
+          + actions   = [
+              + "cloudfront:CreateInvalidation",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:cloudfront::650503560686:distribution/E3RPZJYKPFZ4Z3",
+            ]
+          + sid       = "InvalidatePreviewDistribution"
+        }
+    }
+
+  # module.preview[0].data.aws_iam_policy_document.preview_bucket will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "preview_bucket" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:GetObject",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "AllowCloudFrontOAC"
+
+          + condition {
+              + test     = "StringEquals"
+              + values   = [
+                  + "arn:aws:cloudfront::650503560686:distribution/E3RPZJYKPFZ4Z3",
+                ]
+              + variable = "AWS:SourceArn"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "cloudfront.amazonaws.com",
+                ]
+              + type        = "Service"
+            }
+        }
+      + statement {
+          + actions   = [
+              + "s3:*",
+            ]
+          + effect    = "Deny"
+          + resources = [
+              + (known after apply),
+              + (known after apply),
+            ]
+          + sid       = "DenyInsecureTransport"
+
+          + condition {
+              + test     = "Bool"
+              + values   = [
+                  + "false",
+                ]
+              + variable = "aws:SecureTransport"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "*",
+                ]
+              + type        = "*"
+            }
+        }
+    }
+
+  # module.preview[0].aws_acm_certificate.preview[0] will be updated in-place
+  ~ resource "aws_acm_certificate" "preview" {
+        id                        = "arn:aws:acm:us-east-1:650503560686:certificate/db34f003-9355-4a35-8147-3f3917acb0df"
+      ~ tags                      = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-preview-certificate" -> "jwall-engineering-site-preview-certificate"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                  = {
+          ~ "Name"        = "jwallace145-site-preview-certificate" -> "jwall-engineering-site-preview-certificate"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+        # (18 unchanged attributes hidden)
+
+        # (1 unchanged block hidden)
+    }
+
+  # module.preview[0].aws_cloudfront_distribution.preview will be updated in-place
+  ~ resource "aws_cloudfront_distribution" "preview" {
+      ~ comment                         = "jwallace145-site-preview-cdn" -> "jwall-engineering-site-preview-cdn"
+        id                              = "E3RPZJYKPFZ4Z3"
+      ~ tags                            = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-preview-cdn" -> "jwall-engineering-site-preview-cdn"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                        = {
+          ~ "Name"        = "jwallace145-site-preview-cdn" -> "jwall-engineering-site-preview-cdn"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+        # (23 unchanged attributes hidden)
+
+      ~ default_cache_behavior {
+            # (16 unchanged attributes hidden)
+
+          - function_association {
+              - event_type   = "viewer-request" -> null
+              - function_arn = "arn:aws:cloudfront::650503560686:function/jwallace145-site-web-rewrite-index" -> null
+            }
+          + function_association {
+              + event_type   = "viewer-request"
+              + function_arn = (known after apply)
+            }
+
+            # (1 unchanged block hidden)
+        }
+
+      - origin {
+          - connection_attempts         = 3 -> null
+          - connection_timeout          = 10 -> null
+          - domain_name                 = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09.s3.us-east-1.amazonaws.com" -> null
+          - origin_access_control_id    = "ELYJZL9VW8O6P" -> null
+          - origin_id                   = "s3-preview" -> null
+          - response_completion_timeout = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+      + origin {
+          + connection_attempts         = 3
+          + connection_timeout          = 10
+          + domain_name                 = (known after apply)
+          + origin_access_control_id    = "ELYJZL9VW8O6P"
+          + origin_id                   = "s3-preview"
+          + response_completion_timeout = (known after apply)
+            # (1 unchanged attribute hidden)
+        }
+
+        # (4 unchanged blocks hidden)
+    }
+
+  # module.preview[0].aws_cloudfront_origin_access_control.preview will be updated in-place
+  ~ resource "aws_cloudfront_origin_access_control" "preview" {
+      ~ description                       = "OAC for jwallace145-site-preview-bucket" -> "OAC for jwall-engineering-site-preview-bucket"
+        id                                = "ELYJZL9VW8O6P"
+      ~ name                              = "jwallace145-site-preview-oac" -> "jwall-engineering-site-preview-oac"
+        # (5 unchanged attributes hidden)
+    }
+
+  # module.preview[0].aws_cloudfront_response_headers_policy.preview_security will be updated in-place
+  ~ resource "aws_cloudfront_response_headers_policy" "preview_security" {
+      ~ comment = "Security headers + noindex for jwallace145-site-preview-cdn" -> "Security headers + noindex for jwall-engineering-site-preview-cdn"
+        id      = "7124df90-79b8-4dad-a50d-693e3b1ae02a"
+      ~ name    = "jwallace145-site-preview-security-headers" -> "jwall-engineering-site-preview-security-headers"
+        # (2 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.preview[0].aws_iam_role.preview must be replaced
+-/+ resource "aws_iam_role" "preview" {
+      ~ arn                   = "arn:aws:iam::650503560686:role/jwallace145-site-preview-github-role" -> (known after apply)
+      ~ create_date           = "2026-10-11T18:27:03Z" -> (known after apply)
+      ~ description           = "Assumed by GitHub Actions (jwallace145/site, preview) to publish PR previews to jwallace145-site-preview-cdn" -> "Assumed by GitHub Actions (jwallace145/site, preview) to publish PR previews to jwall-engineering-site-preview-cdn"
+      ~ id                    = "jwallace145-site-preview-github-role" -> (known after apply)
+      ~ managed_policy_arns   = [] -> (known after apply)
+      ~ name                  = "jwallace145-site-preview-github-role" -> "jwall-engineering-site-preview-github-role" # forces replacement
+      + name_prefix           = (known after apply)
+      ~ tags                  = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-preview-github-role" -> "jwall-engineering-site-preview-github-role"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all              = {
+          ~ "Name"        = "jwallace145-site-preview-github-role" -> "jwall-engineering-site-preview-github-role"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+      ~ unique_id             = "AROAZO5IITXXDJCN42M6U" -> (known after apply)
+        # (5 unchanged attributes hidden)
+
+      ~ inline_policy (known after apply)
+      - inline_policy {
+          - name   = "jwallace145-site-preview-github-policy" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = "s3:ListBucket"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09"
+                          - Sid      = "ListPreviewBucket"
+                        },
+                      - {
+                          - Action   = [
+                              - "s3:PutObject",
+                              - "s3:DeleteObject",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/pr-*"
+                          - Sid      = "WritePreviewObjects"
+                        },
+                      - {
+                          - Action   = "cloudfront:CreateInvalidation"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:cloudfront::650503560686:distribution/E3RPZJYKPFZ4Z3"
+                          - Sid      = "InvalidatePreviewDistribution"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+    }
+
+  # module.preview[0].aws_iam_role_policy.plan_read[0] must be replaced
+-/+ resource "aws_iam_role_policy" "plan_read" {
+      ~ id          = "jwallace145-site-deploy-github-plan-role:jwallace145-site-preview-github-plan-policy" -> (known after apply)
+      ~ name        = "jwallace145-site-preview-github-plan-policy" -> "jwall-engineering-site-preview-github-plan-policy" # forces replacement
+      + name_prefix = (known after apply)
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "s3:List*",
+                          - "s3:Get*",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09"
+                      - Sid      = "ReadPreviewBucketConfig"
+                    },
+                  - {
+                      - Action   = [
+                          - "s3:GetObjectTagging",
+                          - "s3:GetObject",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/404.html"
+                      - Sid      = "ReadNotFoundObject"
+                    },
+                  - {
+                      - Action   = [
+                          - "iam:ListRoleTags",
+                          - "iam:ListRolePolicies",
+                          - "iam:ListInstanceProfilesForRole",
+                          - "iam:ListAttachedRolePolicies",
+                          - "iam:GetRolePolicy",
+                          - "iam:GetRole",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:iam::650503560686:role/jwallace145-site-preview-github-role"
+                      - Sid      = "ReadPreviewRole"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+      ~ role        = "jwallace145-site-deploy-github-plan-role" -> "jwall-engineering-site-deploy-github-plan-role" # forces replacement
+    }
+
+  # module.preview[0].aws_iam_role_policy.preview must be replaced
+-/+ resource "aws_iam_role_policy" "preview" {
+      ~ id          = "jwallace145-site-preview-github-role:jwallace145-site-preview-github-policy" -> (known after apply)
+      ~ name        = "jwallace145-site-preview-github-policy" -> "jwall-engineering-site-preview-github-policy" # forces replacement
+      + name_prefix = (known after apply)
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "s3:ListBucket"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09"
+                      - Sid      = "ListPreviewBucket"
+                    },
+                  - {
+                      - Action   = [
+                          - "s3:PutObject",
+                          - "s3:DeleteObject",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/pr-*"
+                      - Sid      = "WritePreviewObjects"
+                    },
+                  - {
+                      - Action   = "cloudfront:CreateInvalidation"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:cloudfront::650503560686:distribution/E3RPZJYKPFZ4Z3"
+                      - Sid      = "InvalidatePreviewDistribution"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+      ~ role        = "jwallace145-site-preview-github-role" -> (known after apply) # forces replacement
+    }
+
+  # module.preview[0].aws_s3_bucket.preview must be replaced
+-/+ resource "aws_s3_bucket" "preview" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      ~ arn                         = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+      ~ bucket                      = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> "jwall-engineering-site-preview-bucket" # forces replacement
+      ~ bucket_domain_name          = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09.s3.amazonaws.com" -> (known after apply)
+      ~ bucket_namespace            = "global" -> (known after apply)
+      ~ bucket_prefix               = "jwallace145-site-preview-bucket-" -> (known after apply)
+      ~ bucket_region               = "us-east-1" -> (known after apply)
+      ~ bucket_regional_domain_name = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09.s3.us-east-1.amazonaws.com" -> (known after apply)
+      ~ hosted_zone_id              = "Z3AQBSTGFYJSTF" -> (known after apply)
+      ~ id                          = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+      ~ object_lock_enabled         = false -> (known after apply)
+      ~ policy                      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "s3:GetObject"
+                      - Condition = {
+                          - StringEquals = {
+                              - "AWS:SourceArn" = "arn:aws:cloudfront::650503560686:distribution/E3RPZJYKPFZ4Z3"
+                            }
+                        }
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "cloudfront.amazonaws.com"
+                        }
+                      - Resource  = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/*"
+                      - Sid       = "AllowCloudFrontOAC"
+                    },
+                  - {
+                      - Action    = "s3:*"
+                      - Condition = {
+                          - Bool = {
+                              - "aws:SecureTransport" = "false"
+                            }
+                        }
+                      - Effect    = "Deny"
+                      - Principal = "*"
+                      - Resource  = [
+                          - "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/*",
+                          - "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09",
+                        ]
+                      - Sid       = "DenyInsecureTransport"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+      ~ request_payer               = "BucketOwner" -> (known after apply)
+      ~ tags                        = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-preview-bucket" -> "jwall-engineering-site-preview-bucket"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                    = {
+          ~ "Name"        = "jwallace145-site-preview-bucket" -> "jwall-engineering-site-preview-bucket"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+        # (2 unchanged attributes hidden)
+
+      ~ cors_rule (known after apply)
+
+      ~ grant (known after apply)
+      - grant {
+          - id          = "c3802813b9fec4c048b61ec4ae1f5758b431031f8f9d273892505c46b5b467bb" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      ~ lifecycle_rule (known after apply)
+      - lifecycle_rule {
+          - abort_incomplete_multipart_upload_days = 1 -> null
+          - enabled                                = true -> null
+          - id                                     = "expire-stale-previews" -> null
+          - prefix                                 = "pr-" -> null
+          - tags                                   = {} -> null
+
+          - expiration {
+              - days                         = 30 -> null
+              - expired_object_delete_marker = false -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+      - lifecycle_rule {
+          - abort_incomplete_multipart_upload_days = 0 -> null
+          - enabled                                = true -> null
+          - id                                     = "expire-delete-markers" -> null
+          - tags                                   = {} -> null
+            # (1 unchanged attribute hidden)
+
+          - expiration {
+              - days                         = 0 -> null
+              - expired_object_delete_marker = true -> null
+                # (1 unchanged attribute hidden)
+            }
+
+          - noncurrent_version_expiration {
+              - days = 1 -> null
+            }
+        }
+
+      ~ logging (known after apply)
+
+      ~ object_lock_configuration (known after apply)
+
+      ~ replication_configuration (known after apply)
+
+      ~ server_side_encryption_configuration (known after apply)
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      ~ versioning (known after apply)
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+
+      ~ website (known after apply)
+    }
+
+  # module.preview[0].aws_s3_bucket_lifecycle_configuration.preview must be replaced
+-/+ resource "aws_s3_bucket_lifecycle_configuration" "preview" {
+      ~ bucket                                 = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply) # forces replacement
+      + expected_bucket_owner                  = (known after apply)
+      ~ id                                     = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+        # (2 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.preview[0].aws_s3_bucket_ownership_controls.preview must be replaced
+-/+ resource "aws_s3_bucket_ownership_controls" "preview" {
+      ~ bucket = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply) # forces replacement
+      ~ id     = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+        # (1 unchanged attribute hidden)
+
+        # (1 unchanged block hidden)
+    }
+
+  # module.preview[0].aws_s3_bucket_policy.preview must be replaced
+-/+ resource "aws_s3_bucket_policy" "preview" {
+      ~ bucket = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply) # forces replacement
+      ~ id     = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+      ~ policy = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "s3:GetObject"
+                      - Condition = {
+                          - StringEquals = {
+                              - "AWS:SourceArn" = "arn:aws:cloudfront::650503560686:distribution/E3RPZJYKPFZ4Z3"
+                            }
+                        }
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "cloudfront.amazonaws.com"
+                        }
+                      - Resource  = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/*"
+                      - Sid       = "AllowCloudFrontOAC"
+                    },
+                  - {
+                      - Action    = "s3:*"
+                      - Condition = {
+                          - Bool = {
+                              - "aws:SecureTransport" = "false"
+                            }
+                        }
+                      - Effect    = "Deny"
+                      - Principal = "*"
+                      - Resource  = [
+                          - "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/*",
+                          - "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09",
+                        ]
+                      - Sid       = "DenyInsecureTransport"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.preview[0].aws_s3_bucket_public_access_block.preview must be replaced
+-/+ resource "aws_s3_bucket_public_access_block" "preview" {
+      ~ bucket                  = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply) # forces replacement
+      ~ id                      = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+        # (5 unchanged attributes hidden)
+    }
+
+  # module.preview[0].aws_s3_bucket_server_side_encryption_configuration.preview must be replaced
+-/+ resource "aws_s3_bucket_server_side_encryption_configuration" "preview" {
+      ~ bucket                = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply) # forces replacement
+      ~ id                    = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+        # (2 unchanged attributes hidden)
+
+      - rule {
+          - blocked_encryption_types = [
+              - "SSE-C",
+            ] -> null
+          - bucket_key_enabled       = false -> null
+
+          - apply_server_side_encryption_by_default {
+              - sse_algorithm     = "AES256" -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+      + rule {
+          + blocked_encryption_types = (known after apply)
+          + bucket_key_enabled       = (known after apply)
+
+          + apply_server_side_encryption_by_default {
+              + kms_master_key_id = (known after apply)
+              + sse_algorithm     = "AES256"
+            }
+        }
+    }
+
+  # module.preview[0].aws_s3_bucket_versioning.preview must be replaced
+-/+ resource "aws_s3_bucket_versioning" "preview" {
+      ~ bucket                = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply) # forces replacement
+      ~ id                    = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+        # (2 unchanged attributes hidden)
+
+      ~ versioning_configuration {
+          ~ mfa_delete = "Disabled" -> (known after apply)
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # module.preview[0].aws_s3_object.not_found must be replaced
+-/+ resource "aws_s3_object" "not_found" {
+      + acl                           = (known after apply)
+      ~ arn                           = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/404.html" -> (known after apply)
+      ~ bucket                        = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply) # forces replacement
+      ~ bucket_key_enabled            = false -> (known after apply)
+      + checksum_crc32                = (known after apply)
+      + checksum_crc32c               = (known after apply)
+      + checksum_crc64nvme            = (known after apply)
+      + checksum_sha1                 = (known after apply)
+      + checksum_sha256               = (known after apply)
+      ~ id                            = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/404.html" -> (known after apply)
+      + kms_key_id                    = (known after apply)
+      - metadata                      = {} -> null
+      ~ server_side_encryption        = "AES256" -> (known after apply)
+      ~ storage_class                 = "STANDARD" -> (known after apply)
+      ~ tags                          = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-preview-bucket" -> "jwall-engineering-site-preview-bucket"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                      = {
+          ~ "Name"        = "jwallace145-site-preview-bucket" -> "jwall-engineering-site-preview-bucket"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+      ~ version_id                    = "null" -> (known after apply)
+        # (14 unchanged attributes hidden)
+    }
+
+  # module.site.data.aws_iam_policy_document.deploy will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "deploy" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:ListBucket",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ListWebBucket"
+        }
+      + statement {
+          + actions   = [
+              + "s3:DeleteObject",
+              + "s3:PutObject",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "WriteWebObjects"
+        }
+      + statement {
+          + actions   = [
+              + "cloudfront:CreateInvalidation",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:cloudfront::650503560686:distribution/E2JW9QLQWM6E9S",
+            ]
+          + sid       = "InvalidateWebDistribution"
+        }
+    }
+
+  # module.site.data.aws_iam_policy_document.plan[0] will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "plan" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:GetObject",
+              + "s3:GetObjectVersion",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:s3:::jwall-engineering-site-tfstate/environment=prod/terraform.tfstate",
+            ]
+          + sid       = "ReadStateObject"
+        }
+      + statement {
+          + actions   = [
+              + "s3:ListBucket",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:s3:::jwall-engineering-site-tfstate",
+            ]
+          + sid       = "ListStateBucket"
+        }
+      + statement {
+          + actions   = [
+              + "s3:Get*",
+              + "s3:List*",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "ReadWebBucketConfig"
+        }
+      + statement {
+          + actions   = [
+              + "cloudfront:Describe*",
+              + "cloudfront:Get*",
+              + "cloudfront:List*",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "*",
+            ]
+          + sid       = "ReadCloudFront"
+        }
+      + statement {
+          + actions   = [
+              + "iam:GetRole",
+              + "iam:GetRolePolicy",
+              + "iam:ListAttachedRolePolicies",
+              + "iam:ListInstanceProfilesForRole",
+              + "iam:ListRolePolicies",
+              + "iam:ListRoleTags",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:iam::650503560686:role/jwall-engineering-site-deploy-github-plan-role",
+              + (known after apply),
+            ]
+          + sid       = "ReadIamRoles"
+        }
+      + statement {
+          + actions   = [
+              + "iam:GetOpenIDConnectProvider",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:iam::650503560686:oidc-provider/token.actions.githubusercontent.com",
+            ]
+          + sid       = "ReadOidcProvider"
+        }
+      + statement {
+          + actions   = [
+              + "iam:ListOpenIDConnectProviders",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "*",
+            ]
+          + sid       = "ListOidcProviders"
+        }
+      + statement {
+          + actions   = [
+              + "budgets:DescribeBudget*",
+              + "budgets:ListTagsForResource",
+              + "budgets:ViewBudget",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "arn:aws:budgets::650503560686:budget/jwall-engineering-site-billing-monthly",
+            ]
+          + sid       = "ReadBudget"
+        }
+      + statement {
+          + actions   = [
+              + "acm:DescribeCertificate",
+              + "acm:ListTagsForCertificate",
+              + "route53:GetChange",
+              + "route53:GetHostedZone",
+              + "route53:ListResourceRecordSets",
+              + "route53:ListTagsForResource",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + "*",
+            ]
+          + sid       = "ReadDns"
+        }
+    }
+
+  # module.site.data.aws_iam_policy_document.web_bucket will be read during apply
+  # (config refers to values not yet known)
+ <= data "aws_iam_policy_document" "web_bucket" {
+      + id            = (known after apply)
+      + json          = (known after apply)
+      + minified_json = (known after apply)
+
+      + statement {
+          + actions   = [
+              + "s3:GetObject",
+            ]
+          + effect    = "Allow"
+          + resources = [
+              + (known after apply),
+            ]
+          + sid       = "AllowCloudFrontOAC"
+
+          + condition {
+              + test     = "StringEquals"
+              + values   = [
+                  + "arn:aws:cloudfront::650503560686:distribution/E2JW9QLQWM6E9S",
+                ]
+              + variable = "AWS:SourceArn"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "cloudfront.amazonaws.com",
+                ]
+              + type        = "Service"
+            }
+        }
+      + statement {
+          + actions   = [
+              + "s3:*",
+            ]
+          + effect    = "Deny"
+          + resources = [
+              + (known after apply),
+              + (known after apply),
+            ]
+          + sid       = "DenyInsecureTransport"
+
+          + condition {
+              + test     = "Bool"
+              + values   = [
+                  + "false",
+                ]
+              + variable = "aws:SecureTransport"
+            }
+
+          + principals {
+              + identifiers = [
+                  + "*",
+                ]
+              + type        = "*"
+            }
+        }
+    }
+
+  # module.site.aws_acm_certificate.web[0] will be updated in-place
+  ~ resource "aws_acm_certificate" "web" {
+        id                        = "arn:aws:acm:us-east-1:650503560686:certificate/b40264d2-ed3f-4268-9f6a-86d0e73196e8"
+      ~ tags                      = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-web-certificate" -> "jwall-engineering-site-web-certificate"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                  = {
+          ~ "Name"        = "jwallace145-site-web-certificate" -> "jwall-engineering-site-web-certificate"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+        # (18 unchanged attributes hidden)
+
+        # (1 unchanged block hidden)
+    }
+
+  # module.site.aws_budgets_budget.billing_monthly must be replaced
+-/+ resource "aws_budgets_budget" "billing_monthly" {
+      ~ account_id        = "650503560686" -> (known after apply)
+      ~ arn               = "arn:aws:budgets::650503560686:budget/jwallace145-site-billing-monthly" -> (known after apply)
+      ~ id                = "650503560686:jwallace145-site-billing-monthly" -> (known after apply)
+      ~ limit_amount      = "5.0" -> "5"
+      - metrics           = [] -> null
+      ~ name              = "jwallace145-site-billing-monthly" -> "jwall-engineering-site-billing-monthly" # forces replacement
+      + name_prefix       = (known after apply)
+      ~ tags              = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-billing-monthly" -> "jwall-engineering-site-billing-monthly"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all          = {
+          ~ "Name"        = "jwallace145-site-billing-monthly" -> "jwall-engineering-site-billing-monthly"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+      ~ time_period_start = "2026-10-01_00:00" -> (known after apply)
+        # (5 unchanged attributes hidden)
+
+      ~ cost_filter (known after apply)
+
+      ~ cost_types (known after apply)
+      - cost_types {
+          - include_credit             = true -> null
+          - include_discount           = true -> null
+          - include_other_subscription = true -> null
+          - include_recurring          = true -> null
+          - include_refund             = true -> null
+          - include_subscription       = true -> null
+          - include_support            = true -> null
+          - include_tax                = true -> null
+          - include_upfront            = true -> null
+          - use_amortized              = false -> null
+          - use_blended                = false -> null
+        }
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.site.aws_cloudfront_distribution.web will be updated in-place
+  ~ resource "aws_cloudfront_distribution" "web" {
+      ~ comment                         = "jwallace145-site-web-cdn" -> "jwall-engineering-site-web-cdn"
+        id                              = "E2JW9QLQWM6E9S"
+      ~ tags                            = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-web-cdn" -> "jwall-engineering-site-web-cdn"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                        = {
+          ~ "Name"        = "jwallace145-site-web-cdn" -> "jwall-engineering-site-web-cdn"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+        # (23 unchanged attributes hidden)
+
+      ~ default_cache_behavior {
+            # (16 unchanged attributes hidden)
+
+          - function_association {
+              - event_type   = "viewer-request" -> null
+              - function_arn = "arn:aws:cloudfront::650503560686:function/jwallace145-site-web-rewrite-index" -> null
+            }
+          + function_association {
+              + event_type   = "viewer-request"
+              + function_arn = (known after apply)
+            }
+
+            # (1 unchanged block hidden)
+        }
+
+      - origin {
+          - connection_attempts         = 3 -> null
+          - connection_timeout          = 10 -> null
+          - domain_name                 = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226.s3.us-east-1.amazonaws.com" -> null
+          - origin_access_control_id    = "E3NW0SI08LOHIB" -> null
+          - origin_id                   = "s3-web" -> null
+          - response_completion_timeout = 0 -> null
+            # (1 unchanged attribute hidden)
+        }
+      + origin {
+          + connection_attempts         = 3
+          + connection_timeout          = 10
+          + domain_name                 = (known after apply)
+          + origin_access_control_id    = "E3NW0SI08LOHIB"
+          + origin_id                   = "s3-web"
+          + response_completion_timeout = (known after apply)
+            # (1 unchanged attribute hidden)
+        }
+
+        # (4 unchanged blocks hidden)
+    }
+
+  # module.site.aws_cloudfront_function.web_rewrite_index must be replaced
++/- resource "aws_cloudfront_function" "web_rewrite_index" {
+      ~ arn                          = "arn:aws:cloudfront::650503560686:function/jwallace145-site-web-rewrite-index" -> (known after apply)
+      ~ etag                         = "E1F83G8C2ARO7P" -> (known after apply)
+      ~ id                           = "jwallace145-site-web-rewrite-index" -> (known after apply)
+      - key_value_store_associations = [] -> null
+      ~ live_stage_etag              = "E1F83G8C2ARO7P" -> (known after apply)
+      ~ name                         = "jwallace145-site-web-rewrite-index" -> "jwall-engineering-site-web-rewrite-index" # forces replacement
+      ~ status                       = "DEPLOYED" -> (known after apply)
+      - tags                         = {
+          - "Project" = "jwallace145-site"
+        } -> null
+      ~ tags_all                     = {
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+        # (4 unchanged attributes hidden)
+    }
+
+  # module.site.aws_cloudfront_origin_access_control.web will be updated in-place
+  ~ resource "aws_cloudfront_origin_access_control" "web" {
+      ~ description                       = "OAC for jwallace145-site-web-bucket" -> "OAC for jwall-engineering-site-web-bucket"
+        id                                = "E3NW0SI08LOHIB"
+      ~ name                              = "jwallace145-site-web-oac" -> "jwall-engineering-site-web-oac"
+        # (5 unchanged attributes hidden)
+    }
+
+  # module.site.aws_cloudfront_response_headers_policy.web_security will be updated in-place
+  ~ resource "aws_cloudfront_response_headers_policy" "web_security" {
+      ~ comment = "Security headers for jwallace145-site-web-cdn" -> "Security headers for jwall-engineering-site-web-cdn"
+        id      = "806ef426-61cc-4e66-9a65-9cc87d219777"
+      ~ name    = "jwallace145-site-web-security-headers" -> "jwall-engineering-site-web-security-headers"
+        # (2 unchanged attributes hidden)
+
+        # (2 unchanged blocks hidden)
+    }
+
+  # module.site.aws_iam_role.deploy must be replaced
+-/+ resource "aws_iam_role" "deploy" {
+      ~ arn                   = "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-role" -> (known after apply)
+      ~ create_date           = "2026-10-11T06:17:51Z" -> (known after apply)
+      ~ description           = "Assumed by GitHub Actions (jwallace145/site, production) to deploy jwallace145-site-web-cdn" -> "Assumed by GitHub Actions (jwallace145/site, production) to deploy jwall-engineering-site-web-cdn"
+      ~ id                    = "jwallace145-site-deploy-github-role" -> (known after apply)
+      ~ managed_policy_arns   = [] -> (known after apply)
+      ~ name                  = "jwallace145-site-deploy-github-role" -> "jwall-engineering-site-deploy-github-role" # forces replacement
+      + name_prefix           = (known after apply)
+      ~ tags                  = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-deploy-github-role" -> "jwall-engineering-site-deploy-github-role"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all              = {
+          ~ "Name"        = "jwallace145-site-deploy-github-role" -> "jwall-engineering-site-deploy-github-role"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+      ~ unique_id             = "AROAZO5IITXXJTSTNT4NO" -> (known after apply)
+        # (5 unchanged attributes hidden)
+
+      ~ inline_policy (known after apply)
+      - inline_policy {
+          - name   = "jwallace145-site-deploy-github-policy" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = "s3:ListBucket"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226"
+                          - Sid      = "ListWebBucket"
+                        },
+                      - {
+                          - Action   = [
+                              - "s3:PutObject",
+                              - "s3:DeleteObject",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226/*"
+                          - Sid      = "WriteWebObjects"
+                        },
+                      - {
+                          - Action   = "cloudfront:CreateInvalidation"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:cloudfront::650503560686:distribution/E2JW9QLQWM6E9S"
+                          - Sid      = "InvalidateWebDistribution"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+    }
+
+  # module.site.aws_iam_role.plan[0] must be replaced
+-/+ resource "aws_iam_role" "plan" {
+      ~ arn                   = "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-plan-role" -> (known after apply)
+      ~ create_date           = "2026-10-11T06:32:24Z" -> (known after apply)
+      ~ id                    = "jwallace145-site-deploy-github-plan-role" -> (known after apply)
+      ~ managed_policy_arns   = [] -> (known after apply)
+      ~ name                  = "jwallace145-site-deploy-github-plan-role" -> "jwall-engineering-site-deploy-github-plan-role" # forces replacement
+      + name_prefix           = (known after apply)
+      ~ tags                  = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-deploy-github-plan-role" -> "jwall-engineering-site-deploy-github-plan-role"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all              = {
+          ~ "Name"        = "jwallace145-site-deploy-github-plan-role" -> "jwall-engineering-site-deploy-github-plan-role"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+      ~ unique_id             = "AROAZO5IITXXKELEEUBOO" -> (known after apply)
+        # (6 unchanged attributes hidden)
+
+      ~ inline_policy (known after apply)
+      - inline_policy {
+          - name   = "jwallace145-site-deploy-github-plan-policy" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = [
+                              - "s3:GetObjectVersion",
+                              - "s3:GetObject",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-tfstate/environment=prod/terraform.tfstate"
+                          - Sid      = "ReadStateObject"
+                        },
+                      - {
+                          - Action   = "s3:ListBucket"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-tfstate"
+                          - Sid      = "ListStateBucket"
+                        },
+                      - {
+                          - Action   = [
+                              - "s3:List*",
+                              - "s3:Get*",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226"
+                          - Sid      = "ReadWebBucketConfig"
+                        },
+                      - {
+                          - Action   = [
+                              - "cloudfront:List*",
+                              - "cloudfront:Get*",
+                              - "cloudfront:Describe*",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "*"
+                          - Sid      = "ReadCloudFront"
+                        },
+                      - {
+                          - Action   = [
+                              - "iam:ListRoleTags",
+                              - "iam:ListRolePolicies",
+                              - "iam:ListInstanceProfilesForRole",
+                              - "iam:ListAttachedRolePolicies",
+                              - "iam:GetRolePolicy",
+                              - "iam:GetRole",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = [
+                              - "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-role",
+                              - "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-plan-role",
+                            ]
+                          - Sid      = "ReadIamRoles"
+                        },
+                      - {
+                          - Action   = "iam:GetOpenIDConnectProvider"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:iam::650503560686:oidc-provider/token.actions.githubusercontent.com"
+                          - Sid      = "ReadOidcProvider"
+                        },
+                      - {
+                          - Action   = "iam:ListOpenIDConnectProviders"
+                          - Effect   = "Allow"
+                          - Resource = "*"
+                          - Sid      = "ListOidcProviders"
+                        },
+                      - {
+                          - Action   = [
+                              - "budgets:ViewBudget",
+                              - "budgets:ListTagsForResource",
+                              - "budgets:DescribeBudget*",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:budgets::650503560686:budget/jwallace145-site-billing-monthly"
+                          - Sid      = "ReadBudget"
+                        },
+                      - {
+                          - Action   = [
+                              - "route53:ListTagsForResource",
+                              - "route53:ListResourceRecordSets",
+                              - "route53:GetHostedZone",
+                              - "route53:GetChange",
+                              - "acm:ListTagsForCertificate",
+                              - "acm:DescribeCertificate",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "*"
+                          - Sid      = "ReadDns"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+      - inline_policy {
+          - name   = "jwallace145-site-preview-github-plan-policy" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = [
+                              - "s3:List*",
+                              - "s3:Get*",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09"
+                          - Sid      = "ReadPreviewBucketConfig"
+                        },
+                      - {
+                          - Action   = [
+                              - "s3:GetObjectTagging",
+                              - "s3:GetObject",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09/404.html"
+                          - Sid      = "ReadNotFoundObject"
+                        },
+                      - {
+                          - Action   = [
+                              - "iam:ListRoleTags",
+                              - "iam:ListRolePolicies",
+                              - "iam:ListInstanceProfilesForRole",
+                              - "iam:ListAttachedRolePolicies",
+                              - "iam:GetRolePolicy",
+                              - "iam:GetRole",
+                            ]
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:iam::650503560686:role/jwallace145-site-preview-github-role"
+                          - Sid      = "ReadPreviewRole"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+    }
+
+  # module.site.aws_iam_role_policy.deploy must be replaced
+-/+ resource "aws_iam_role_policy" "deploy" {
+      ~ id          = "jwallace145-site-deploy-github-role:jwallace145-site-deploy-github-policy" -> (known after apply)
+      ~ name        = "jwallace145-site-deploy-github-policy" -> "jwall-engineering-site-deploy-github-policy" # forces replacement
+      + name_prefix = (known after apply)
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "s3:ListBucket"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226"
+                      - Sid      = "ListWebBucket"
+                    },
+                  - {
+                      - Action   = [
+                          - "s3:PutObject",
+                          - "s3:DeleteObject",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226/*"
+                      - Sid      = "WriteWebObjects"
+                    },
+                  - {
+                      - Action   = "cloudfront:CreateInvalidation"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:cloudfront::650503560686:distribution/E2JW9QLQWM6E9S"
+                      - Sid      = "InvalidateWebDistribution"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+      ~ role        = "jwallace145-site-deploy-github-role" -> (known after apply) # forces replacement
+    }
+
+  # module.site.aws_iam_role_policy.plan[0] must be replaced
+-/+ resource "aws_iam_role_policy" "plan" {
+      ~ id          = "jwallace145-site-deploy-github-plan-role:jwallace145-site-deploy-github-plan-policy" -> (known after apply)
+      ~ name        = "jwallace145-site-deploy-github-plan-policy" -> "jwall-engineering-site-deploy-github-plan-policy" # forces replacement
+      + name_prefix = (known after apply)
+      ~ policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = [
+                          - "s3:GetObjectVersion",
+                          - "s3:GetObject",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-tfstate/environment=prod/terraform.tfstate"
+                      - Sid      = "ReadStateObject"
+                    },
+                  - {
+                      - Action   = "s3:ListBucket"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-tfstate"
+                      - Sid      = "ListStateBucket"
+                    },
+                  - {
+                      - Action   = [
+                          - "s3:List*",
+                          - "s3:Get*",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226"
+                      - Sid      = "ReadWebBucketConfig"
+                    },
+                  - {
+                      - Action   = [
+                          - "cloudfront:List*",
+                          - "cloudfront:Get*",
+                          - "cloudfront:Describe*",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "*"
+                      - Sid      = "ReadCloudFront"
+                    },
+                  - {
+                      - Action   = [
+                          - "iam:ListRoleTags",
+                          - "iam:ListRolePolicies",
+                          - "iam:ListInstanceProfilesForRole",
+                          - "iam:ListAttachedRolePolicies",
+                          - "iam:GetRolePolicy",
+                          - "iam:GetRole",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = [
+                          - "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-role",
+                          - "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-plan-role",
+                        ]
+                      - Sid      = "ReadIamRoles"
+                    },
+                  - {
+                      - Action   = "iam:GetOpenIDConnectProvider"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:iam::650503560686:oidc-provider/token.actions.githubusercontent.com"
+                      - Sid      = "ReadOidcProvider"
+                    },
+                  - {
+                      - Action   = "iam:ListOpenIDConnectProviders"
+                      - Effect   = "Allow"
+                      - Resource = "*"
+                      - Sid      = "ListOidcProviders"
+                    },
+                  - {
+                      - Action   = [
+                          - "budgets:ViewBudget",
+                          - "budgets:ListTagsForResource",
+                          - "budgets:DescribeBudget*",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:budgets::650503560686:budget/jwallace145-site-billing-monthly"
+                      - Sid      = "ReadBudget"
+                    },
+                  - {
+                      - Action   = [
+                          - "route53:ListTagsForResource",
+                          - "route53:ListResourceRecordSets",
+                          - "route53:GetHostedZone",
+                          - "route53:GetChange",
+                          - "acm:ListTagsForCertificate",
+                          - "acm:DescribeCertificate",
+                        ]
+                      - Effect   = "Allow"
+                      - Resource = "*"
+                      - Sid      = "ReadDns"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+      ~ role        = "jwallace145-site-deploy-github-plan-role" -> (known after apply) # forces replacement
+    }
+
+  # module.site.aws_s3_bucket.web must be replaced
+-/+ resource "aws_s3_bucket" "web" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      ~ arn                         = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+      ~ bucket                      = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> "jwall-engineering-site-web-bucket" # forces replacement
+      ~ bucket_domain_name          = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226.s3.amazonaws.com" -> (known after apply)
+      ~ bucket_namespace            = "global" -> (known after apply)
+      ~ bucket_prefix               = "jwallace145-site-web-bucket-" -> (known after apply)
+      ~ bucket_region               = "us-east-1" -> (known after apply)
+      ~ bucket_regional_domain_name = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226.s3.us-east-1.amazonaws.com" -> (known after apply)
+      ~ hosted_zone_id              = "Z3AQBSTGFYJSTF" -> (known after apply)
+      ~ id                          = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+      ~ object_lock_enabled         = false -> (known after apply)
+      ~ policy                      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "s3:GetObject"
+                      - Condition = {
+                          - StringEquals = {
+                              - "AWS:SourceArn" = "arn:aws:cloudfront::650503560686:distribution/E2JW9QLQWM6E9S"
+                            }
+                        }
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "cloudfront.amazonaws.com"
+                        }
+                      - Resource  = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226/*"
+                      - Sid       = "AllowCloudFrontOAC"
+                    },
+                  - {
+                      - Action    = "s3:*"
+                      - Condition = {
+                          - Bool = {
+                              - "aws:SecureTransport" = "false"
+                            }
+                        }
+                      - Effect    = "Deny"
+                      - Principal = "*"
+                      - Resource  = [
+                          - "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226/*",
+                          - "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226",
+                        ]
+                      - Sid       = "DenyInsecureTransport"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+      ~ request_payer               = "BucketOwner" -> (known after apply)
+      ~ tags                        = {
+            "Environment" = "prod"
+            "ManagedBy"   = "terraform"
+          ~ "Name"        = "jwallace145-site-web-bucket" -> "jwall-engineering-site-web-bucket"
+            "Owner"       = "jwallace145"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            "Repository"  = "github.com/jwallace145/site"
+        }
+      ~ tags_all                    = {
+          ~ "Name"        = "jwallace145-site-web-bucket" -> "jwall-engineering-site-web-bucket"
+          ~ "Project"     = "jwallace145-site" -> "jwall-engineering-site"
+            # (4 unchanged elements hidden)
+        }
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+        # (2 unchanged attributes hidden)
+
+      ~ cors_rule (known after apply)
+
+      ~ grant (known after apply)
+      - grant {
+          - id          = "c3802813b9fec4c048b61ec4ae1f5758b431031f8f9d273892505c46b5b467bb" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      ~ lifecycle_rule (known after apply)
+
+      ~ logging (known after apply)
+
+      ~ object_lock_configuration (known after apply)
+
+      ~ replication_configuration (known after apply)
+
+      ~ server_side_encryption_configuration (known after apply)
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      ~ versioning (known after apply)
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+
+      ~ website (known after apply)
+    }
+
+  # module.site.aws_s3_bucket_ownership_controls.web must be replaced
+-/+ resource "aws_s3_bucket_ownership_controls" "web" {
+      ~ bucket = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply) # forces replacement
+      ~ id     = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+        # (1 unchanged attribute hidden)
+
+        # (1 unchanged block hidden)
+    }
+
+  # module.site.aws_s3_bucket_policy.web must be replaced
+-/+ resource "aws_s3_bucket_policy" "web" {
+      ~ bucket = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply) # forces replacement
+      ~ id     = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+      ~ policy = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "s3:GetObject"
+                      - Condition = {
+                          - StringEquals = {
+                              - "AWS:SourceArn" = "arn:aws:cloudfront::650503560686:distribution/E2JW9QLQWM6E9S"
+                            }
+                        }
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "cloudfront.amazonaws.com"
+                        }
+                      - Resource  = "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226/*"
+                      - Sid       = "AllowCloudFrontOAC"
+                    },
+                  - {
+                      - Action    = "s3:*"
+                      - Condition = {
+                          - Bool = {
+                              - "aws:SecureTransport" = "false"
+                            }
+                        }
+                      - Effect    = "Deny"
+                      - Principal = "*"
+                      - Resource  = [
+                          - "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226/*",
+                          - "arn:aws:s3:::jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226",
+                        ]
+                      - Sid       = "DenyInsecureTransport"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> (known after apply)
+        # (1 unchanged attribute hidden)
+    }
+
+  # module.site.aws_s3_bucket_public_access_block.web must be replaced
+-/+ resource "aws_s3_bucket_public_access_block" "web" {
+      ~ bucket                  = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply) # forces replacement
+      ~ id                      = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+        # (5 unchanged attributes hidden)
+    }
+
+  # module.site.aws_s3_bucket_server_side_encryption_configuration.web must be replaced
+-/+ resource "aws_s3_bucket_server_side_encryption_configuration" "web" {
+      ~ bucket                = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply) # forces replacement
+      ~ id                    = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+        # (2 unchanged attributes hidden)
+
+      - rule {
+          - blocked_encryption_types = [
+              - "SSE-C",
+            ] -> null
+          - bucket_key_enabled       = false -> null
+
+          - apply_server_side_encryption_by_default {
+              - sse_algorithm     = "AES256" -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+      + rule {
+          + blocked_encryption_types = (known after apply)
+          + bucket_key_enabled       = (known after apply)
+
+          + apply_server_side_encryption_by_default {
+              + kms_master_key_id = (known after apply)
+              + sse_algorithm     = "AES256"
+            }
+        }
+    }
+
+  # module.site.aws_s3_bucket_versioning.web must be replaced
+-/+ resource "aws_s3_bucket_versioning" "web" {
+      ~ bucket                = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply) # forces replacement
+      ~ id                    = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+        # (2 unchanged attributes hidden)
+
+      ~ versioning_configuration {
+          ~ mfa_delete = "Disabled" -> (known after apply)
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+Plan: 23 to add, 9 to change, 23 to destroy.
+
+Changes to Outputs:
+  ~ deploy_role_arn                      = "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-role" -> (known after apply)
+  ~ github_environment_variables         = {
+      ~ AWS_ROLE_ARN               = "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-role" -> (known after apply)
+      ~ S3_BUCKET                  = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+        # (3 unchanged attributes hidden)
+    }
+  ~ github_preview_environment_variables = {
+      ~ AWS_ROLE_ARN               = "arn:aws:iam::650503560686:role/jwallace145-site-preview-github-role" -> (known after apply)
+      ~ S3_BUCKET                  = "jwallace145-site-preview-bucket-deb65a00b5226f71a7c101bc09" -> (known after apply)
+        # (4 unchanged attributes hidden)
+    }
+  ~ github_repository_variables          = {
+      ~ AWS_PLAN_ROLE_ARN = "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-plan-role" -> (known after apply)
+        # (1 unchanged attribute hidden)
+    }
+  ~ plan_role_arn                        = "arn:aws:iam::650503560686:role/jwallace145-site-deploy-github-plan-role" -> (known after apply)
+  ~ preview_role_arn                     = "arn:aws:iam::650503560686:role/jwallace145-site-preview-github-role" -> (known after apply)
+  ~ resource_names                       = {
+      ~ billing_monthly      = "jwallace145-site-billing-monthly" -> "jwall-engineering-site-billing-monthly"
+      ~ deploy_github_policy = "jwallace145-site-deploy-github-policy" -> "jwall-engineering-site-deploy-github-policy"
+      ~ deploy_github_role   = "jwallace145-site-deploy-github-role" -> "jwall-engineering-site-deploy-github-role"
+      ~ deploy_oidc_provider = "jwallace145-site-deploy-github-oidc" -> "jwall-engineering-site-deploy-github-oidc"
+      ~ plan_github_policy   = "jwallace145-site-deploy-github-plan-policy" -> "jwall-engineering-site-deploy-github-plan-policy"
+      ~ plan_github_role     = "jwallace145-site-deploy-github-plan-role" -> "jwall-engineering-site-deploy-github-plan-role"
+      ~ web_bucket           = "jwallace145-site-web-bucket" -> "jwall-engineering-site-web-bucket"
+      ~ web_cdn              = "jwallace145-site-web-cdn" -> "jwall-engineering-site-web-cdn"
+      ~ web_certificate      = "jwallace145-site-web-certificate" -> "jwall-engineering-site-web-certificate"
+      ~ web_oac              = "jwallace145-site-web-oac" -> "jwall-engineering-site-web-oac"
+      ~ web_rewrite_index    = "jwallace145-site-web-rewrite-index" -> "jwall-engineering-site-web-rewrite-index"
+      ~ web_security_headers = "jwallace145-site-web-security-headers" -> "jwall-engineering-site-web-security-headers"
+    }
+  ~ site_bucket_name                     = "jwallace145-site-web-bucket-14373797ea98dcf46f0bbee226" -> (known after apply)
+  ~ standard_tags                        = {
+      ~ Project     = "jwallace145-site" -> "jwall-engineering-site"
+        # (4 unchanged attributes hidden)
+    }
+
+─────────────────────────────────────────────────────────────────────────────
+
+Saved the plan to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"

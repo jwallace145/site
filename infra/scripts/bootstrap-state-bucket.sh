@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
-# Creates the Terraform state bucket for jwallace145-site. Run once, by hand,
+# Creates the Terraform state bucket for jwall-engineering-site. Run once, by hand,
 # before the first `terraform init`. Safe to re-run: every call is idempotent.
 #
 # The bucket is deliberately outside Terraform (chicken and egg), so this
 # script applies the same standard tags Terraform applies everywhere else.
 set -euo pipefail
 
-BUCKET="${TF_STATE_BUCKET:-jwallace145-site-tfstate}"
+BUCKET="${TF_STATE_BUCKET:-jwall-engineering-site-tfstate}"
 REGION="${AWS_REGION:-us-east-1}"
 
 TAGS='TagSet=[
-  {Key=Project,Value=jwallace145-site},
+  {Key=Project,Value=jwall-engineering-site},
   {Key=Owner,Value=jwallace145},
   {Key=Environment,Value=prod},
   {Key=ManagedBy,Value=bootstrap-script},
