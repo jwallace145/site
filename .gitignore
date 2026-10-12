@@ -44,3 +44,8 @@ override.tf.json
 
 # terraform plan files
 tfplan
+
+# terraform plan artifacts (local and CI)
+infra/**/plan.log
+infra/**/plan.txt
+infra/**/tfplan-*
