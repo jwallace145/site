@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/jwallace145/site/compare/v1.16.0...v1.17.0) (2026-10-12)
+
+
+### Features
+
+* **site:** use the jwall engineering logo as the favicon and name the site in the tab ([#39](https://github.com/jwallace145/site/issues/39)) ([c3bd11c](https://github.com/jwallace145/site/commit/c3bd11c415736c2d628a030deada9f005aa421aa))
+
 ## [1.16.0](https://github.com/jwallace145/site/compare/v1.15.0...v1.16.0) (2026-10-12)
 
 
