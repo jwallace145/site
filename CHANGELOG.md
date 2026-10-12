@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/jwallace145/site/compare/v1.14.0...v1.15.0) (2026-10-12)
+
+
+### Features
+
+* **site:** replace the placeholder avatar with the jwall.engineering avatar ([#35](https://github.com/jwallace145/site/issues/35)) ([279fe46](https://github.com/jwallace145/site/commit/279fe46b66523cef2b74899631647f9cd816cc3f))
+
 ## [1.14.0](https://github.com/jwallace145/site/compare/v1.13.0...v1.14.0) (2026-10-11)
 
 
