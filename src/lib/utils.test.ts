@@ -12,7 +12,9 @@ describe("withBase", () => {
     expect(withBase("/", "/pr-9")).toBe("/pr-9/");
     expect(withBase("/blog", "/pr-9")).toBe("/pr-9/blog");
     expect(withBase("/#work", "/pr-9")).toBe("/pr-9/#work");
-    expect(withBase("/picofme.png", "/pr-9")).toBe("/pr-9/picofme.png");
+    expect(withBase("/jwall-engineering-avatar.png", "/pr-9")).toBe(
+      "/pr-9/jwall-engineering-avatar.png",
+    );
   });
 
   it("tolerates a trailing slash on the base", () => {
