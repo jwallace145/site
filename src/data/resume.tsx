@@ -2,7 +2,7 @@
 // `DATA` and should not need to change. Content mirrors the latest release of
 // https://github.com/jwallace145/resume.
 import { Icons } from "@/components/icons";
-import { House, Library, Package } from "lucide-react";
+import { BookOpen, Guitar, House, Library, Mountain, Package } from "lucide-react";
 import { Typescript } from "@/components/ui/svgs/typescript";
 import { Python } from "@/components/ui/svgs/python";
 import { Java } from "@/components/ui/svgs/java";
@@ -28,27 +28,28 @@ export const DATA = {
     work: { order: 2, enabled: true, heading: "Work Experience", presentLabel: "Present" },
     education: { order: 3, enabled: true, heading: "Education" },
     skills: { order: 4, enabled: true, heading: "Skills" },
+    interests: { order: 5, enabled: true, heading: "Hobbies & Interests" },
     projects: {
-      order: 5,
+      order: 6,
       enabled: true,
       label: "My Projects",
       heading: "Check out my latest work",
       text: "Things I build outside of work, mostly at the intersection of AI agents and cloud infrastructure.",
     },
     photos: {
-      order: 6,
+      order: 7,
       enabled: false,
       heading: "Photos",
     },
     hackathons: {
-      order: 7,
+      order: 8,
       enabled: false,
       label: "Hackathons",
       heading: "I like building things",
       text: "TODO: A sentence about hackathons. {count} is replaced with the number of entries.",
     },
     contact: {
-      order: 8,
+      order: 9,
       enabled: true,
       label: "Contact",
       heading: "Get in Touch",
@@ -74,6 +75,28 @@ export const DATA = {
     { name: "Postgres", icon: Postgresql },
     { name: "Databricks", icon: undefined },
     { name: "MCP", icon: undefined },
+  ],
+  // A few things outside of engineering. `description` is markdown so it can
+  // link out; keep each one to a sentence or two.
+  interests: [
+    {
+      name: "Guitar",
+      icon: Guitar,
+      description:
+        "Over ten years on electric blues guitar and an avid rock and blues fan. John Mayer, Stevie Ray Vaughan, and B.B. King are on heavy rotation.",
+    },
+    {
+      name: "Philosophy",
+      icon: BookOpen,
+      description:
+        "I read philosophy in my spare time and enjoy a good dialogue on society and ethics. Currently reading [The Metamorphosis](https://en.wikipedia.org/wiki/The_Metamorphosis) by [Franz Kafka](https://en.wikipedia.org/wiki/Franz_Kafka).",
+    },
+    {
+      name: "Mountaineering",
+      icon: Mountain,
+      description:
+        "Rock climber and mountaineer. I summit peaks on foot or on rope, and trail run in the mountains whenever I can.",
+    },
   ],
   navbar: [
     { href: "/", icon: House, label: "Home" },

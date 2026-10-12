@@ -7,6 +7,7 @@ import Markdown, { defaultUrlTransform } from "react-markdown";
 import { withBase } from "@/lib/utils";
 import ContactSection from "@/components/section/contact-section";
 import HackathonsSection from "@/components/section/hackathons-section";
+import InterestsSection from "@/components/section/interests-section";
 import PhotosSection from "@/components/section/photos-section";
 import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
@@ -116,16 +117,26 @@ const sectionComponents: Record<string, React.ReactNode> = {
       </div>
     </section>
   ),
+  interests: (
+    <section id="interests">
+      <div className="flex min-h-0 flex-col gap-y-6">
+        <BlurFade delay={BLUR_FADE_DELAY * 11}>
+          <h2 className="text-xl font-bold">{DATA.sections.interests.heading}</h2>
+        </BlurFade>
+        <InterestsSection />
+      </div>
+    </section>
+  ),
   projects: (
     <section id="projects">
-      <BlurFade delay={BLUR_FADE_DELAY * 11}>
+      <BlurFade delay={BLUR_FADE_DELAY * 12}>
         <ProjectsSection />
       </BlurFade>
     </section>
   ),
   hackathons: (
     <section id="hackathons">
-      <BlurFade delay={BLUR_FADE_DELAY * 13}>
+      <BlurFade delay={BLUR_FADE_DELAY * 14}>
         <HackathonsSection />
       </BlurFade>
     </section>
@@ -133,7 +144,7 @@ const sectionComponents: Record<string, React.ReactNode> = {
   photos: <PhotosSection />,
   contact: (
     <section id="contact">
-      <BlurFade delay={BLUR_FADE_DELAY * 16}>
+      <BlurFade delay={BLUR_FADE_DELAY * 17}>
         <ContactSection />
       </BlurFade>
     </section>
