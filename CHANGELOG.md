@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.0](https://github.com/jwallace145/site/compare/v1.17.0...v1.18.0) (2026-10-12)
+
+
+### Features
+
+* **infra:** rename the project to jwall-engineering-site ([#42](https://github.com/jwallace145/site/issues/42)) ([fdd6c9c](https://github.com/jwallace145/site/commit/fdd6c9c1aa2c1ca1e56c76d1a2a5532e1674d5ac))
+
 ## [1.17.0](https://github.com/jwallace145/site/compare/v1.16.0...v1.17.0) (2026-10-12)
 
 
