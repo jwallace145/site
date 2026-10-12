@@ -17,8 +17,8 @@ interface Props {
 const { title, description = DATA.description, image, canonicalURL = Astro.url.href } = Astro.props;
 
 const pageTitle = title
-  ? CONFIG.seo.titleTemplate.replace("%s", title).replace("%n", DATA.name)
-  : DATA.name;
+  ? CONFIG.seo.titleTemplate.replace("%s", title).replace("%n", CONFIG.site.name)
+  : CONFIG.site.name;
 const siteUrl = (Astro.site ?? new URL(CONFIG.site.url)).href.replace(/\/$/, "");
 const ogImage = image
   ? image.startsWith("http")
@@ -107,9 +107,15 @@ const { baseFontSize } = CONFIG.typography;
     `}
     ></style>
 
-    <!-- Favicon -->
+    <!-- Icons, all derived from public/brand/jwall-engineering-logo.svg -->
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
-    <link rel="icon" type="image/x-icon" href={withBase("/favicon.ico")} />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      sizes="16x16 32x32 48x48"
+      href={withBase("/favicon.ico")}
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href={withBase("/apple-touch-icon.png")} />
 
     <!-- Primary meta -->
     <title>{pageTitle}</title>
@@ -128,7 +134,7 @@ const { baseFontSize } = CONFIG.typography;
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:site_name" content={DATA.name} />
+    <meta property="og:site_name" content={CONFIG.site.name} />
     <meta property="og:locale" content={CONFIG.site.locale} />
     <meta property="og:image" content={ogImage} />
 
