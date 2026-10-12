@@ -38,11 +38,11 @@ pnpm dev                 # http://localhost:4321
 
 Content lives in three places; search for `TODO:` to find every placeholder.
 
-| File                     | Controls                                                   |
-| ------------------------ | ---------------------------------------------------------- |
-| `src/data/resume.tsx`    | Name, bio, work, education, projects, skills, social links |
-| `src/data/config.ts`     | Site URL, SEO, theme colours, font size                    |
-| `src/content/blog/*.mdx` | Blog posts (`example-post.mdx` is a template)              |
+| File                     | Controls                                                              |
+| ------------------------ | --------------------------------------------------------------------- |
+| `src/data/resume.tsx`    | Name, bio, work, education, projects, skills, interests, social links |
+| `src/data/config.ts`     | Site URL, SEO, theme colours, font size                               |
+| `src/content/blog/*.mdx` | Blog posts (`example-post.mdx` is a template)                         |
 
 The footer links to this repository and shows the site version from
 `package.json`, which Release Please bumps on every release, linked to that
