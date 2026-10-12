@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.19.0](https://github.com/jwallace145/site/compare/v1.18.0...v1.19.0) (2026-10-12)
+
+
+### Features
+
+* **content:** add a thumbnail to the cs survival guide project card ([#45](https://github.com/jwallace145/site/issues/45)) ([e2fa775](https://github.com/jwallace145/site/commit/e2fa775984022e45ae237b3a80fbd8f92bf60b91))
+* **content:** update the charter team to data platforms infrastructure and solutions ([#41](https://github.com/jwallace145/site/issues/41)) ([c061811](https://github.com/jwallace145/site/commit/c0618112eb43bfb49b87736fea1a28aa5eb15ec0))
+
 ## [1.18.0](https://github.com/jwallace145/site/compare/v1.17.0...v1.18.0) (2026-10-12)
 
 
