@@ -3,6 +3,9 @@ export const CONFIG = {
   // Site Settings
   // ---------------------------------------------------------------------------
   site: {
+    // Brand name: the browser tab title, og:site_name, and the home page title.
+    // The person behind it is DATA.name in resume.tsx.
+    name: "JWall Engineering",
     // Production URL. Overridden by the SITE_URL environment variable at
     // build time (see astro.config.mjs), which previews use.
     url: "https://jwall.engineering",
@@ -15,7 +18,7 @@ export const CONFIG = {
   // SEO Settings
   // ---------------------------------------------------------------------------
   seo: {
-    titleTemplate: "%s | %n", // %s = page title, %n = DATA.name
+    titleTemplate: "%s | %n", // %s = page title, %n = CONFIG.site.name
     twitterCard: "summary_large_image" as const,
     robots: "index, follow",
   },
