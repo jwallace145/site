@@ -248,7 +248,7 @@ export const DATA = {
           icon: <Package className="size-3" />,
         },
       ],
-      image: "",
+      image: "/projects/cs-survival-guide-thumbnail.png",
       video: "",
     },
   ],
