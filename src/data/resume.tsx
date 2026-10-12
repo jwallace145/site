@@ -20,8 +20,8 @@ export const DATA = {
   description: "Software engineer with a passion for AI. Founder of Prog Strength.",
   summary:
     "I'm a software engineer with six years of experience building cloud platforms and backend services. Today I lead DevOps for Data Lake Platforms at [Charter Communications](/#work), where I build serverless AWS services and architect data platforms used across the organization. Before that I owned EC2's metering service at [AWS](/#work) and built container tooling at [Capital One](/#work). On the side I'm building [Prog Strength](/#projects), an AI-native fitness platform with a conversational coach as its primary interface. I studied Computer Science and Engineering at [The Ohio State University](/#education) with a minor in mathematics and a concentration in artificial intelligence.",
-  // TODO: replace public/picofme.png and public/og_image.png with your own images.
-  avatarUrl: "/picofme.png",
+  // TODO: replace public/og_image.png with your own image.
+  avatarUrl: "/jwall-engineering-avatar.png",
   ogImage: "/og_image.png",
   sections: {
     about: { order: 1, enabled: true, heading: "About" },
