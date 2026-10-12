@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/jwallace145/site/compare/v1.15.0...v1.16.0) (2026-10-12)
+
+
+### Features
+
+* **content:** add a hobbies and interests section below skills ([#37](https://github.com/jwallace145/site/issues/37)) ([c136d72](https://github.com/jwallace145/site/commit/c136d726ac8143ea5ff7db6044d46e30dc7e352c))
+
 ## [1.15.0](https://github.com/jwallace145/site/compare/v1.14.0...v1.15.0) (2026-10-12)
 
 
