@@ -139,7 +139,7 @@ export const DATA = {
       roles: [
         {
           title: "Lead DevOps Engineer",
-          team: "Data Lake Platforms (DLP)",
+          team: "Data Platforms Infrastructure & Solutions - Data Lake Platforms",
           start: "July 2025",
           end: undefined,
           bullets: [
