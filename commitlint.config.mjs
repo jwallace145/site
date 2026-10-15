@@ -6,6 +6,9 @@ import bodyTrailersOnly from "./tools/commitlint/body-trailers-only.mjs";
 export default {
   extends: ["@commitlint/config-conventional"],
   plugins: [{ rules: { "body-trailers-only": bodyTrailersOnly } }],
+  // Dependabot writes multi-line bodies it can't be configured out of. Only
+  // the PR title reaches main (squash merge), and pr-title checks that.
+  ignores: [(message) => /^Signed-off-by: dependabot\[bot\] <support@github\.com>$/m.test(message)],
   rules: {
     "header-max-length": [2, "always", 100],
     "type-enum": [
