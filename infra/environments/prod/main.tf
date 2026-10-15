@@ -20,25 +20,12 @@ locals {
   )
 }
 
-# DNS: the hosted zone for the domain, plus any plain records. Alias records
-# for CloudFront are created by the site modules.
-module "dns" {
-  source = "../../modules/dns-zone"
-  count  = var.dns.zone_name != null ? 1 : 0
-
-  name_prefix = local.name_prefix
-
-  zone = {
-    name    = var.dns.zone_name
-    comment = "${var.identity.project}: managed by Terraform in ${var.identity.repository}"
-    records = var.dns.records
-  }
-
-  tags = local.standard_tags
-}
-
+# DNS: the jwall.engineering hosted zone is owned by
+# jwallace145/jwall-engineering-infra. This stack only creates records in it:
+# the alias and ACM validation records for the apex, www and preview hosts,
+# which the site modules own.
 locals {
-  hosted_zone_id = var.dns.zone_name != null ? module.dns[0].zone_id : var.dns.hosted_zone_id
+  hosted_zone_id = var.dns.hosted_zone_id
 
   redirect_hostnames = var.domain.name != null && var.domain.www_redirect ? ["www.${var.domain.name}"] : []
 

@@ -18,7 +18,6 @@ infra/
     variables.tf  outputs.tf  versions.tf  function/
   modules/preview-site/  PR previews: preview bucket + CloudFront, OIDC preview role, shared 404 page
     naming.tf  main.tf  cloudfront.tf  iam.tf  variables.tf  outputs.tf  versions.tf  files/
-  modules/dns-zone/      Route 53 hosted zone + plain records
   environments/prod/     the root you run terraform in; dev/staging would be siblings
     main.tf              computes names + tags, calls the module
     variables.tf         the interface: validated variables, environment-neutral defaults
@@ -51,7 +50,6 @@ bucket is `<project>-tfstate`. With `project = "jwall-engineering-site"`:
 | IAM role policy (plan)        | `jwall-engineering-site-deploy-github-plan-policy`   |
 | OIDC provider                 | `jwall-engineering-site-deploy-github-oidc` (Name tag) |
 | Budget                        | `jwall-engineering-site-billing-monthly`             |
-| Hosted zone                   | `jwall-engineering-site-dns-zone` (Name tag; zone `jwall.engineering`) |
 | ACM certificate (previews)    | `jwall-engineering-site-preview-certificate` (Name tag) |
 | S3 bucket (previews)          | `jwall-engineering-site-preview-bucket` |
 | Origin access control (previews) | `jwall-engineering-site-preview-oac`              |
@@ -116,7 +114,7 @@ its value has a shape, and `terraform.tfvars` sets them all:
 | ---------- | ----------------------------------------------------------------------------------------------------------- |
 | `identity` | `project`, `owner`, `environment`, `repository`, `extra_tags`                                               |
 | `aws`      | `region`                                                                                                    |
-| `dns`      | `zone_name` (managed zone) or `hosted_zone_id` (existing), `records`                                        |
+| `dns`      | `hosted_zone_id` (the zone is owned by `jwall-engineering-infra`)                                            |
 | `domain`   | `name`, `www_redirect`                                                                                      |
 | `site`     | `price_class`, `error_caching_min_ttl`                                                                      |
 | `github`   | `repository`, `owner_id`, `repository_id`, `environment`, `create_oidc_provider`                            |
@@ -125,7 +123,7 @@ its value has a shape, and `terraform.tfvars` sets them all:
 
 The modules follow the same style: `static-site` takes `site`, `github`,
 `plan`, `billing`; `preview-site` takes `previews`, `domain`, `github`,
-`shared`; `dns-zone` takes `zone`. `terraform-docs`-style detail lives in
+`shared`. `terraform-docs`-style detail lives in
 each module's `variables.tf` descriptions.
 
 ## 2. Configure
@@ -211,23 +209,20 @@ the GitHub `preview` environment (`docs/repo-setup.md` section 5c).
 
 ## DNS and custom domain
 
-`modules/dns-zone` creates the `jwall.engineering` hosted zone. The site
-module attaches `domain.name` (the apex) plus `www.` as a 301 redirect, and
-the preview module attaches `preview.jwall.engineering`. Certificates are
-ACM in us-east-1 with DNS validation. Extra records (MX, TXT, ...) go in
-`dns.records` in `terraform.tfvars`; alias records are owned by the modules.
+The `jwall.engineering` hosted zone is owned by
+[`jwallace145/jwall-engineering-infra`](https://github.com/jwallace145/jwall-engineering-infra);
+`dns.hosted_zone_id` in `terraform.tfvars` points at it. This stack creates
+only the records the site needs: the site module attaches `domain.name` (the
+apex) plus `www.` as a 301 redirect, and the preview module attaches
+`preview.jwall.engineering`, each with its ACM validation records.
+Certificates are ACM in us-east-1 with DNS validation. Records for other
+projects (for example `guitar.jwall.engineering`) are owned by those projects'
+repositories, and zone-level records (CAA) by the infra repo.
 
-Bringing up a new domain is two applies, because ACM validation needs the
-zone to be authoritative:
-
-1. `dns.zone_name` set, `domain.name = null`: apply, then set the four
-   nameservers from `terraform output dns_name_servers` at the registrar.
-   Check with `dig +norecurse @<a TLD nameserver> NS <zone>`.
-2. When the registry shows them, set `domain.name` and apply. Then update
-   `SITE_URL` on the `production` and `preview` GitHub environments and run
-   the Release workflow once to redeploy with the new canonical URL.
-
-The registrar is GoDaddy; only the nameservers point at Route 53.
+Until October 2026 this stack created the zone itself through a `dns-zone`
+module. The zone was imported into the infra repo and removed from this
+stack's state with `terraform state rm 'module.dns[0]'`, so nothing was
+destroyed. The registrar is GoDaddy; only the nameservers point at Route 53.
 
 ## Cache behaviour
 

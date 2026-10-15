@@ -46,40 +46,27 @@ variable "aws" {
 
 variable "dns" {
   description = <<-EOT
-    DNS for the site's domain.
-      zone_name       domain of the Terraform-managed Route 53 hosted zone; null manages no zone
-      hosted_zone_id  an existing zone to use instead, when zone_name is null
-      records         plain records in the managed zone keyed by name ("@" = apex,
-                      "mail" = mail.<zone>); alias records are owned by the site modules
+    The Route 53 hosted zone the site's records live in. The zone itself is
+    owned by jwallace145/jwall-engineering-infra (`terraform output
+    hosted_zone_id` there); this stack only creates alias and ACM validation
+    records in it through the site modules.
+      hosted_zone_id  ID of the existing zone
   EOT
   type = object({
-    zone_name      = optional(string)
-    hosted_zone_id = optional(string)
-    records = optional(map(object({
-      type   = string
-      ttl    = optional(number, 300)
-      values = list(string)
-    })), {})
+    hosted_zone_id = string
   })
-  default = {}
 
   validation {
-    condition     = var.dns.zone_name == null || can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", var.dns.zone_name))
-    error_message = "dns.zone_name must be a lowercase fully qualified domain name."
-  }
-
-  validation {
-    condition     = !(var.dns.zone_name != null && var.dns.hosted_zone_id != null)
-    error_message = "dns.zone_name and dns.hosted_zone_id are alternatives; set one."
+    condition     = can(regex("^Z[A-Z0-9]{5,31}$", var.dns.hosted_zone_id))
+    error_message = "dns.hosted_zone_id must be a Route 53 hosted zone ID (e.g. Z0123456789ABCDEFGHIJ)."
   }
 }
 
 variable "domain" {
   description = <<-EOT
     The hostname the site is served from. Leave name null to serve from the
-    CloudFront domain. Set name only after the zone's nameservers are live at
-    the registrar (ACM validates via DNS).
-      name          e.g. example.com; must be dns.zone_name or a subdomain of it
+    CloudFront domain (ACM validates via DNS in the zone).
+      name          e.g. example.com; must be in the zone dns.hosted_zone_id refers to
       www_redirect  301-redirect www.<name> to name
   EOT
   type = object({
@@ -91,16 +78,6 @@ variable "domain" {
   validation {
     condition     = var.domain.name == null || can(regex("^([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$", var.domain.name))
     error_message = "domain.name must be a lowercase fully qualified domain name."
-  }
-
-  validation {
-    condition     = var.domain.name == null || var.dns.zone_name == null || var.domain.name == var.dns.zone_name || endswith(var.domain.name, ".${var.dns.zone_name}")
-    error_message = "domain.name must be dns.zone_name or a subdomain of it."
-  }
-
-  validation {
-    condition     = var.domain.name == null || var.dns.zone_name != null || var.dns.hosted_zone_id != null
-    error_message = "domain.name needs a zone: set dns.zone_name (managed) or dns.hosted_zone_id (existing)."
   }
 }
 
