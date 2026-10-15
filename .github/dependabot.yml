@@ -1,7 +1,11 @@
 # Weekly dependency updates, grouped so a single PR covers all minor and
 # patch bumps. The commit prefix + scope produce PR titles like
-# `chore(deps): bump the npm-minor-and-patch group ...`, which pass commitlint
+# `fix(deps): bump the npm-minor-and-patch group ...`, which pass commitlint
 # and the PR title check.
+#
+# npm and terraform bumps change what ships, so they use `fix` and
+# release-please queues them for the next patch release. Actions bumps only
+# touch CI, so they stay `chore` and ride along with the next release.
 version: 2
 updates:
   - package-ecosystem: npm
@@ -13,7 +17,7 @@ updates:
       timezone: America/New_York
     open-pull-requests-limit: 5
     commit-message:
-      prefix: chore
+      prefix: fix
       include: scope
     groups:
       npm-minor-and-patch:
@@ -37,7 +41,7 @@ updates:
           - minor
           - patch
 
-  # Opens a chore(deps) PR when the jwall-engineering registry module or the
+  # Opens a fix(deps) PR when the jwall-engineering registry module or the
   # AWS provider publishes a release. The plan comment on that PR shows what
   # the new version would change in AWS.
   - package-ecosystem: terraform
@@ -48,5 +52,5 @@ updates:
       time: "06:00"
       timezone: America/New_York
     commit-message:
-      prefix: chore
+      prefix: fix
       include: scope
