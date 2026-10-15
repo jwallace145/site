@@ -274,6 +274,24 @@ export const DATA = {
       image: "",
       video: "",
     },
+    {
+      title: "Terraform Library",
+      href: "https://github.com/jwallace145/terraform-library",
+      dates: "October 2026 - Present",
+      active: true,
+      description:
+        "A versioned library of Terraform modules that my projects consume to build cloud resources in a standard, organized way. Today it covers the HTTPS static-site pattern behind every JWall Engineering site: hardened S3 buckets, CloudFront with ACM certificates and Route 53 DNS, PR preview distributions, and tightly scoped GitHub OIDC roles for CI. The library is pure modules: it holds no state and creates no infrastructure on its own. Consumers pin whichever modules they need to a release tag cut by release-please from conventional commits. The plan is to grow it into a production-grade foundation for the infrastructure needs across all of my projects.",
+      technologies: ["Terraform", "AWS", "S3", "CloudFront", "Route 53", "GitHub Actions"],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/jwallace145/terraform-library",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "",
+    },
   ],
   // TODO: hackathons, if any. The section is disabled above until you add some.
   hackathons: [
