@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.0](https://github.com/jwallace145/site/compare/v1.22.0...v1.23.0) (2026-10-15)
+
+
+### Features
+
+* **infra:** manage hosting with the jwall-engineering registry module ([#53](https://github.com/jwallace145/site/issues/53)) ([95d01db](https://github.com/jwallace145/site/commit/95d01db0611b74f4083d5f70381ee1d93bc5914d))
+
 ## [1.22.0](https://github.com/jwallace145/site/compare/v1.21.0...v1.22.0) (2026-10-15)
 
 
