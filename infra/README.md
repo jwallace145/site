@@ -1,238 +1,149 @@
 # Infrastructure
 
-Terraform for the site, split into a reusable module and one thin root per
-environment that applies it with this project's standards. Only `prod` exists
-today; a `dev` or `staging` environment would be a sibling directory with its
-own committed `terraform.tfvars` and state key
-(`environment=<env>/terraform.tfstate`). Applied manually by the owner; CI
-runs `terraform fmt -check`, `terraform validate` and a read-only plan.
+Terraform for serving <https://jwall.engineering/> from S3 + CloudFront in the
+jwall-engineering AWS account (`650503560686`, `us-east-1`). Applied by CI only, when a
+Release Please release PR is merged. Nobody runs `terraform apply` locally.
 
-```
-infra/
-  modules/static-site/   the module: S3 + CloudFront (OAC), OIDC deploy role, budget
-    naming.tf            <prefix>-<domain>-<resource> naming standard, all names in one place
-    main.tf              web: site bucket
-    cloudfront.tf        web: distribution, headers, function, optional ACM + Route 53
-    iam.tf               deploy: deploy role (release) and read-only plan role (PRs)
-    budget.tf            billing: monthly cost alert
-    variables.tf  outputs.tf  versions.tf  function/
-  modules/preview-site/  PR previews: preview bucket + CloudFront, OIDC preview role, shared 404 page
-    naming.tf  main.tf  cloudfront.tf  iam.tf  variables.tf  outputs.tf  versions.tf  files/
-  environments/prod/     the root you run terraform in; dev/staging would be siblings
-    main.tf              computes names + tags, calls the module
-    variables.tf         the interface: validated variables, environment-neutral defaults
-    terraform.tfvars     the prod environment's values (committed; nothing secret)
-    providers.tf         default_tags carry the standard tags
-    backend.tf           S3 backend: jwall-engineering-site-tfstate, key environment=prod/terraform.tfstate
-    outputs.tf           values for the GitHub `production` and `preview` environments
-  scripts/
-    bootstrap-state-bucket.sh   creates the state bucket with the standard tags
-```
+## What it creates
 
-## Standards
+Two module blocks from the public registry module
+[`jwallace145/jwall-engineering/aws`](https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest),
+pinned to an exact version in `context.tf` and `main.tf`:
 
-**Names** follow `<project>-<domain>-<resource>`, where `domain` is the logical
-area (`web`, `deploy`, `billing`). Bucket names are deterministic (no random
-suffix): they are global, so `project` must be distinctive, and the state
-bucket is `<project>-tfstate`. With `project = "jwall-engineering-site"`:
+| Module | Creates |
+| --- | --- |
+| `context` | Nothing. Derives the tag set for the provider's `default_tags` and the bucket name `jwall-engineering-main-site`. The `Project` tag is what the apply role's IAM policy keys on. |
+| `site` (root module) | ACM certificate, CloudFront distribution, index-rewrite function and Route 53 alias for `jwall.engineering` served from `<bucket>/prod`; a wildcard certificate and distribution for `*.preview.jwall.engineering` served from `<bucket>/previews/pr-<n>`. |
 
-| Resource                      | Name                                          |
-| ----------------------------- | --------------------------------------------- |
-| S3 bucket                     | `jwall-engineering-site-web-bucket`     |
-| Origin access control         | `jwall-engineering-site-web-oac`                     |
-| CloudFront distribution       | `jwall-engineering-site-web-cdn` (comment + Name tag) |
-| Response headers policy       | `jwall-engineering-site-web-security-headers`        |
-| CloudFront function           | `jwall-engineering-site-web-rewrite-index`           |
-| ACM certificate (optional)    | `jwall-engineering-site-web-certificate` (Name tag)  |
-| IAM role (deploy)             | `jwall-engineering-site-deploy-github-role`          |
-| IAM role policy (deploy)      | `jwall-engineering-site-deploy-github-policy`        |
-| IAM role (plan, read-only)    | `jwall-engineering-site-deploy-github-plan-role`     |
-| IAM role policy (plan)        | `jwall-engineering-site-deploy-github-plan-policy`   |
-| OIDC provider                 | `jwall-engineering-site-deploy-github-oidc` (Name tag) |
-| Budget                        | `jwall-engineering-site-billing-monthly`             |
-| ACM certificate (previews)    | `jwall-engineering-site-preview-certificate` (Name tag) |
-| S3 bucket (previews)          | `jwall-engineering-site-preview-bucket` |
-| Origin access control (previews) | `jwall-engineering-site-preview-oac`              |
-| CloudFront distribution (previews) | `jwall-engineering-site-preview-cdn`            |
-| Response headers policy (previews) | `jwall-engineering-site-preview-security-headers` |
-| IAM role (previews)           | `jwall-engineering-site-preview-github-role`         |
-| IAM role policy (previews)    | `jwall-engineering-site-preview-github-policy`       |
-| IAM role policy (plan → previews) | `jwall-engineering-site-preview-github-plan-policy` |
+The bucket, the three CI roles and the hosted zone are owned by
+[`jwallace145/jwall-engineering-infra`](https://github.com/jwallace145/jwall-engineering-infra),
+which registers this site under the project key `main-site` in `projects.tf`. This stack
+only references them. There is no `dev` environment; the apply role is only allowed to
+change the production and preview record names.
 
-`terraform output resource_names` prints the full list.
+| File | Owns |
+| --- | --- |
+| `versions.tf`, `providers.tf` | Terraform `>= 1.11`, AWS provider `~> 6.0`, region, `default_tags` |
+| `backend.tf`, `backend/prod.hcl` | State in `jwall-engineering-tfstate` at `project=main-site/env=prod/main-site-prod.tfstate`, native lockfile locking |
+| `context.tf`, `main.tf` | The two module blocks |
+| `variables.tf`, `terraform.tfvars` | `domain_name` and `zone_id`. The zone ID is hardcoded because the CI roles may not list hosted zones. |
+| `outputs.tf` | Bucket name and production distribution ID; the deploy workflow reads them with `terraform output -raw` |
+| `.terraform.lock.hcl` | Provider checksums for `linux_amd64` (CI) and `darwin_arm64` (local) |
+| `.tflint.hcl` | tflint rules, same as the infra repo |
 
-**Tags** on every taggable resource, via provider `default_tags`:
+Not provided by the module, and therefore gone since the migration: the `www.` redirect
+to the apex, the monthly budget alert, and the custom security-headers policy of the old
+local modules.
 
-| Tag           | Default value               |
-| ------------- | --------------------------- |
-| `Project`     | `jwall-engineering-site`          |
-| `Owner`       | `jwallace145`               |
-| `Environment` | `prod`                      |
-| `ManagedBy`   | `terraform`                 |
-| `Repository`  | `github.com/jwallace145/site` |
-| `Name`        | the resource's name above   |
+## Bucket layout
 
-Add more with `identity.extra_tags`.
+| Prefix | Served at | Written by |
+| --- | --- | --- |
+| `prod/` | `https://jwall.engineering/` | the `deploy` job in `release.yml`, with the apply role |
+| `previews/pr-<n>/` | `https://pr-<n>.preview.jwall.engineering/` | `preview.yml`, with the preview role; removed when the PR closes, and expired after 14 days by lifecycle rule |
 
-## Prerequisites
+## CI roles
 
-- Terraform `>= 1.11`
-- AWS CLI authenticated as an admin in the target account (`aws sts get-caller-identity`)
-- Optional: a Route 53 hosted zone, only if you want a custom domain now
+Three IAM roles, created by the infra repo, assumed through GitHub OIDC. No long-lived
+keys anywhere.
 
-## 1. Bootstrap the state bucket (once)
+| Role | Repository variable | Trusted OIDC subject | Used by |
+| --- | --- | --- | --- |
+| `jwall-engineering-main-site-ci-plan` | `AWS_PLAN_ROLE_ARN` | `pull_request` | `terraform-plan` job in `ci.yml` |
+| `jwall-engineering-main-site-ci-preview` | `AWS_PREVIEW_ROLE_ARN` | `pull_request` | `preview.yml` |
+| `jwall-engineering-main-site-ci-apply` | `AWS_APPLY_ROLE_ARN` | `environment:prod` | `deploy` job in `release.yml` |
 
-State lives in `s3://jwall-engineering-site-tfstate` with native lockfile locking,
-so no DynamoDB table is needed. The key is `environment=prod/terraform.tfstate`;
-Terraform writes `environment=prod/terraform.tfstate.tflock` beside it while a
-write is in flight and removes it afterwards.
+The plan and preview jobs must **not** declare a GitHub environment: that would change
+the OIDC subject to `environment:<name>` and the role assumption would fail. The deploy
+job must run in the `prod` environment for the same reason.
 
-The bucket is created outside Terraform by a script that applies the same
-standard tags, plus versioning, encryption, public-access block and a
-90-day retention for old state versions. Re-running it is safe.
+## Workflows
 
-```bash
-infra/scripts/bootstrap-state-bucket.sh
+- **Pull requests** (`ci.yml`): `terraform` runs `fmt`, `validate` and `tflint` without
+  credentials and always runs, so it can be a required check. `terraform-plan` runs only
+  when `infra/` changed, assumes the plan role and posts the plan as a comment that is
+  replaced on every push. The plan is skipped for fork PRs.
+- **Pull requests** (`preview.yml`): builds the site, syncs it to `previews/pr-<n>/` and
+  comments the preview URL; deletes the prefix when the PR closes.
+- **Release** (`release.yml`): when a release PR is merged, the `deploy` job checks out the
+  tag, runs `terraform apply`, builds the site, syncs it to `prod/` with tiered
+  `Cache-Control` and invalidates `/*` on the production distribution.
+  `workflow_dispatch` redeploys the latest or a given tag.
+
+Merging to `main` does not deploy. A merged change goes live with the next release PR.
+
+## Local commands
+
+```sh
+cd infra
+terraform fmt -check -recursive
+terraform init -backend=false      # fetches the registry module, no credentials
+terraform validate
+tflint --init && tflint
 ```
 
-**Renaming the project** (changing `identity.project`) renames every resource.
-Most update in place, but buckets, IAM roles, the CloudFront function and the
-budget are replaced. The site bucket is the one that matters: remove it and its
-configuration from state (`terraform state rm`), apply with `-target` on the
-new bucket, `aws s3 sync` the old bucket into it, then apply the rest. That
-keeps the distribution serving the old bucket until the new one is full. State
-moves with a fresh bootstrap of `<project>-tfstate`, the new name in
-`backend.tf`, and `terraform init -migrate-state`. Finish by updating the role
-ARNs and bucket names on the GitHub environments and deleting the old buckets.
+A real plan needs the plan role or equivalent read-only credentials:
+`terraform init -backend-config=backend/prod.hcl && terraform plan`. Never apply locally.
 
-## Variables
+## Upgrading the module
 
-The root takes one object per concern; every field has a validation where
-its value has a shape, and `terraform.tfvars` sets them all:
+Dependabot's `terraform` ecosystem opens a `chore(deps)` PR when the registry module
+publishes a release. The plan comment on that PR shows what the new version changes in
+AWS. Read the module's
+[CHANGELOG](https://github.com/jwallace145/terraform-aws-jwall-engineering/blob/main/CHANGELOG.md),
+check the plan, merge; the change applies with the next release. Keep the two pins
+identical.
 
-| Object     | Fields                                                                                                      |
-| ---------- | ----------------------------------------------------------------------------------------------------------- |
-| `identity` | `project`, `owner`, `environment`, `repository`, `extra_tags`                                               |
-| `aws`      | `region`                                                                                                    |
-| `dns`      | `hosted_zone_id` (the zone is owned by `jwall-engineering-infra`)                                            |
-| `domain`   | `name`, `www_redirect`                                                                                      |
-| `site`     | `price_class`, `error_caching_min_ttl`                                                                      |
-| `github`   | `repository`, `owner_id`, `repository_id`, `environment`, `create_oidc_provider`                            |
-| `preview`  | `enabled`, `github_environment`, `key_prefix`, `retention_days`, `price_class`, `error_caching_min_ttl`, `robots_tag`, `extra_response_headers`, `use_custom_domain`, `domain_name` |
-| `billing`  | `alert_email`, `monthly_budget_usd`                                                                         |
+## Owner hand-off and cutover
 
-The modules follow the same style: `static-site` takes `site`, `github`,
-`plan`, `billing`; `preview-site` takes `previews`, `domain`, `github`,
-`shared`. `terraform-docs`-style detail lives in
-each module's `variables.tf` descriptions.
+This site used to be managed by local Terraform modules in this directory (bucket
+`jwall-engineering-site-web-bucket`, state in `jwall-engineering-site-tfstate`). The new
+stack creates a fresh set of resources, and both stacks cannot own the same names, so the
+old one is destroyed first. Expect a few minutes of downtime between step 4 and step 6
+(ACM validation and CloudFront creation). One-time steps that need the owner's credentials
+or the GitHub UI, in order:
 
-## 2. Configure
+1. **Infra repo applied** with `main-site` in `projects.tf` (it is). Confirm the bucket
+   `jwall-engineering-main-site` and the three `jwall-engineering-main-site-ci-*` roles
+   exist.
 
-`infra/environments/prod/terraform.tfvars` is committed and describes the
-whole environment; edit it in a PR like any other code. Nothing in it is
-secret. If a sensitive input is ever needed, declare it in `variables.tf`
-with `sensitive = true` and no default, and pass it at plan/apply time
-(`TF_VAR_<name>=... terraform apply` or `-var`); CI would read it from a
-repository secret the same way. Personal overrides go in a git-ignored
-`*.local.tfvars` passed with `-var-file`.
+2. **`prod` environment and repository variables**: the `gh` commands are in
+   `docs/repo-setup.md` section 5. Until they are set, previews and the plan comment on
+   the migration PR fail to assume a role.
 
-The account already has an OIDC provider for
-`token.actions.githubusercontent.com`, so `github.create_oidc_provider = false` and
-the module looks it up. Confirm it accepts the `sts.amazonaws.com` audience
-the deploy role trusts:
+3. **Merge the migration PR.** Nothing deploys yet; Release Please opens a release PR.
+   (The old stack keeps serving the site.)
 
-```bash
-aws iam get-open-id-connect-provider \
-  --open-id-connect-provider-arn "$(aws iam list-open-id-connect-providers \
-    --query 'OpenIDConnectProviderList[?contains(Arn, `token.actions.githubusercontent.com`)].Arn' --output text)" \
-  --query ClientIDList
-```
+4. **Destroy the old stack** from a checkout of the last commit that still has it
+   (`16acbbc`), using the old admin profile:
 
-## 3. Init, plan, apply
+   ```sh
+   git worktree add ../site-old 16acbbc
+   cd ../site-old/infra/environments/prod
+   export AWS_PROFILE=prog-strength-admin
+   terraform init
+   terraform output resource_names                 # confirm the two bucket names below
+   aws s3 rm s3://jwall-engineering-site-web-bucket --recursive
+   aws s3 rm s3://jwall-engineering-site-preview-bucket --recursive
+   terraform plan -destroy   # check: no hosted zone, only site and preview resources
+   terraform destroy
+   ```
 
-```bash
-terraform init                  # backend is fully configured in backend.tf
-terraform plan -out=tfplan      # review names and tags here
-terraform apply tfplan
-```
+   The zone is not in that state (it moved to the infra repo), so the destroy removes only
+   the distributions, certificates, buckets, IAM roles, budget and the apex, `www` and
+   `preview` records.
 
-The first apply takes several minutes while CloudFront deploys. With a custom
-domain it also waits for ACM DNS validation.
+5. **Merge the release PR** immediately afterwards (or re-run the Release workflow with
+   `workflow_dispatch`). The deploy job creates the certificates, distributions and
+   records, builds the tag and syncs it to `prod/`. If it fails waiting on ACM validation,
+   re-run it.
 
-## 4. Wire up GitHub
+6. **Verify** <https://jwall.engineering/> and a PR preview at
+   `https://pr-<n>.preview.jwall.engineering/`.
 
-```bash
-terraform output github_environment_variables   # -> `production` environment variables
-terraform output github_repository_variables    # -> repository variables (PR plan check)
-```
-
-The first set goes on the GitHub Environment `production` as environment
-**variables**. The second set goes on the repository itself for the `terraform-plan` PR
-check.
-`docs/repo-setup.md` section 5 has the `gh` commands.
-
-## GitHub OIDC trust
-
-Both roles trust the account's existing `token.actions.githubusercontent.com`
-provider (owned by another project; this stack only reads it). The repository
-has GitHub's **immutable OIDC subject** enabled, so tokens carry
-`repo:jwallace145@<user id>/site@<repo id>:...`. The trust policies accept
-both that and the plain `repo:jwallace145/site:...` form, so toggling the
-setting never breaks deploys. The IDs are plain variables in
-`environments/prod/variables.tf`.
-
-| Role                                      | Trusts                                   | Can                                                    |
-| ----------------------------------------- | ---------------------------------------- | ------------------------------------------------------ |
-| `jwall-engineering-site-deploy-github-role`      | jobs in the `production` environment     | write the site bucket, invalidate CloudFront           |
-| `jwall-engineering-site-deploy-github-plan-role` | `pull_request` workflows in this repo    | read state and the stack's resources (`terraform plan`) |
-| `jwall-engineering-site-preview-github-role`     | jobs in the `preview` environment        | write `pr-*/` in the preview bucket, invalidate the preview CDN |
-
-## PR plan check
-
-The `terraform-plan` job in `.github/workflows/ci.yml` runs when a PR touches
-`infra/**`, assumes the plan role, runs `terraform plan -lock=false` against
-prod, and posts the result as a sticky PR comment. It is informational, not a
-required check: PRs from forks get no OIDC token, so it only runs for branches
-in this repository.
-
-## PR previews
-
-`modules/preview-site` is applied from the prod root when
-`preview.enabled = true`. One private bucket and one distribution host every
-open PR under `pr-<n>/`; a lifecycle rule expires those keys after
-`preview.retention_days`. The shared `404.html` at the bucket root is
-uploaded by Terraform. Every knob is a field of the `preview` object in the
-committed `terraform.tfvars`.
-
-After apply: `terraform output github_preview_environment_variables` goes on
-the GitHub `preview` environment (`docs/repo-setup.md` section 5c).
-
-## DNS and custom domain
-
-The `jwall.engineering` hosted zone is owned by
-[`jwallace145/jwall-engineering-infra`](https://github.com/jwallace145/jwall-engineering-infra);
-`dns.hosted_zone_id` in `terraform.tfvars` points at it. This stack creates
-only the records the site needs: the site module attaches `domain.name` (the
-apex) plus `www.` as a 301 redirect, and the preview module attaches
-`preview.jwall.engineering`, each with its ACM validation records.
-Certificates are ACM in us-east-1 with DNS validation. Records for other
-projects (for example `guitar.jwall.engineering`) are owned by those projects'
-repositories, and zone-level records (CAA) by the infra repo.
-
-Until October 2026 this stack created the zone itself through a `dns-zone`
-module. The zone was imported into the infra repo and removed from this
-stack's state with `terraform state rm 'module.dns[0]'`, so nothing was
-destroyed. The registrar is GoDaddy; only the nameservers point at Route 53.
-
-## Cache behaviour
-
-- `_astro/*` (content-hashed): `public, max-age=31536000, immutable`
-- HTML: `public, max-age=0, must-revalidate`
-- Managed `CachingOptimized` policy; every deploy invalidates `/*`.
-
-## Destroy
-
-```bash
-aws s3 rm "s3://$(terraform output -raw site_bucket_name)" --recursive
-terraform destroy
-```
+7. **Afterwards**: delete the `production` and `preview` GitHub environments and the
+   repository variable `AWS_REGION` (`gh api -X DELETE repos/jwallace145/site/environments/production`,
+   likewise `preview`), delete the old state bucket `jwall-engineering-site-tfstate`, and
+   add `terraform` to the `main` ruleset's required checks if it is not there already.
+   `www.jwall.engineering` no longer resolves; add a redirect to the registry module if
+   it is wanted back.
