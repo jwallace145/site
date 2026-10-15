@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/jwallace145/site/compare/v1.19.0...v1.20.0) (2026-10-15)
+
+
+### Features
+
+* add the guitar knowledge base to projects and point guitar.jwall.engineering at it ([#46](https://github.com/jwallace145/site/issues/46)) ([1ea3521](https://github.com/jwallace145/site/commit/1ea352127ee0b161904b2d2eac15cfd95f21afed))
+
 ## [1.19.0](https://github.com/jwallace145/site/compare/v1.18.0...v1.19.0) (2026-10-12)
 
 
