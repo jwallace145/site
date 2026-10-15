@@ -23,7 +23,11 @@ type(optional-scope): subject
 ```
 
 - **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`,
-  `build`, `ci`, `chore`, `revert`. Breaking changes add `!`: `feat!: ...`.
+  `build`, `ci`, `chore`, `deps`, `revert`. Breaking changes add `!`:
+  `feat!: ...`.
+- Use `deps` for dependency updates that change what ships (npm packages,
+  Terraform modules and providers). Dependabot opens these as `deps: bump ...`.
+  CI-only bumps such as GitHub Actions stay `chore(deps)`.
 - Lowercase type and scope, imperative subject, no trailing period, header at
   most 100 characters.
 - **No body.** Explanations, context and screenshots go in the PR description.
@@ -37,7 +41,7 @@ Good:
 feat: add dark mode toggle
 fix(blog): sort posts by published date
 docs: explain release flow
-chore(deps): bump astro to 6.3.0
+deps: bump astro to 6.3.0
 feat!: require node 24
 
 feat(infra): add budget alert
@@ -71,6 +75,7 @@ write the changelog:
 | `feat`             | minor bump                         | Features          |
 | `fix`              | patch bump                         | Bug Fixes         |
 | `perf`             | patch bump                         | Performance       |
+| `deps`             | patch bump                         | Dependencies      |
 | `revert`           | patch bump                         | Reverts           |
 | `docs`             | patch bump                         | Documentation     |
 | `type!` / breaking | minor bump while `0.x`, else major | marked breaking   |
