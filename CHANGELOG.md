@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.0](https://github.com/jwallace145/site/compare/v1.21.0...v1.22.0) (2026-10-15)
+
+
+### Features
+
+* **content:** present the terraform module as a registry-published project ([#50](https://github.com/jwallace145/site/issues/50)) ([77db81c](https://github.com/jwallace145/site/commit/77db81cfdaaf21a0835b225f078c03aba2f82b57))
+
 ## [1.21.0](https://github.com/jwallace145/site/compare/v1.20.0...v1.21.0) (2026-10-15)
 
 
