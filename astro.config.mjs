@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
+import { unified } from "@astrojs/markdown-remark";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
 import { loadEnv } from "vite";
@@ -44,17 +45,16 @@ export default defineConfig({
 
   integrations: [
     react(),
-    mdx({
-      remarkPlugins: [remarkGfm, remarkCodeMeta],
-      rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
-      syntaxHighlight: false,
-    }),
+    // MDX inherits the plugins from `markdown.processor`.
+    mdx({ syntaxHighlight: false }),
     sitemap(),
   ],
 
   markdown: {
     syntaxHighlight: false,
-    remarkPlugins: [remarkGfm, remarkCodeMeta],
-    rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+    processor: unified({
+      remarkPlugins: [remarkGfm, remarkCodeMeta],
+      rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+    }),
   },
 });
