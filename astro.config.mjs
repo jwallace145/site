@@ -10,10 +10,10 @@ import { loadEnv } from "vite";
 import { remarkCodeMeta } from "./src/lib/remark-code-meta.ts";
 import { CONFIG } from "./src/data/config.ts";
 
-// SITE_URL and BASE_PATH come from the environment (CI sets them from the
-// GitHub Environment). SITE_URL falls back to the placeholder in
-// src/data/config.ts; BASE_PATH defaults to "/" and is only set for PR
-// previews, which are served under /pr-<n>/.
+// SITE_URL and BASE_PATH come from the environment (CI sets SITE_URL per
+// workflow). SITE_URL falls back to the placeholder in src/data/config.ts;
+// BASE_PATH defaults to "/" (previews get their own hostname, so CI no longer
+// sets it).
 const { SITE_URL, BASE_PATH } = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
 
 /** @type {import('rehype-pretty-code').Options} */

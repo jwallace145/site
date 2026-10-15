@@ -118,33 +118,20 @@ jobs:
 
   terraform:
     name: terraform
+    # Always runs (so it can be a required check) and needs no AWS credentials.
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    defaults:
+      run:
+        working-directory: infra
     steps:
       # actions/checkout v7.0.1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          fetch-depth: 0
           persist-credentials: false
 
-      - name: Detect infra changes
-        id: changes
-        # This job always runs so it can be a required status check; the
-        # Terraform steps only execute when infra/ changed in this PR.
-        run: |
-          if [ -d infra ] && ! git diff --quiet "$BASE_SHA" "$HEAD_SHA" -- infra/; then
-            echo "infra=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "infra=false" >> "$GITHUB_OUTPUT"
-            echo "No changes under infra/, skipping Terraform checks."
-          fi
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-
       - name: Setup Terraform
-        if: steps.changes.outputs.infra == 'true'
         # hashicorp/setup-terraform v4.0.1
         uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e
         with:
@@ -152,19 +139,26 @@ jobs:
           terraform_wrapper: false
 
       - name: terraform fmt
-        if: steps.changes.outputs.infra == 'true'
         run: terraform fmt -check -recursive -diff
-        working-directory: infra
 
       - name: terraform init
-        if: steps.changes.outputs.infra == 'true'
         run: terraform init -backend=false -input=false
-        working-directory: infra/environments/prod
 
       - name: terraform validate
-        if: steps.changes.outputs.infra == 'true'
         run: terraform validate -no-color
-        working-directory: infra/environments/prod
+
+      - name: Setup tflint
+        # terraform-linters/setup-tflint v6.3.2
+        uses: terraform-linters/setup-tflint@6ffdbaa3be476b3431f7275c26966ef32ff60337
+
+      - name: tflint
+        run: |
+          tflint --init
+          tflint
+        env:
+          # Downloads the AWS ruleset from GitHub releases; unauthenticated
+          # requests from shared runners hit the API rate limit.
+          GITHUB_TOKEN: ${{ github.token }}
 
   terraform-plan:
     name: terraform-plan
@@ -211,29 +205,29 @@ jobs:
         uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
         with:
           role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: us-east-1
           role-session-name: github-plan-pr${{ github.event.pull_request.number }}
 
       - name: terraform init
         if: steps.changes.outputs.infra == 'true'
-        run: terraform init -input=false
-        working-directory: infra/environments/prod
+        run: terraform init -input=false -backend-config=backend/prod.hcl
+        working-directory: infra
 
       - name: terraform plan
         if: steps.changes.outputs.infra == 'true'
         id: plan
-        # -lock=false: the plan role can read state but never writes the lock.
+        # The plan role may write the state lock, so locking stays on.
         # -detailed-exitcode: 0 = no changes, 2 = changes, 1 = error.
         run: |
           set +e
-          terraform plan -input=false -lock=false -no-color -detailed-exitcode -out=tfplan > plan.log 2>&1
+          terraform plan -input=false -lock-timeout=60s -no-color -detailed-exitcode -out=tfplan > plan.log 2>&1
           code=$?
           set -e
           echo "exitcode=$code" >> "$GITHUB_OUTPUT"
           cat plan.log
           if [ "$code" = "1" ]; then exit 1; fi
           terraform show -no-color tfplan > plan.txt
-        working-directory: infra/environments/prod
+        working-directory: infra
 
       - name: Comment plan on PR
         if: steps.changes.outputs.infra == 'true' && always()
@@ -244,30 +238,30 @@ jobs:
           SHA: ${{ github.event.pull_request.head.sha }}
           EXITCODE: ${{ steps.plan.outputs.exitcode }}
         run: |
-          marker='<!-- terraform-plan:infra/environments/prod -->'
+          marker='<!-- terraform-plan:infra -->'
           case "$EXITCODE" in
             0) status='No changes. Prod matches this branch.' ;;
-            2) status="$(grep -E '^Plan:' infra/environments/prod/plan.txt || echo 'Changes detected.')" ;;
+            2) status="$(grep -E '^Plan:' infra/plan.txt || echo 'Changes detected.')" ;;
             *) status='Plan failed. See the job log.' ;;
           esac
           body_file=$(mktemp)
           {
             echo "$marker"
-            echo "## Terraform plan (\`infra/environments/prod\`) for $SHA"
+            echo "## Terraform plan (\`infra\`) for $SHA"
             echo
             echo "**$status**"
             echo
-            if [ -s infra/environments/prod/plan.txt ]; then
+            if [ -s infra/plan.txt ]; then
               echo '<details><summary>Full plan</summary>'
               echo
               echo '```hcl'
-              head -c 60000 infra/environments/prod/plan.txt
+              head -c 60000 infra/plan.txt
               echo
               echo '```'
               echo '</details>'
-            elif [ -s infra/environments/prod/plan.log ]; then
+            elif [ -s infra/plan.log ]; then
               echo '```'
-              tail -c 20000 infra/environments/prod/plan.log
+              tail -c 20000 infra/plan.log
               echo '```'
             fi
           } > "$body_file"

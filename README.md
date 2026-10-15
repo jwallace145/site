@@ -12,12 +12,12 @@ GitHub Actions.
 
 ## Stack
 
-| Layer   | Choice                                                                                                  |
-| ------- | ------------------------------------------------------------------------------------------------------- |
-| Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                  |
-| Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest |
-| Hosting | S3 (private, OAC) + CloudFront, Terraform module in [`infra/`](infra/)                                  |
-| CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                  |
+| Layer   | Choice                                                                                                                        |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                                        |
+| Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest                       |
+| Hosting | S3 (private, OAC) + CloudFront, Terraform in [`infra/`](infra/) using the registry module `jwallace145/jwall-engineering/aws` |
+| CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                                        |
 
 ## Local development
 
@@ -72,8 +72,8 @@ Every change is a PR, squash-merged into `main` as a single one-line
     tag vX.Y.Z + GitHub Release
           │
           ▼
-  deploy job (environment: production)
-    checkout tag → pnpm build → OIDC → aws s3 sync → CloudFront invalidation
+  deploy job (environment: prod)
+    checkout tag → OIDC → terraform apply → pnpm build → aws s3 sync → CloudFront invalidation
           │
           ▼
   live site
@@ -85,12 +85,10 @@ Every change is a PR, squash-merged into `main` as a single one-line
 
 ### PR previews
 
-Every pull request from a branch in this repository is built with
-`BASE_PATH=/pr-<n>` and published to a separate preview bucket + CloudFront
-distribution at `https://<preview-cdn>/pr-<n>/`. The URL is posted as a
-sticky comment and as the PR's `preview` deployment; the prefix is deleted
-when the PR closes. Previews send `X-Robots-Tag: noindex`. Forks get no
-preview (no OIDC token). See [`infra/README.md`](infra/README.md).
+Every pull request from a branch in this repository is built and published to
+`https://pr-<n>.preview.jwall.engineering/` (the `previews/pr-<n>/` prefix of the
+site bucket). The URL is posted as a sticky comment; the prefix is deleted
+when the PR closes. Forks get no preview (no OIDC token). See [`infra/README.md`](infra/README.md).
 
 - Details: [CONTRIBUTING.md](CONTRIBUTING.md), [infra/README.md](infra/README.md),
   [docs/repo-setup.md](docs/repo-setup.md).
@@ -99,8 +97,7 @@ preview (no OIDC token). See [`infra/README.md`](infra/README.md).
 
 ```
 src/                 Astro site
-infra/modules/       static-site (S3, CloudFront, OIDC role, budget) and preview-site Terraform modules
-infra/environments/  one root per environment (prod today) applying the module with the project's names and tags
+infra/               Terraform root: the registry module for the CloudFront distributions and DNS records
 tools/commitlint/    custom "one-line commit" rule and its tests
 .github/             workflows (ci, release, preview), composite setup action, templates, dependabot
 docs/repo-setup.md   one-time GitHub configuration (gh commands)

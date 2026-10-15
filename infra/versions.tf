@@ -5,8 +5,6 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 6.0"
-      # CloudFront only accepts ACM certificates from us-east-1.
-      configuration_aliases = [aws.us_east_1]
     }
   }
 }

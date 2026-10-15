@@ -140,13 +140,18 @@ gh secret set RELEASE_BOT_PRIVATE_KEY --repo "$REPO" < /path/to/private-key.pem
 
 Delete the local `.pem` once stored.
 
-## 5. `production` environment
+## 5. `prod` environment and AWS role variables
 
-Created after `terraform apply` in `infra/environments/prod/` (see `infra/README.md`). The values are not
-secret, so they are environment **variables**.
+The bucket and the three CI roles are created by
+[`jwall-engineering-infra`](https://github.com/jwallace145/jwall-engineering-infra)
+(project key `main-site`); apply it first. The values are not secret, so they
+are **variables**. The apply role trusts the `environment:prod` OIDC subject,
+so the deploy job must run in an environment with exactly that name. The plan
+and preview roles trust `pull_request`, so those jobs must not declare an
+environment.
 
 ```bash
-gh api -X PUT "repos/$REPO/environments/production" --input - <<'JSON'
+gh api -X PUT "repos/$REPO/environments/prod" --input - <<'JSON'
 {
   "deployment_branch_policy": {
     "protected_branches": false,
@@ -158,56 +163,23 @@ JSON
 # The policy applies to the ref the workflow RUN was triggered from, not to
 # what the job checks out. The Release workflow runs from main (push and
 # workflow_dispatch); release tags are also allowed for manual dispatch.
-gh api -X POST "repos/$REPO/environments/production/deployment-branch-policies" \
+gh api -X POST "repos/$REPO/environments/prod/deployment-branch-policies" \
   -f name='main' -f type=branch
-gh api -X POST "repos/$REPO/environments/production/deployment-branch-policies" \
+gh api -X POST "repos/$REPO/environments/prod/deployment-branch-policies" \
   -f name='v*' -f type=tag
 
-# From infra/environments/prod/: terraform output github_environment_variables
-gh variable set AWS_ROLE_ARN               --env production --repo "$REPO" --body "arn:aws:iam::<account>:role/jwall-engineering-site-deploy-github-role"
-gh variable set AWS_REGION                 --env production --repo "$REPO" --body "us-east-1"
-gh variable set S3_BUCKET                  --env production --repo "$REPO" --body "<site bucket name>"
-gh variable set CLOUDFRONT_DISTRIBUTION_ID --env production --repo "$REPO" --body "<distribution id>"
-gh variable set SITE_URL                   --env production --repo "$REPO" --body "https://jwall.engineering"
+gh variable set AWS_PLAN_ROLE_ARN    --repo "$REPO" --body "arn:aws:iam::650503560686:role/jwall-engineering-main-site-ci-plan"
+gh variable set AWS_PREVIEW_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::650503560686:role/jwall-engineering-main-site-ci-preview"
+gh variable set AWS_APPLY_ROLE_ARN   --repo "$REPO" --body "arn:aws:iam::650503560686:role/jwall-engineering-main-site-ci-apply"
 ```
 
 Optional: add yourself as a required reviewer on the environment for a second
 human gate before deploys. Merging the release PR is already the gate, so this
 is off by default.
 
-## 5b. Repository variables for the PR plan check
-
-The `terraform-plan` CI job assumes a read-only role on pull requests. These
-are **repository** variables (not environment):
-
-```bash
-# From infra/environments/prod/: terraform output github_repository_variables
-gh variable set AWS_PLAN_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::<account>:role/jwall-engineering-site-deploy-github-plan-role"
-gh variable set AWS_REGION        --repo "$REPO" --body "us-east-1"
-```
-
 > This repository has GitHub's immutable OIDC subject enabled
-> (`gh api repos/$REPO/actions/oidc/customization/sub`). The IAM trust
-> policies in `infra/` accept both the immutable and the plain subject.
-
-## 5c. `preview` environment (PR previews)
-
-Created after `terraform apply` with `preview.enabled = true`. No branch
-policy: any PR from this repository may deploy a preview.
-
-```bash
-gh api -X PUT "repos/$REPO/environments/preview" --input - <<'JSON'
-{ "deployment_branch_policy": null }
-JSON
-
-# From infra/environments/prod/: terraform output github_preview_environment_variables
-gh variable set AWS_ROLE_ARN               --env preview --repo "$REPO" --body "arn:aws:iam::<account>:role/jwall-engineering-site-preview-github-role"
-gh variable set AWS_REGION                 --env preview --repo "$REPO" --body "us-east-1"
-gh variable set S3_BUCKET                  --env preview --repo "$REPO" --body "<preview bucket name>"
-gh variable set CLOUDFRONT_DISTRIBUTION_ID --env preview --repo "$REPO" --body "<preview distribution id>"
-gh variable set SITE_URL                   --env preview --repo "$REPO" --body "https://preview.jwall.engineering"
-gh variable set PREVIEW_KEY_PREFIX         --env preview --repo "$REPO" --body "pr-"
-```
+> (`gh api repos/$REPO/actions/oidc/customization/sub`). The infra repo passes
+> the owner and repository IDs so the roles trust that form.
 
 ## 6. Verify
 
@@ -215,11 +187,9 @@ gh variable set PREVIEW_KEY_PREFIX         --env preview --repo "$REPO" --body "
 gh repo view "$REPO" --json squashMergeAllowed,mergeCommitAllowed,rebaseMergeAllowed,deleteBranchOnMerge
 gh api "repos/$REPO/rulesets" --jq '.[].name'
 gh secret list --repo "$REPO"
-gh variable list --env production --repo "$REPO"
-gh variable list --env preview --repo "$REPO"
 gh variable list --repo "$REPO"
 ```
 
-Open a trivial PR (e.g. `docs: test pr checks`) and confirm all six checks
+Open a trivial PR (e.g. `docs: test pr checks`) and confirm all checks
 appear and pass, then merge it. Release Please opens the first release PR
 (`chore(main): release 0.1.0`); merging it tags `v0.1.0` and deploys.
