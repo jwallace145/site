@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/jwallace145/site/compare/v1.20.0...v1.21.0) (2026-10-15)
+
+
+### Features
+
+* **content:** add the terraform library to projects ([#48](https://github.com/jwallace145/site/issues/48)) ([79d0fc1](https://github.com/jwallace145/site/commit/79d0fc1089cbe5fe45fc17725e0f29cac13d7da1))
+
 ## [1.20.0](https://github.com/jwallace145/site/compare/v1.19.0...v1.20.0) (2026-10-15)
 
 
