@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/jwallace145/site/compare/v1.23.0...v1.23.1) (2026-10-15)
+
+
+### Miscellaneous
+
+* release 1.23.1 ([#64](https://github.com/jwallace145/site/issues/64)) ([a75383a](https://github.com/jwallace145/site/commit/a75383a2d8b306a1dc4d6f289deaefd87cee1a56))
+
 ## [1.23.0](https://github.com/jwallace145/site/compare/v1.22.0...v1.23.0) (2026-10-15)
 
 
