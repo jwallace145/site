@@ -251,6 +251,29 @@ export const DATA = {
       image: "/projects/cs-survival-guide-thumbnail.png",
       video: "",
     },
+    {
+      title: "Guitar Knowledge Base",
+      href: "https://guitar.jwall.engineering/",
+      dates: "October 2026 - Present",
+      active: true,
+      description:
+        "An open-source knowledge base for guitar: theory, the fretboard, technique, and repertoire, written up as I study them and kept in one place. Not an engineering project at heart, but it shares the CS Survival Guide's internals: a Zensical site with conventional commits, automated releases, and a strict build in CI, with a custom pipeline for generating fretboard and chord diagrams on the roadmap. Music is a large part of who I am, so this one is public from day one and grows as I learn.",
+      technologies: ["Zensical", "Markdown", "Music Theory", "GitHub Pages"],
+      links: [
+        {
+          type: "Website",
+          href: "https://guitar.jwall.engineering/",
+          icon: <Icons.globe className="size-3" />,
+        },
+        {
+          type: "Source",
+          href: "https://github.com/jwallace145/guitar-knowledge-base",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "",
+    },
   ],
   // TODO: hackathons, if any. The section is disabled above until you add some.
   hackathons: [
