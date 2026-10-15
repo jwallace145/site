@@ -275,17 +275,22 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Terraform Library",
-      href: "https://github.com/jwallace145/terraform-library",
+      title: "JWall Engineering Terraform Module",
+      href: "https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest",
       dates: "October 2026 - Present",
       active: true,
       description:
-        "A versioned library of Terraform modules that my projects consume to build cloud resources in a standard, organized way. Today it covers the HTTPS static-site pattern behind every JWall Engineering site: hardened S3 buckets, CloudFront with ACM certificates and Route 53 DNS, PR preview distributions, and tightly scoped GitHub OIDC roles for CI. The library is pure modules: it holds no state and creates no infrastructure on its own. Consumers pin whichever modules they need to a release tag cut by release-please from conventional commits. The plan is to grow it into a production-grade foundation for the infrastructure needs across all of my projects.",
-      technologies: ["Terraform", "AWS", "S3", "CloudFront", "Route 53", "GitHub Actions"],
+        "A public, MIT-licensed Terraform module published to the Terraform Registry as jwallace145/jwall-engineering/aws. The root module deploys the complete static-site stack behind every JWall Engineering site: CloudFront distributions with ACM certificates and Route 53 aliases for production, an optional dev environment, and per-pull-request preview URLs, all served from one hardened S3 bucket. Five composable submodules (context, site-bucket, site-ci-roles, static-site, preview-site) cover naming and tagging conventions, bucket hardening, and least-privilege GitHub OIDC roles for CI. The module holds no state and configures no providers; consumers pin a semantic version cut by release-please, with every input and output documented by terraform-docs and validated in CI. It is the foundation my own projects build on and will grow to cover their infrastructure needs over time.",
+      technologies: ["Terraform", "AWS", "CloudFront", "S3", "Route 53", "IAM", "GitHub Actions"],
       links: [
         {
+          type: "Registry",
+          href: "https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest",
+          icon: <Package className="size-3" />,
+        },
+        {
           type: "Source",
-          href: "https://github.com/jwallace145/terraform-library",
+          href: "https://github.com/jwallace145/terraform-aws-jwall-engineering",
           icon: <Icons.github className="size-3" />,
         },
       ],
