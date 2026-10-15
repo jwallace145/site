@@ -22,6 +22,8 @@ dns = {
   records = {
     # CS Survival Guide, hosted on GitHub Pages from jwallace145/cs-survival-guide.
     "survival-guide" = { type = "CNAME", values = ["jwallace145.github.io."] }
+    # Guitar Knowledge Base, hosted on GitHub Pages from jwallace145/guitar-knowledge-base.
+    "guitar" = { type = "CNAME", values = ["jwallace145.github.io."] }
     # GitHub Pages verified domain for the jwallace145 account: proves ownership
     # of jwall.engineering so no other account can publish Pages on its subdomains.
     "_github-pages-challenge-jwallace145" = { type = "TXT", values = ["278aa0fd98189307922e6679ba36f1"] }
