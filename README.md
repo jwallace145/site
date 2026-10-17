@@ -16,7 +16,7 @@ GitHub Actions.
 | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                                        |
 | Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest                       |
-| Hosting | S3 (private, OAC) + CloudFront, Terraform in [`infra/`](infra/) using the registry module `jwallace145/jwall-engineering/aws` |
+| Hosting | S3 (private, OAC) + CloudFront, described by [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml) and managed by the `jwall-engineering-sites` CLI from [jwall-engineering-infra](https://github.com/jwallace145/jwall-engineering-infra) |
 | CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                                        |
 
 ## Local development
@@ -72,8 +72,9 @@ Every change is a PR, squash-merged into `main` as a single one-line
     tag vX.Y.Z + GitHub Release
           │
           ▼
-  deploy job (environment: prod)
-    checkout tag → OIDC → terraform apply → pnpm build → aws s3 sync → CloudFront invalidation
+  build job: checkout tag → pnpm build → artifact
+  deploy (reusable site-deploy.yml, environment: prod)
+    OIDC → jwall-engineering-sites release: terraform apply → sync prod/ → CloudFront invalidation
           │
           ▼
   live site
@@ -88,16 +89,16 @@ Every change is a PR, squash-merged into `main` as a single one-line
 Every pull request from a branch in this repository is built and published to
 `https://pr-<n>.preview.jwall.engineering/` (the `previews/pr-<n>/` prefix of the
 site bucket). The URL is posted as a sticky comment; the prefix is deleted
-when the PR closes. Forks get no preview (no OIDC token). See [`infra/README.md`](infra/README.md).
+when the PR closes. Forks get no preview (no OIDC token). Publishing and
+cleanup are the reusable `site-preview.yml` workflow from jwall-engineering-infra.
 
-- Details: [CONTRIBUTING.md](CONTRIBUTING.md), [infra/README.md](infra/README.md),
-  [docs/repo-setup.md](docs/repo-setup.md).
+- Details: [CONTRIBUTING.md](CONTRIBUTING.md), [docs/repo-setup.md](docs/repo-setup.md).
 
 ## Repository layout
 
 ```
 src/                 Astro site
-infra/               Terraform root: the registry module for the CloudFront distributions and DNS records
+jwall-engineering-sites.yaml   the site's infrastructure, managed by the jwall-engineering-sites CLI
 tools/commitlint/    custom "one-line commit" rule and its tests
 .github/             workflows (ci, release, preview), composite setup action, templates, dependabot
 docs/repo-setup.md   one-time GitHub configuration (gh commands)

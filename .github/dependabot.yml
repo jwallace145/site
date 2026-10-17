@@ -44,13 +44,3 @@ updates:
   # Opens a fix(deps) PR when the jwall-engineering registry module or the
   # AWS provider publishes a release. The plan comment on that PR shows what
   # the new version would change in AWS.
-  - package-ecosystem: terraform
-    directory: /infra
-    schedule:
-      interval: weekly
-      day: monday
-      time: "06:00"
-      timezone: America/New_York
-    commit-message:
-      prefix: fix
-      include: scope
