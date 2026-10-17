@@ -1,154 +1,63 @@
-name: Preview
-
-# Publishes a live preview of each pull request to
-# https://pr-<n>.preview.jwall.engineering/ and removes it when the PR closes.
-# The build is uploaded to previews/pr-<n>/ in the project's site bucket with
-# the preview CI role; the wildcard preview distribution created by infra/
-# routes the hostname to that prefix. Fork PRs receive no OIDC token, so both
-# jobs only run for branches in this repository. Informational: not a
-# required check.
+# Pull request previews: builds the Astro site for its preview hostname and
+# hands it to the jwall-engineering-sites reusable workflow, which publishes it
+# to https://pr-<n>.preview.jwall.engineering/ as the preview role and removes
+# it when the pull request closes. Hashed assets under _astro/ are uploaded as
+# immutable (site.immutable_paths in jwall-engineering-sites.yaml), HTML as
+# must-revalidate, the rest with a short cache.
 #
-# Neither job declares a GitHub environment: the preview role trusts the
-# `pull_request` OIDC subject, and an environment would change it.
+# Fork PRs receive no OIDC token, so the jobs only run for branches in this
+# repository. Neither job declares a GitHub environment: the preview role
+# trusts the `pull_request` OIDC subject, and an environment would change it.
+name: Preview
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
 
-permissions:
-  contents: read
+permissions: {}
 
 concurrency:
   group: preview-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
-env:
-  AWS_REGION: us-east-1
-  # Owned by jwallace145/jwall-engineering-infra; also module.context.bucket_name in infra/.
-  S3_BUCKET: jwall-engineering-main-site
-  PR_NUMBER: ${{ github.event.pull_request.number }}
-  PREFIX: previews/pr-${{ github.event.pull_request.number }}
-  PREVIEW_URL: https://pr-${{ github.event.pull_request.number }}.preview.jwall.engineering
-  COMMENT_MARKER: "<!-- preview-deploy -->"
-
 jobs:
-  deploy:
-    name: deploy
+  build:
+    name: build
     if: >-
       github.event.action != 'closed' &&
       github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # OIDC token for the preview role
-      pull-requests: write # sticky preview comment
     steps:
       # actions/checkout v7.0.1
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
-
       - uses: ./.github/actions/setup
-
       - name: Build
         run: pnpm build
         env:
-          SITE_URL: ${{ env.PREVIEW_URL }}
-
-      - name: Configure AWS credentials (OIDC, preview role)
-        # aws-actions/configure-aws-credentials v6.3.0
-        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
+          SITE_URL: https://pr-${{ github.event.pull_request.number }}.preview.jwall.engineering
+      # actions/upload-artifact v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          role-to-assume: ${{ vars.AWS_PREVIEW_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
-          role-session-name: github-preview-pr${{ env.PR_NUMBER }}
+          name: site
+          path: dist
+          retention-days: 1
 
-      - name: Sync to S3
-        # The preview distribution caps edge caching at five minutes, so no
-        # invalidation is needed.
-        run: |
-          set -euo pipefail
-          dest="s3://$S3_BUCKET/$PREFIX/"
-
-          # 1. Everything except HTML and hashed assets: short cache.
-          aws s3 sync dist/ "$dest" \
-            --delete \
-            --exclude "*.html" \
-            --exclude "_astro/*" \
-            --cache-control "public, max-age=300"
-
-          # 2. Hashed assets under _astro/: cache forever.
-          aws s3 sync dist/_astro/ "${dest}_astro/" \
-            --delete \
-            --cache-control "public, max-age=31536000, immutable"
-
-          # 3. HTML: always revalidate so each push shows up immediately.
-          aws s3 sync dist/ "$dest" \
-            --delete \
-            --exclude "*" \
-            --include "*.html" \
-            --cache-control "public, max-age=0, must-revalidate" \
-            --content-type "text/html; charset=utf-8"
-
-      - name: Comment preview URL
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          url="$PREVIEW_URL/"
-          body_file=$(mktemp)
-          {
-            echo "$COMMENT_MARKER"
-            echo "## Preview"
-            echo
-            echo "**$url**"
-            echo
-            echo "Built from $SHA. Updated on every push; removed when the PR closes."
-          } > "$body_file"
-          existing=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
-            --jq ".[] | select(.body | startswith(\"$COMMENT_MARKER\")) | .id" | head -n1)
-          if [ -n "$existing" ]; then
-            gh api -X PATCH "repos/$GH_REPO/issues/comments/$existing" -F body=@"$body_file" >/dev/null
-          else
-            gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" -F body=@"$body_file" >/dev/null
-          fi
-          { echo "## Preview"; echo; echo "- $url"; } >> "$GITHUB_STEP_SUMMARY"
-
-  cleanup:
-    name: cleanup
+  preview:
+    name: preview
+    needs: build
     if: >-
-      github.event.action == 'closed' &&
-      github.event.pull_request.head.repo.full_name == github.repository
-    runs-on: ubuntu-latest
+      !cancelled() &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (github.event.action == 'closed' || needs.build.result == 'success')
+    uses: jwallace145/jwall-engineering-infra/.github/workflows/site-preview.yml@v0.8.0
+    with:
+      artifact: site
+      preview-role-arn: ${{ vars.AWS_PREVIEW_ROLE_ARN }}
     permissions:
       contents: read
-      id-token: write
-      pull-requests: write
-    steps:
-      - name: Configure AWS credentials (OIDC, preview role)
-        # aws-actions/configure-aws-credentials v6.3.0
-        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd
-        with:
-          role-to-assume: ${{ vars.AWS_PREVIEW_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
-          role-session-name: github-preview-cleanup-pr${{ env.PR_NUMBER }}
-
-      - name: Remove preview objects
-        # Objects under previews/ also expire after 14 days by bucket lifecycle.
-        # `aws s3 rm --recursive` on an empty prefix exits 0.
-        run: aws s3 rm "s3://$S3_BUCKET/$PREFIX/" --recursive
-
-      - name: Update preview comment
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          existing=$(gh api "repos/$GH_REPO/issues/$PR_NUMBER/comments" --paginate \
-            --jq ".[] | select(.body | startswith(\"$COMMENT_MARKER\")) | .id" | head -n1)
-          if [ -n "$existing" ]; then
-            printf '%s\n## Preview\n\nRemoved: this pull request is closed.\n' "$COMMENT_MARKER" > body.md
-            gh api -X PATCH "repos/$GH_REPO/issues/comments/$existing" -F body=@body.md >/dev/null
-          else
-            echo "No preview comment to update."
-          fi
+      id-token: write # the preview role, through OIDC
+      pull-requests: write # the sticky preview comment

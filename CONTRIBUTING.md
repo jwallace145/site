@@ -102,15 +102,15 @@ pnpm dev                   # http://localhost:4321
 
 These run in CI on every PR and (where it makes sense) in the pre-commit hook:
 
-| Command                                              | What it checks                                     |
-| ---------------------------------------------------- | -------------------------------------------------- |
-| `pnpm format:check`                                  | Prettier formatting (`pnpm format` to fix)         |
-| `pnpm lint`                                          | ESLint (`pnpm lint:fix` to fix)                    |
-| `pnpm check`                                         | `astro check`: TypeScript and template diagnostics |
-| `pnpm build`                                         | Static build succeeds                              |
-| `pnpm test`                                          | commitlint rule unit tests                         |
-| `terraform fmt`, `validate` and `tflint` in `infra/` | every PR (no AWS credentials needed)               |
-| `BASE_PATH=/pr-0 pnpm build`                         | links honour Astro `base` (needed for PR previews) |
+| Command                           | What it checks                                       |
+| --------------------------------- | ---------------------------------------------------- |
+| `pnpm format:check`               | Prettier formatting (`pnpm format` to fix)           |
+| `pnpm lint`                       | ESLint (`pnpm lint:fix` to fix)                      |
+| `pnpm check`                      | `astro check`: TypeScript and template diagnostics   |
+| `pnpm build`                      | Static build succeeds                                |
+| `pnpm test`                       | commitlint rule unit tests                           |
+| `plan` (reusable `site-plan.yml`) | validates `jwall-engineering-sites.yaml`, plans prod |
+| `BASE_PATH=/pr-0 pnpm build`      | links honour Astro `base` (needed for PR previews)   |
 
 To skip the hooks once (e.g. a WIP commit you will squash): `LEFTHOOK=0 git commit ...`.
 CI still enforces everything.
@@ -130,9 +130,9 @@ Releases are automated and human-gated:
    updates `CHANGELOG.md` from the conventional commits since the last tag,
    and shows exactly what will ship.
 2. Nothing merges on its own. The owner merges the release PR when ready.
-3. That merge creates the `vX.Y.Z` tag and GitHub Release, and the **deploy**
-   job in the same workflow applies `infra/`, builds that tag, syncs it to
-   S3, then invalidates CloudFront.
+3. That merge creates the `vX.Y.Z` tag and GitHub Release; the same workflow
+   builds that tag and the reusable **deploy** workflow applies the
+   infrastructure, syncs the build to S3 and invalidates CloudFront.
 
 Versions start at `0.1.0`. While below `1.0.0`, breaking changes bump the
 minor version. The `Release` workflow can also be run manually to redeploy
@@ -149,7 +149,7 @@ src/data/config.ts       site URL, SEO, theme
 src/content/blog/        MDX posts
 src/components/          React islands and UI
 src/pages/               Astro routes
-infra/                   Terraform root using the jwallace145/jwall-engineering/aws registry module
+jwall-engineering-sites.yaml  the site's infrastructure, managed by the jwall-engineering-sites CLI
 tools/commitlint/        custom commitlint rule + tests
 .github/workflows/       ci.yml (PR checks), release.yml (release + deploy)
 docs/repo-setup.md       one-time GitHub configuration
