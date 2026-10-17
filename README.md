@@ -12,12 +12,12 @@ GitHub Actions.
 
 ## Stack
 
-| Layer   | Choice                                                                                                                        |
-| ------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                                        |
-| Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest                       |
+| Layer   | Choice                                                                                                                                                                                                                                              |
+| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                                                                                                                                                              |
+| Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest                                                                                                                                             |
 | Hosting | S3 (private, OAC) + CloudFront, described by [`jwall-engineering-sites.yaml`](jwall-engineering-sites.yaml) and managed by the `jwall-engineering-sites` CLI from [jwall-engineering-infra](https://github.com/jwallace145/jwall-engineering-infra) |
-| CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                                        |
+| CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                                                                                                                                                              |
 
 ## Local development
 
