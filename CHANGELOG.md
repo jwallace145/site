@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/jwallace145/site/compare/v1.23.1...v1.24.0) (2026-10-17)
+
+
+### Features
+
+* **ci:** manage the infrastructure with jwall-engineering-sites ([#68](https://github.com/jwallace145/site/issues/68)) ([e3c0bf4](https://github.com/jwallace145/site/commit/e3c0bf42e0b4696afea469d6459d0270cf3105f9))
+
 ## [1.23.1](https://github.com/jwallace145/site/compare/v1.23.0...v1.23.1) (2026-10-15)
 
 
