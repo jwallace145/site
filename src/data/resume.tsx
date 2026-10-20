@@ -12,6 +12,11 @@ import { Docker } from "@/components/ui/svgs/docker";
 import { Kubernetes } from "@/components/ui/svgs/kubernetes";
 import { Nodejs } from "@/components/ui/svgs/nodejs";
 
+// Upper bound on a project card's description, enforced by resume.test.ts.
+// The cards share a row, so a long description costs vertical space for the
+// whole section; a pitch fits in a few sentences.
+export const PROJECT_DESCRIPTION_MAX_CHARS = 550;
+
 export const DATA = {
   name: "Jimmy Wallace",
   initials: "JW",
@@ -280,7 +285,7 @@ export const DATA = {
       dates: "October 2026 - Present",
       active: true,
       description:
-        "A Python CLI (Typer, uv) that provisions and publishes every JWall Engineering static site from a single YAML file in its repository. Site repos keep no Terraform: the CLI renders a shared site stack built on my own jwallace145/jwall-engineering/aws modules from the Terraform Registry, runs it against a central, hardened state bucket with a per-project, per-environment key convention, syncs the built content to S3, and invalidates CloudFront. Its validate, plan, preview, apply and publish commands are shipped as a versioned container image and run through reusable GitHub Actions workflows that post sticky plan comments on pull requests, deploy per-PR preview URLs, and release to production under least-privilege GitHub OIDC roles. Any number of sites can be onboarded the same way, so adding one is a config file and four workflow calls. The repo also owns the foundation stack that the CLI and the module library sit on: the state bucket, the hosted zone, and the per-project buckets and CI roles.",
+        "A Python CLI (Typer) that provisions and publishes every JWall Engineering site from one YAML file, built on my own Terraform Registry modules. Site repos keep no Terraform: the CLI renders a shared stack against a central hardened state bucket, syncs content to S3, and invalidates CloudFront. Its plan, preview, apply and publish commands ship as a versioned image behind reusable GitHub Actions workflows: plan comments on PRs, per-PR preview URLs, and OIDC-scoped production releases. Adding a site is a config file and four workflow calls.",
       technologies: [
         "Python",
         "Typer",
