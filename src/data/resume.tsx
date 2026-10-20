@@ -12,6 +12,11 @@ import { Docker } from "@/components/ui/svgs/docker";
 import { Kubernetes } from "@/components/ui/svgs/kubernetes";
 import { Nodejs } from "@/components/ui/svgs/nodejs";
 
+// Upper bound on a project card's description, enforced by resume.test.ts.
+// The cards share a row, so a long description costs vertical space for the
+// whole section; a pitch fits in a few sentences.
+export const PROJECT_DESCRIPTION_MAX_CHARS = 550;
+
 export const DATA = {
   name: "Jimmy Wallace",
   initials: "JW",
@@ -275,21 +280,37 @@ export const DATA = {
       video: "",
     },
     {
-      title: "JWall Engineering Terraform Module",
-      href: "https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest",
+      title: "JWall Engineering Sites CLI",
+      href: "https://github.com/jwallace145/jwall-engineering-infra",
       dates: "October 2026 - Present",
       active: true,
       description:
-        "A public, MIT-licensed Terraform module published to the Terraform Registry as jwallace145/jwall-engineering/aws. The root module deploys the complete static-site stack behind every JWall Engineering site: CloudFront distributions with ACM certificates and Route 53 aliases for production, an optional dev environment, and per-pull-request preview URLs, all served from one hardened S3 bucket. Five composable submodules (context, site-bucket, site-ci-roles, static-site, preview-site) cover naming and tagging conventions, bucket hardening, and least-privilege GitHub OIDC roles for CI. The module holds no state and configures no providers; consumers pin a semantic version cut by release-please, with every input and output documented by terraform-docs and validated in CI. It is the foundation my own projects build on and will grow to cover their infrastructure needs over time.",
-      technologies: ["Terraform", "AWS", "CloudFront", "S3", "Route 53", "IAM", "GitHub Actions"],
+        "A Python CLI (Typer) that provisions and publishes every JWall Engineering site from one YAML file, built on my own Terraform Registry modules. Site repos keep no Terraform: the CLI renders a shared stack against a central hardened state bucket, syncs content to S3, and invalidates CloudFront. Its plan, preview, apply and publish commands ship as a versioned image behind reusable GitHub Actions workflows: plan comments on PRs, per-PR preview URLs, and OIDC-scoped production releases. Adding a site is a config file and four workflow calls.",
+      technologies: [
+        "Python",
+        "Typer",
+        "Terraform",
+        "AWS",
+        "S3",
+        "CloudFront",
+        "Route 53",
+        "IAM",
+        "Docker",
+        "GitHub Actions",
+      ],
       links: [
+        {
+          type: "Source",
+          href: "https://github.com/jwallace145/jwall-engineering-infra",
+          icon: <Icons.github className="size-3" />,
+        },
         {
           type: "Registry",
           href: "https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest",
           icon: <Package className="size-3" />,
         },
         {
-          type: "Source",
+          type: "Modules",
           href: "https://github.com/jwallace145/terraform-aws-jwall-engineering",
           icon: <Icons.github className="size-3" />,
         },
