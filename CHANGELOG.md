@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/jwallace145/site/compare/v1.24.1...v1.25.0) (2026-10-20)
+
+
+### Features
+
+* **projects:** replace Terraform module listing with the Sites CLI ([#75](https://github.com/jwallace145/site/issues/75)) ([d941c35](https://github.com/jwallace145/site/commit/d941c35a4bcd588664af0feb59d594c869fad2c3))
+
 ## [1.24.1](https://github.com/jwallace145/site/compare/v1.24.0...v1.24.1) (2026-10-19)
 
 
