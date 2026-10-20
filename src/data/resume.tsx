@@ -275,21 +275,37 @@ export const DATA = {
       video: "",
     },
     {
-      title: "JWall Engineering Terraform Module",
-      href: "https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest",
+      title: "JWall Engineering Sites CLI",
+      href: "https://github.com/jwallace145/jwall-engineering-infra",
       dates: "October 2026 - Present",
       active: true,
       description:
-        "A public, MIT-licensed Terraform module published to the Terraform Registry as jwallace145/jwall-engineering/aws. The root module deploys the complete static-site stack behind every JWall Engineering site: CloudFront distributions with ACM certificates and Route 53 aliases for production, an optional dev environment, and per-pull-request preview URLs, all served from one hardened S3 bucket. Five composable submodules (context, site-bucket, site-ci-roles, static-site, preview-site) cover naming and tagging conventions, bucket hardening, and least-privilege GitHub OIDC roles for CI. The module holds no state and configures no providers; consumers pin a semantic version cut by release-please, with every input and output documented by terraform-docs and validated in CI. It is the foundation my own projects build on and will grow to cover their infrastructure needs over time.",
-      technologies: ["Terraform", "AWS", "CloudFront", "S3", "Route 53", "IAM", "GitHub Actions"],
+        "A Python CLI (Typer, uv) that provisions and publishes every JWall Engineering static site from a single YAML file in its repository. Site repos keep no Terraform: the CLI renders a shared site stack built on my own jwallace145/jwall-engineering/aws modules from the Terraform Registry, runs it against a central, hardened state bucket with a per-project, per-environment key convention, syncs the built content to S3, and invalidates CloudFront. Its validate, plan, preview, apply and publish commands are shipped as a versioned container image and run through reusable GitHub Actions workflows that post sticky plan comments on pull requests, deploy per-PR preview URLs, and release to production under least-privilege GitHub OIDC roles. Any number of sites can be onboarded the same way, so adding one is a config file and four workflow calls. The repo also owns the foundation stack that the CLI and the module library sit on: the state bucket, the hosted zone, and the per-project buckets and CI roles.",
+      technologies: [
+        "Python",
+        "Typer",
+        "Terraform",
+        "AWS",
+        "S3",
+        "CloudFront",
+        "Route 53",
+        "IAM",
+        "Docker",
+        "GitHub Actions",
+      ],
       links: [
+        {
+          type: "Source",
+          href: "https://github.com/jwallace145/jwall-engineering-infra",
+          icon: <Icons.github className="size-3" />,
+        },
         {
           type: "Registry",
           href: "https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest",
           icon: <Package className="size-3" />,
         },
         {
-          type: "Source",
+          type: "Modules",
           href: "https://github.com/jwallace145/terraform-aws-jwall-engineering",
           icon: <Icons.github className="size-3" />,
         },
