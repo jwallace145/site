@@ -124,7 +124,7 @@ jobs:
     if: >-
       github.event.action != 'edited' &&
       github.event.pull_request.head.repo.full_name == github.repository
-    uses: jwallace145/jwall-engineering-infra/.github/workflows/site-plan.yml@v0.8.1
+    uses: jwallace145/jwall-engineering-infra/.github/workflows/site-plan.yml@v0.10.1
     with:
       plan-role-arn: ${{ vars.AWS_PLAN_ROLE_ARN }}
     permissions:
