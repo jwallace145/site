@@ -2,7 +2,7 @@
 // `DATA` and should not need to change. Content mirrors the latest release of
 // https://github.com/jwallace145/resume.
 import { Icons } from "@/components/icons";
-import { BookOpen, Guitar, House, Library, Mountain, Package } from "lucide-react";
+import { BookOpen, Crown, Guitar, House, Library, Mountain, Package } from "lucide-react";
 import { Typescript } from "@/components/ui/svgs/typescript";
 import { Python } from "@/components/ui/svgs/python";
 import { Java } from "@/components/ui/svgs/java";
@@ -231,6 +231,29 @@ export const DATA = {
         },
       ],
       image: "",
+      video: "",
+    },
+    {
+      title: "Braveheart",
+      href: "https://github.com/jwallace145/rusty-chess-v2",
+      dates: "November 2025 - Present",
+      active: true,
+      description:
+        "A UCI chess engine in Rust: a heavily optimized alpha-beta search paired with an NNUE evaluator trained on 3.2 billion self-play, self-labeled positions I curate in S3 and train on AWS GPUs. Every change must earn its merge: CI benchmarks speed and search efficiency against bars that only rise, and changes ship only after passing SPRT gates for Elo. Rated about 3,170 Elo on a Stockfish-calibrated ladder and live as a Lichess bot on infra from my JWall Engineering CLI. Named for the Scotch Opening and my ancestor William Wallace.",
+      technologies: ["Rust", "NNUE", "Alpha-Beta Search", "SPRT", "CUDA", "AWS", "GitHub Actions"],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/jwallace145/rusty-chess-v2",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Lichess",
+          href: "https://lichess.org/@/jwallace145",
+          icon: <Crown className="size-3" />,
+        },
+      ],
+      image: "/projects/braveheart-thumbnail.png",
       video: "",
     },
     {
