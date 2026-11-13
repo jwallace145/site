@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.26.0](https://github.com/jwallace145/site/compare/v1.25.1...v1.26.0) (2026-11-13)
+
+
+### Features
+
+* **projects:** add Braveheart chess engine project ([#86](https://github.com/jwallace145/site/issues/86)) ([0004f01](https://github.com/jwallace145/site/commit/0004f01c64c2bef3e1610e9b4178d1ce3c0c3f01))
+
+
+### Bug Fixes
+
+* **deps:** bump the npm-minor-and-patch group with 7 updates ([#82](https://github.com/jwallace145/site/issues/82)) ([3b02330](https://github.com/jwallace145/site/commit/3b0233022e8d23aebc5c98076434566cdcacbd40))
+
 ## [1.25.1](https://github.com/jwallace145/site/compare/v1.25.0...v1.25.1) (2026-10-26)
 
 
