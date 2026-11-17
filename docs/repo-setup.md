@@ -143,7 +143,7 @@ Delete the local `.pem` once stored.
 ## 5. `prod` environment and AWS role variables
 
 The bucket and the three CI roles are created by
-[`jwall-engineering-infra`](https://github.com/jwallace145/jwall-engineering-infra)
+[`jaws`](https://github.com/jwallace145/jaws)
 (project key `main-site`); apply it first. The values are not secret, so they
 are **variables**. The apply role trusts the `environment:prod` OIDC subject,
 so the deploy job must run in an environment with exactly that name. The plan
