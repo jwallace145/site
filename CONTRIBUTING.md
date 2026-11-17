@@ -109,7 +109,7 @@ These run in CI on every PR and (where it makes sense) in the pre-commit hook:
 | `pnpm check`                      | `astro check`: TypeScript and template diagnostics   |
 | `pnpm build`                      | Static build succeeds                                |
 | `pnpm test`                       | commitlint rule unit tests                           |
-| `plan` (reusable `site-plan.yml`) | validates `jwall-engineering-sites.yaml`, plans prod |
+| `plan` (reusable `site-plan.yml`) | validates `jaws.yaml`, plans prod |
 | `BASE_PATH=/pr-0 pnpm build`      | links honour Astro `base` (needed for PR previews)   |
 
 To skip the hooks once (e.g. a WIP commit you will squash): `LEFTHOOK=0 git commit ...`.
@@ -149,7 +149,7 @@ src/data/config.ts       site URL, SEO, theme
 src/content/blog/        MDX posts
 src/components/          React islands and UI
 src/pages/               Astro routes
-jwall-engineering-sites.yaml  the site's infrastructure, managed by the jwall-engineering-sites CLI
+jaws.yaml  the site's infrastructure, managed by the jaws CLI
 tools/commitlint/        custom commitlint rule + tests
 .github/workflows/       ci.yml (PR checks), release.yml (release + deploy)
 docs/repo-setup.md       one-time GitHub configuration

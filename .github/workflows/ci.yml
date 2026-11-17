@@ -118,13 +118,13 @@ jobs:
 
   plan:
     name: plan
-    # The jwall-engineering-sites CLI validates jwall-engineering-sites.yaml
+    # The jaws CLI validates jaws.yaml
     # and plans the infrastructure as the plan role; the plan is a sticky PR
     # comment. Fork PRs receive no OIDC token.
     if: >-
       github.event.action != 'edited' &&
       github.event.pull_request.head.repo.full_name == github.repository
-    uses: jwallace145/jaws/.github/workflows/site-plan.yml@v0.19.0
+    uses: jwallace145/jaws/.github/workflows/site-plan.yml@v0.48.0
     with:
       plan-role-arn: ${{ vars.AWS_PLAN_ROLE_ARN }}
     permissions:

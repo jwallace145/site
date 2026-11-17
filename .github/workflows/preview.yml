@@ -1,8 +1,8 @@
 # Pull request previews: builds the Astro site for its preview hostname and
-# hands it to the jwall-engineering-sites reusable workflow, which publishes it
+# hands it to the Jaws reusable workflow, which publishes it
 # to https://pr-<n>.preview.jwall.engineering/ as the preview role and removes
 # it when the pull request closes. Hashed assets under _astro/ are uploaded as
-# immutable (site.immutable_paths in jwall-engineering-sites.yaml), HTML as
+# immutable (site.immutable_paths in jaws.yaml), HTML as
 # must-revalidate, the rest with a short cache.
 #
 # Fork PRs receive no OIDC token, so the jobs only run for branches in this
@@ -53,7 +53,7 @@ jobs:
       !cancelled() &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       (github.event.action == 'closed' || needs.build.result == 'success')
-    uses: jwallace145/jaws/.github/workflows/site-preview.yml@v0.19.0
+    uses: jwallace145/jaws/.github/workflows/site-preview.yml@v0.48.0
     with:
       artifact: site
       preview-role-arn: ${{ vars.AWS_PREVIEW_ROLE_ARN }}
