@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.1](https://github.com/jwallace145/site/compare/v1.26.0...v1.26.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* **ci:** build and deploy a release dispatched by hand ([#92](https://github.com/jwallace145/site/issues/92)) ([c9d13e5](https://github.com/jwallace145/site/commit/c9d13e523e20034a63dec26d219a04b0d11f6ecb))
+
 ## [1.26.0](https://github.com/jwallace145/site/compare/v1.25.1...v1.26.0) (2026-11-13)
 
 
