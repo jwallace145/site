@@ -124,7 +124,7 @@ jobs:
     if: >-
       github.event.action != 'edited' &&
       github.event.pull_request.head.repo.full_name == github.repository
-    uses: Jaws-Platform/jaws/.github/workflows/site-plan.yml@v0.56.0
+    uses: Jaws-Platform/jaws/.github/workflows/site-plan.yml@v0.73.0
     with:
       plan-role-arn: ${{ vars.AWS_PLAN_ROLE_ARN }}
     permissions:
