@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.0](https://github.com/jwallace145/site/compare/v1.26.2...v1.27.0) (2026-11-21)
+
+
+### Features
+
+* feature JAWS and point Braveheart at its organization ([#99](https://github.com/jwallace145/site/issues/99)) ([9cb145c](https://github.com/jwallace145/site/commit/9cb145cb9b7129e72cbd0d6c4865f73b06bd39af))
+
 ## [1.26.2](https://github.com/jwallace145/site/compare/v1.26.1...v1.26.2) (2026-11-21)
 
 
