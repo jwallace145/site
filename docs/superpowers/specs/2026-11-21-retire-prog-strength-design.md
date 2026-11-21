@@ -1,7 +1,7 @@
 # Retire Prog Strength
 
 **Date:** 2026-11-21
-**Status:** design, pending approval
+**Status:** approved and implemented
 
 ## Why
 
