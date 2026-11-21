@@ -12,12 +12,12 @@ GitHub Actions.
 
 ## Stack
 
-| Layer   | Choice                                                                                                                                               |
-| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                                                               |
-| Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest                                              |
-| Hosting | S3 (private, OAC) + CloudFront, described by [`jaws.yaml`](jaws.yaml) and managed by the `jaws` CLI from [jaws](https://github.com/jwallace145/jaws) |
-| CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                                                               |
+| Layer   | Choice                                                                                                                                                 |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Site    | Astro (static output), TypeScript, React islands, Tailwind CSS v4, MDX                                                                                 |
+| Tooling | pnpm (pinned via `packageManager`), Node LTS (`.nvmrc`), ESLint, Prettier, commitlint, lefthook, Vitest                                                |
+| Hosting | S3 (private, OAC) + CloudFront, described by [`jaws.yaml`](jaws.yaml) and managed by the `jaws` CLI from [jaws](https://github.com/Jaws-Platform/jaws) |
+| CI/CD   | GitHub Actions: PR checks, Release Please, OIDC deploy                                                                                                 |
 
 ## Local development
 
