@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/jwallace145/site/compare/v1.27.0...v1.28.0) (2026-11-21)
+
+
+### Features
+
+* retire Prog Strength as an archived portfolio project ([#104](https://github.com/jwallace145/site/issues/104)) ([cb222a4](https://github.com/jwallace145/site/commit/cb222a4f845d4fa243277c4008e83f88b36e7d95))
+
 ## [1.27.0](https://github.com/jwallace145/site/compare/v1.26.2...v1.27.0) (2026-11-21)
 
 
