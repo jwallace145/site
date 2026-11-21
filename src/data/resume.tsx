@@ -2,7 +2,7 @@
 // `DATA` and should not need to change. Content mirrors the latest release of
 // https://github.com/jwallace145/resume.
 import { Icons } from "@/components/icons";
-import { BookOpen, Crown, Guitar, House, Library, Mountain, Package } from "lucide-react";
+import { Archive, BookOpen, Crown, Guitar, House, Library, Mountain, Package } from "lucide-react";
 import { Typescript } from "@/components/ui/svgs/typescript";
 import { Python } from "@/components/ui/svgs/python";
 import { Java } from "@/components/ui/svgs/java";
@@ -22,9 +22,13 @@ export const DATA = {
   initials: "JW",
   location: "Denver, CO",
   locationLink: "https://www.google.com/maps/place/Denver,+CO",
-  description: "Software engineer with a passion for AI. Founder of Prog Strength.",
-  summary:
-    "I'm a software engineer with six years of experience building cloud platforms and backend services. Today I lead DevOps for Data Lake Platforms at [Charter Communications](/#work), where I build serverless AWS services and architect data platforms used across the organization. Before that I owned EC2's metering service at [AWS](/#work) and built container tooling at [Capital One](/#work). On the side I'm building [Prog Strength](/#projects), an AI-native fitness platform with a conversational coach as its primary interface. I studied Computer Science and Engineering at [The Ohio State University](/#education) with a minor in mathematics and a concentration in artificial intelligence.",
+  description: "Software engineer w/ a love of math, machine learning, and AI.",
+  summary: [
+    "I’m a software engineer with six years of experience building cloud platforms and backend services. At [Charter Communications](/#work), I lead the design and development of our managed [Databricks](https://www.databricks.com/) platform. We’re building it from the ground up to give teams across Charter governed access to our petabyte-scale data lake.",
+    "Before Charter, I spent nearly three years on the EC2 metering team at [AWS](/#work). I built systems that tracked EC2 instance and host usage worldwide with 99.999% accuracy, producing the records AWS relied on to calculate customers’ bills. In 2024, I helped build the metering behind AWS’s [public IPv4 billing changes](https://aws.amazon.com/blogs/aws/new-aws-public-ipv4-address-charge-public-ip-insights/), including Elastic IP usage. I’m especially proud of leading the cross-team effort to launch [cross-account billing for EC2 Capacity Reservations](https://aws.amazon.com/about-aws/whats-new/2024/10/assign-billing-shared-amazon-ec2-on-demand-capacity-reservations/).",
+    "I started my career at [Capital One](/#work) building cloud infrastructure for its robotic process automation platform. As part of the company’s broader cloud migration, I later helped build the pipeline that became Capital One’s standard for deploying services on [AWS Fargate](https://aws.amazon.com/fargate/), and used it to migrate services off ECS on EC2.",
+    "I earned my degree in computer science and engineering at [The Ohio State University](/#education), with a minor in mathematics and a concentration in AI. These days, I’m putting that background to work on [Braveheart](/#projects), a chess engine I’m building in my spare time. I train its neural network on billions of positions, all from games Braveheart has played against itself!",
+  ].join("\n\n"),
   // TODO: replace public/og_image.png with your own image.
   avatarUrl: "/jwall-engineering-avatar.png",
   ogImage: "/og_image.png",
@@ -58,7 +62,7 @@ export const DATA = {
       enabled: true,
       label: "Contact",
       heading: "Get in Touch",
-      text: "Want to chat about AI, cloud infrastructure, or Prog Strength? Send me a message on LinkedIn or drop me an email and I'll get back to you.",
+      text: "Want to chat about AI, cloud infrastructure, or any of my projects? Send me a message on LinkedIn or drop me an email and I'll get back to you.",
     },
   },
   // TODO: replace the placeholder photos in public/photos/ or disable the section above.
@@ -94,7 +98,7 @@ export const DATA = {
       name: "Philosophy",
       icon: BookOpen,
       description:
-        "I read philosophy in my spare time and enjoy a good dialogue on society and ethics. Currently reading [The Metamorphosis](https://en.wikipedia.org/wiki/The_Metamorphosis) by [Franz Kafka](https://en.wikipedia.org/wiki/Franz_Kafka).",
+        "I read philosophy in my spare time and enjoy a good dialogue on society and ethics. Currently reading [Crime and Punishment](https://en.wikipedia.org/wiki/Crime_and_Punishment) by [Fyodor Dostoevsky](https://en.wikipedia.org/wiki/Fyodor_Dostoevsky).",
     },
     {
       name: "Mountaineering",
@@ -305,20 +309,25 @@ export const DATA = {
     },
     {
       title: "Prog Strength",
-      href: "https://progstrength.fitness",
-      dates: "May 2026 - Present",
-      active: true,
+      href: "https://github.com/Prog-Strength",
+      dates: "May 2026 - November 2026",
+      active: false,
       description:
-        "An AI-native fitness platform (web + iOS beta) where a conversational AI coach is the primary interface: log lifts, track macros, and get strength, nutrition, and running coaching by text, voice, or meal photo. An MCP server is the strict boundary between the LLM and the Go API, exposing 20+ typed tools regression-tested by a 77-case eval harness in CI. Built with an autonomous AI development pipeline that dispatches Claude Code agents on ephemeral EC2 instances against written SOWs.",
+        "An AI-native fitness platform (web + iOS beta) where a conversational AI coach was the primary interface: log lifts, track macros, and get strength, nutrition, and running coaching by text, voice, or meal photo. An MCP server was the strict boundary between the LLM and the Go API, exposing 20+ typed tools regression-tested by a 77-case eval harness in CI. Built with an autonomous pipeline that dispatched Claude Code agents on ephemeral EC2 instances. Retired on purpose in November 2026 to cut hosting costs; the code and data are archived.",
       technologies: ["Go", "Next.js", "Expo", "FastAPI", "MCP", "AWS"],
       links: [
         {
-          type: "Website",
-          href: "https://progstrength.fitness",
-          icon: <Icons.globe className="size-3" />,
+          type: "GitHub",
+          href: "https://github.com/Prog-Strength",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Archive",
+          href: "https://github.com/Prog-Strength/prog-strength-archive",
+          icon: <Archive className="size-3" />,
         },
       ],
-      image: "",
+      image: "/projects/prog-strength-thumbnail.png",
       video: "",
     },
   ],

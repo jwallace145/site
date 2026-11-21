@@ -31,3 +31,21 @@ describe("ProjectCard media paths", () => {
     expect(html).toContain('src="https://x/y.png"');
   });
 });
+
+// A retired project stays in the portfolio, so its card has to say it is
+// archived on purpose; every other card says nothing.
+describe("ProjectCard archived badge", () => {
+  it("renders an Archived badge when active is false", () => {
+    const html = renderToStaticMarkup(
+      <ProjectCard title="T" description="d" dates="2026" tags={[]} active={false} />,
+    );
+    expect(html).toContain(">Archived<");
+  });
+
+  it("renders no badge when active is omitted", () => {
+    const html = renderToStaticMarkup(
+      <ProjectCard title="T" description="d" dates="2026" tags={[]} />,
+    );
+    expect(html).not.toContain("Archived");
+  });
+});

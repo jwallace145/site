@@ -26,6 +26,8 @@ interface Props {
   href?: string;
   description: string;
   dates: string;
+  // `false` marks a retired project: the card shows an "Archived" badge.
+  active?: boolean;
   tags: readonly string[];
   image?: string;
   video?: string;
@@ -42,6 +44,7 @@ export function ProjectCard({
   href,
   description,
   dates,
+  active,
   tags,
   image,
   video,
@@ -98,7 +101,17 @@ export function ProjectCard({
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-1">
             <h3 className="font-semibold">{title}</h3>
-            <time className="text-xs text-muted-foreground">{dates}</time>
+            <div className="flex flex-wrap items-center gap-2">
+              <time className="text-xs text-muted-foreground">{dates}</time>
+              {active === false && (
+                <Badge
+                  className="h-5 w-fit border border-border px-1.5 text-[10px] font-medium text-muted-foreground"
+                  variant="outline"
+                >
+                  Archived
+                </Badge>
+              )}
+            </div>
           </div>
           <a
             href={href || "#"}
