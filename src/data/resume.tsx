@@ -216,18 +216,37 @@ export const DATA = {
   // `image` or `video` is optional.
   projects: [
     {
-      title: "Prog Strength",
-      href: "https://progstrength.fitness",
-      dates: "May 2026 - Present",
+      title: "JAWS",
+      href: "https://github.com/Jaws-Platform",
+      dates: "October 2026 - Present",
       active: true,
       description:
-        "An AI-native fitness platform (web + iOS beta) where a conversational AI coach is the primary interface: log lifts, track macros, and get strength, nutrition, and running coaching by text, voice, or meal photo. An MCP server is the strict boundary between the LLM and the Go API, exposing 20+ typed tools regression-tested by a 77-case eval harness in CI. Built with an autonomous AI development pipeline that dispatches Claude Code agents on ephemeral EC2 instances against written SOWs.",
-      technologies: ["Go", "Next.js", "Expo", "FastAPI", "MCP", "AWS"],
+        "The platform behind everything I run on AWS: static sites, Lichess bots, research workloads, and Databricks workspaces, each declared in one YAML file in its own repo. A Python CLI (Typer) renders Terraform stacks against a hardened central state bucket, built from seven modules I publish to the Terraform Registry. It ships as a versioned image behind reusable GitHub Actions workflows, so project repos keep no Terraform: plan comments on PRs, per-PR preview URLs, and OIDC-scoped releases come from a few workflow calls.",
+      technologies: [
+        "Python",
+        "Typer",
+        "Terraform",
+        "AWS",
+        "Docker",
+        "GitHub Actions",
+        "OIDC",
+        "Databricks",
+      ],
       links: [
         {
-          type: "Website",
-          href: "https://progstrength.fitness",
-          icon: <Icons.globe className="size-3" />,
+          type: "GitHub",
+          href: "https://github.com/Jaws-Platform",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "CLI",
+          href: "https://github.com/Jaws-Platform/jaws",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Registry",
+          href: "https://registry.terraform.io/namespaces/Jaws-Platform",
+          icon: <Package className="size-3" />,
         },
       ],
       image: "",
@@ -235,16 +254,21 @@ export const DATA = {
     },
     {
       title: "Braveheart",
-      href: "https://github.com/jwallace145/rusty-chess-v2",
+      href: "https://github.com/Braveheart-Chess",
       dates: "November 2025 - Present",
       active: true,
       description:
-        "A UCI chess engine in Rust: a heavily optimized alpha-beta search paired with an NNUE evaluator trained on 3.2 billion self-play, self-labeled positions I curate in S3 and train on AWS GPUs. Every change must earn its merge: CI benchmarks speed and search efficiency against bars that only rise, and changes ship only after passing SPRT gates for Elo. Rated about 3,170 Elo on a Stockfish-calibrated ladder and live as a Lichess bot on infra from my JWall Engineering CLI. Named for the Scotch Opening and my ancestor William Wallace.",
+        "A UCI chess engine in Rust: a heavily optimized alpha-beta search paired with an NNUE evaluator trained on 3.2 billion self-play, self-labeled positions I curate in S3 and train on AWS GPUs. Every change must earn its merge: CI benchmarks speed and search efficiency against bars that only rise, and changes ship only after passing SPRT gates for Elo. Rated about 3,170 Elo on a Stockfish-calibrated ladder and live as a Lichess bot on infra from my JAWS platform. Named for the Scotch Opening and my ancestor William Wallace.",
       technologies: ["Rust", "NNUE", "Alpha-Beta Search", "SPRT", "CUDA", "AWS", "GitHub Actions"],
       links: [
         {
-          type: "Source",
-          href: "https://github.com/jwallace145/rusty-chess-v2",
+          type: "GitHub",
+          href: "https://github.com/Braveheart-Chess",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Engine",
+          href: "https://github.com/Braveheart-Chess/braveheart",
           icon: <Icons.github className="size-3" />,
         },
         {
@@ -280,62 +304,18 @@ export const DATA = {
       video: "",
     },
     {
-      title: "Guitar Knowledge Base",
-      href: "https://guitar.jwall.engineering/",
-      dates: "October 2026 - Present",
+      title: "Prog Strength",
+      href: "https://progstrength.fitness",
+      dates: "May 2026 - Present",
       active: true,
       description:
-        "An open-source knowledge base for guitar: theory, the fretboard, technique, and repertoire, written up as I study them and kept in one place. Not an engineering project at heart, but it shares the CS Survival Guide's internals: a Zensical site with conventional commits, automated releases, and a strict build in CI, with a custom pipeline for generating fretboard and chord diagrams on the roadmap. Music is a large part of who I am, so this one is public from day one and grows as I learn.",
-      technologies: ["Zensical", "Markdown", "Music Theory", "GitHub Pages"],
+        "An AI-native fitness platform (web + iOS beta) where a conversational AI coach is the primary interface: log lifts, track macros, and get strength, nutrition, and running coaching by text, voice, or meal photo. An MCP server is the strict boundary between the LLM and the Go API, exposing 20+ typed tools regression-tested by a 77-case eval harness in CI. Built with an autonomous AI development pipeline that dispatches Claude Code agents on ephemeral EC2 instances against written SOWs.",
+      technologies: ["Go", "Next.js", "Expo", "FastAPI", "MCP", "AWS"],
       links: [
         {
           type: "Website",
-          href: "https://guitar.jwall.engineering/",
+          href: "https://progstrength.fitness",
           icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/jwallace145/guitar-knowledge-base",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "",
-      video: "",
-    },
-    {
-      title: "JWall Engineering Sites CLI",
-      href: "https://github.com/jwallace145/jwall-engineering-infra",
-      dates: "October 2026 - Present",
-      active: true,
-      description:
-        "A Python CLI (Typer) that provisions and publishes every JWall Engineering site from one YAML file, built on my own Terraform Registry modules. Site repos keep no Terraform: the CLI renders a shared stack against a central hardened state bucket, syncs content to S3, and invalidates CloudFront. Its plan, preview, apply and publish commands ship as a versioned image behind reusable GitHub Actions workflows: plan comments on PRs, per-PR preview URLs, and OIDC-scoped production releases. Adding a site is a config file and four workflow calls.",
-      technologies: [
-        "Python",
-        "Typer",
-        "Terraform",
-        "AWS",
-        "S3",
-        "CloudFront",
-        "Route 53",
-        "IAM",
-        "Docker",
-        "GitHub Actions",
-      ],
-      links: [
-        {
-          type: "Source",
-          href: "https://github.com/jwallace145/jwall-engineering-infra",
-          icon: <Icons.github className="size-3" />,
-        },
-        {
-          type: "Registry",
-          href: "https://registry.terraform.io/modules/jwallace145/jwall-engineering/aws/latest",
-          icon: <Package className="size-3" />,
-        },
-        {
-          type: "Modules",
-          href: "https://github.com/jwallace145/terraform-aws-jwall-engineering",
-          icon: <Icons.github className="size-3" />,
         },
       ],
       image: "",
