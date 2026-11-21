@@ -98,7 +98,7 @@ export const DATA = {
       name: "Philosophy",
       icon: BookOpen,
       description:
-        "I read philosophy in my spare time and enjoy a good dialogue on society and ethics. Currently reading [The Metamorphosis](https://en.wikipedia.org/wiki/The_Metamorphosis) by [Franz Kafka](https://en.wikipedia.org/wiki/Franz_Kafka).",
+        "I read philosophy in my spare time and enjoy a good dialogue on society and ethics. Currently reading [Crime and Punishment](https://en.wikipedia.org/wiki/Crime_and_Punishment) by [Fyodor Dostoevsky](https://en.wikipedia.org/wiki/Fyodor_Dostoevsky).",
     },
     {
       name: "Mountaineering",
