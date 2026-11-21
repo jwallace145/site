@@ -22,7 +22,7 @@ export const DATA = {
   initials: "JW",
   location: "Denver, CO",
   locationLink: "https://www.google.com/maps/place/Denver,+CO",
-  description: "Software engineer with a passion for AI.",
+  description: "Software engineer w/ a love of math, machine learning, and AI.",
   summary:
     "I'm a software engineer with six years of experience building cloud platforms and backend services. Today I lead DevOps for Data Lake Platforms at [Charter Communications](/#work), where I build serverless AWS services and architect data platforms used across the organization. Before that I owned EC2's metering service at [AWS](/#work) and built container tooling at [Capital One](/#work). On the side I build [JAWS](/#projects), the platform behind everything I run on AWS, and [Braveheart](/#projects), a chess engine in Rust rated about 3,170 Elo. I also built [Prog Strength](/#projects), an AI-native fitness platform with a conversational AI coach, which I've since archived. I studied Computer Science and Engineering at [The Ohio State University](/#education) with a minor in mathematics and a concentration in artificial intelligence.",
   // TODO: replace public/og_image.png with your own image.
