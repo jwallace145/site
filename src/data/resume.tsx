@@ -23,8 +23,12 @@ export const DATA = {
   location: "Denver, CO",
   locationLink: "https://www.google.com/maps/place/Denver,+CO",
   description: "Software engineer w/ a love of math, machine learning, and AI.",
-  summary:
-    "I'm a software engineer with six years of experience building cloud platforms and backend services. Today I lead DevOps for Data Lake Platforms at [Charter Communications](/#work), where I build serverless AWS services and architect data platforms used across the organization. Before that I owned EC2's metering service at [AWS](/#work) and built container tooling at [Capital One](/#work). On the side I build [JAWS](/#projects), the platform behind everything I run on AWS, and [Braveheart](/#projects), a chess engine in Rust rated about 3,170 Elo. I also built [Prog Strength](/#projects), an AI-native fitness platform with a conversational AI coach, which I've since archived. I studied Computer Science and Engineering at [The Ohio State University](/#education) with a minor in mathematics and a concentration in artificial intelligence.",
+  summary: [
+    "I’m a software engineer with six years of experience building cloud platforms and backend services at major enterprise companies. At [Charter Communications](/#work), I lead the design and development of our managed Databricks platform. We’re building it from the ground up to give teams across Charter governed access to our petabyte-scale data lake.",
+    "Before Charter, I spent nearly three years on the EC2 metering team at [AWS](/#work). I built systems that tracked EC2 instance and host usage worldwide with 99.999% accuracy, producing the records AWS relied on to calculate customers’ bills. In 2024, I helped build the metering behind AWS’s public IPv4 billing changes, including changes to how we tracked Elastic IP usage. One project I’m especially proud of was leading the cross-team effort to launch cross-account billing for EC2 Capacity Reservations.",
+    "I started my career at [Capital One](/#work) building cloud infrastructure for its robotic process automation (RPA) platform. As part of the company’s broader migration to the cloud, I later helped build the pipeline that became Capital One’s standard for deploying services on AWS Fargate.",
+    "I earned my degree in computer science and engineering at [The Ohio State University](/#education), with a minor in mathematics and a concentration in AI. These days, I’m putting that background to work on [Braveheart](/#projects), a chess engine I’m building in my spare time. I train its neural network on billions of chess positions, all from games Braveheart has played against itself!",
+  ].join("\n\n"),
   // TODO: replace public/og_image.png with your own image.
   avatarUrl: "/jwall-engineering-avatar.png",
   ogImage: "/og_image.png",
