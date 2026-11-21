@@ -27,7 +27,9 @@ const sectionComponents: Record<string, React.ReactNode> = {
           <h2 className="text-xl font-bold">{DATA.sections.about.heading}</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
-          <div className="prose max-w-full font-sans leading-relaxed text-pretty text-muted-foreground dark:prose-invert">
+          {/* Links stay quiet here: body color and weight with a faint underline,
+              so a paragraph with several links still reads as prose. */}
+          <div className="prose max-w-full font-sans leading-relaxed text-pretty text-muted-foreground dark:prose-invert prose-a:font-normal prose-a:text-inherit prose-a:decoration-muted-foreground/40 prose-a:decoration-1 prose-a:transition-colors prose-a:hover:text-foreground prose-a:hover:decoration-foreground">
             <Markdown urlTransform={markdownUrlTransform}>{DATA.summary}</Markdown>
           </div>
         </BlurFade>
