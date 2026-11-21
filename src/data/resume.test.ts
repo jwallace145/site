@@ -12,3 +12,14 @@ describe("project descriptions", () => {
     },
   );
 });
+
+// progstrength.fitness was retired and will not be renewed, so anyone could
+// register it. Nothing on this site may send visitors there.
+describe("retired domains", () => {
+  it("nothing links to progstrength.fitness", () => {
+    const hrefs = DATA.projects.flatMap((p) => [p.href, ...p.links.map((l) => l.href)]);
+    for (const text of [...hrefs, DATA.summary, DATA.description]) {
+      expect(text).not.toContain("progstrength.fitness");
+    }
+  });
+});
