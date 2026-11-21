@@ -168,9 +168,9 @@ gh api -X POST "repos/$REPO/environments/prod/deployment-branch-policies" \
 gh api -X POST "repos/$REPO/environments/prod/deployment-branch-policies" \
   -f name='v*' -f type=tag
 
-gh variable set AWS_PLAN_ROLE_ARN    --repo "$REPO" --body "arn:aws:iam::650503560686:role/jwall-engineering-main-site-ci-plan"
-gh variable set AWS_PREVIEW_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::650503560686:role/jwall-engineering-main-site-ci-preview"
-gh variable set AWS_APPLY_ROLE_ARN   --repo "$REPO" --body "arn:aws:iam::650503560686:role/jwall-engineering-main-site-ci-apply"
+gh variable set AWS_PLAN_ROLE_ARN    --repo "$REPO" --body "arn:aws:iam::570327089884:role/jaws-main-site-ci-plan"
+gh variable set AWS_PREVIEW_ROLE_ARN --repo "$REPO" --body "arn:aws:iam::570327089884:role/jaws-main-site-ci-preview"
+gh variable set AWS_APPLY_ROLE_ARN   --repo "$REPO" --body "arn:aws:iam::570327089884:role/jaws-main-site-ci-apply"
 ```
 
 Optional: add yourself as a required reviewer on the environment for a second
