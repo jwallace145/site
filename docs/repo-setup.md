@@ -143,7 +143,7 @@ Delete the local `.pem` once stored.
 ## 5. `prod` environment and AWS role variables
 
 The bucket and the three CI roles are created by
-[`jaws`](https://github.com/jwallace145/jaws)
+[`jaws`](https://github.com/Jaws-Platform/jaws)
 (project key `main-site`); apply it first. The values are not secret, so they
 are **variables**. The apply role trusts the `environment:prod` OIDC subject,
 so the deploy job must run in an environment with exactly that name. The plan
