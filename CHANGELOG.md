@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.30.0](https://github.com/jwallace145/site/compare/v1.29.0...v1.30.0) (2026-11-22)
+
+
+### Features
+
+* highlight archived projects and collapse them behind a toggle ([#108](https://github.com/jwallace145/site/issues/108)) ([fd84305](https://github.com/jwallace145/site/commit/fd84305480c48e41ec8279ff1f14fcc9cadb537b))
+
 ## [1.29.0](https://github.com/jwallace145/site/compare/v1.28.0...v1.29.0) (2026-11-22)
 
 
