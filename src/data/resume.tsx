@@ -253,7 +253,7 @@ export const DATA = {
           icon: <Package className="size-3" />,
         },
       ],
-      image: "",
+      image: "/projects/jaws-thumbnail.png",
       video: "",
     },
     {
