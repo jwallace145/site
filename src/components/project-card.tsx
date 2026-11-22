@@ -104,10 +104,7 @@ export function ProjectCard({
             <div className="flex flex-wrap items-center gap-2">
               <time className="text-xs text-muted-foreground">{dates}</time>
               {active === false && (
-                <Badge
-                  className="h-5 w-fit border border-border px-1.5 text-[10px] font-medium text-muted-foreground"
-                  variant="outline"
-                >
+                <Badge className="h-5 w-fit px-1.5 text-[10px] font-medium" variant="warning">
                   Archived
                 </Badge>
               )}
