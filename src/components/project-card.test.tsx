@@ -42,6 +42,13 @@ describe("ProjectCard archived badge", () => {
     expect(html).toContain(">Archived<");
   });
 
+  it("styles the Archived badge as a yellow warning so it stands out", () => {
+    const html = renderToStaticMarkup(
+      <ProjectCard title="T" description="d" dates="2026" tags={[]} active={false} />,
+    );
+    expect(html).toContain("bg-amber-100");
+  });
+
   it("renders no badge when active is omitted", () => {
     const html = renderToStaticMarkup(
       <ProjectCard title="T" description="d" dates="2026" tags={[]} />,
