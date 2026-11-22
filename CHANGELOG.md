@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.0](https://github.com/jwallace145/site/compare/v1.28.0...v1.29.0) (2026-11-22)
+
+
+### Features
+
+* refresh the jaws project card with its logo and a current description ([#106](https://github.com/jwallace145/site/issues/106)) ([763c025](https://github.com/jwallace145/site/commit/763c02512fabfac34d1e3b45ffde149b528e7509))
+
 ## [1.28.0](https://github.com/jwallace145/site/compare/v1.27.0...v1.28.0) (2026-11-21)
 
 
