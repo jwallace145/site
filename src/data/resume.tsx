@@ -225,7 +225,7 @@ export const DATA = {
       dates: "October 2026 - Present",
       active: true,
       description:
-        "The platform behind everything I run on AWS: static sites, Lichess bots, research workloads, and Databricks workspaces, each declared in one YAML file in its own repo. A Python CLI (Typer) renders Terraform stacks against a hardened central state bucket, built from seven modules I publish to the Terraform Registry. It ships as a versioned image behind reusable GitHub Actions workflows, so project repos keep no Terraform: plan comments on PRs, per-PR preview URLs, and OIDC-scoped releases come from a few workflow calls.",
+        "The platform behind everything I run on AWS: static sites, Lichess bots, spot and GPU research jobs, and Databricks workspaces on Unity Catalog, all in a multi-account AWS Organization with SSO and no IAM users. Each project declares what it needs in one YAML file, and a Python CLI turns it into Terraform built from seven open-source module families I publish to the Terraform Registry. Project repos keep no Terraform: reusable workflows give them plan comments, per-PR previews, and OIDC-scoped releases.",
       technologies: [
         "Python",
         "Typer",
