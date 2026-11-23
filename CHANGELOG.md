@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.0](https://github.com/jwallace145/site/compare/v1.30.0...v1.31.0) (2026-11-23)
+
+
+### Features
+
+* add the pi project and move the jaws start date to may 2026 ([#111](https://github.com/jwallace145/site/issues/111)) ([53e4cc5](https://github.com/jwallace145/site/commit/53e4cc505a903fbe5b4d4fa7bfa5708ce1c220ff))
+
 ## [1.30.0](https://github.com/jwallace145/site/compare/v1.29.0...v1.30.0) (2026-11-22)
 
 
