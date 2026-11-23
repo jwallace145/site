@@ -222,7 +222,7 @@ export const DATA = {
     {
       title: "JAWS",
       href: "https://github.com/Jaws-Platform",
-      dates: "October 2026 - Present",
+      dates: "May 2026 - Present",
       active: true,
       description:
         "The platform behind everything I run on AWS: static sites, Lichess bots, spot and GPU research jobs, and Databricks workspaces on Unity Catalog, all in a multi-account AWS Organization with SSO and no IAM users. Each project declares what it needs in one YAML file, and a Python CLI turns it into Terraform built from seven open-source module families I publish to the Terraform Registry. Project repos keep no Terraform: reusable workflows give them plan comments, per-PR previews, and OIDC-scoped releases.",
@@ -282,6 +282,29 @@ export const DATA = {
         },
       ],
       image: "/projects/braveheart-thumbnail.png",
+      video: "",
+    },
+    {
+      title: "Pi",
+      href: "https://github.com/Pi-Mathematical-Reasoning",
+      dates: "November 2026 - Present",
+      active: true,
+      description:
+        "Can a model small enough to run on a laptop beat frontier models at math? Pi is my experiment to find out: benchmark an open-weight model (Qwen3 14B) on MATH-500 answers and miniF2F proofs, fine-tune it hard on math, then benchmark again against its original checkpoint and larger models. Every run is pinned and resumable, so scores reproduce on anyone's machine, and every proof comes back as a Lean 4 file checked independently, so correctness never rests on the model's word. Currently measuring the baseline.",
+      technologies: ["Python", "Lean 4", "Ollama", "Qwen3", "Fine-Tuning", "Benchmarking", "AWS"],
+      links: [
+        {
+          type: "GitHub",
+          href: "https://github.com/Pi-Mathematical-Reasoning",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Repo",
+          href: "https://github.com/Pi-Mathematical-Reasoning/pi",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/projects/pi-thumbnail.png",
       video: "",
     },
     {
