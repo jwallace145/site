@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.1](https://github.com/jwallace145/site/compare/v1.31.0...v1.31.1) (2026-11-27)
+
+
+### Bug Fixes
+
+* **deps:** bump the npm-minor-and-patch group across 1 directory with 7 updates ([#113](https://github.com/jwallace145/site/issues/113)) ([f81bbd9](https://github.com/jwallace145/site/commit/f81bbd97663ac8431fd21ec7c779e5441a3d2a64))
+
 ## [1.31.0](https://github.com/jwallace145/site/compare/v1.30.0...v1.31.0) (2026-11-23)
 
 
